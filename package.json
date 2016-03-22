@@ -1,0 +1,33 @@
+{
+    "name": "ow_tracker",
+    "version": "0.0.1",
+    "description": "CS:GO Overwatch tracker",
+    "keywords": [
+        "Counter-Strike Global Offensive",
+        "Counter Strike",
+        "Global Offensive",
+        "CS:GO",
+        "CSGO",
+        "Overwatch"
+    ],
+    "main": "app.php",
+    "dependencies": {
+        "jquery": "^2.2.2"
+    },
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dwalldorf/owTracker.git"
+    },
+    "author": "Daniel Walldorf",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dwalldorf/owTracker/issues"
+    },
+    "homepage": "https://github.com/dwalldorf/owTracker"
+}

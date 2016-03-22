@@ -1,0 +1,1 @@
+source ~/.my-zsh/zprofile.zsh
