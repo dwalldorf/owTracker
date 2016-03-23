@@ -48,6 +48,16 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+doctrine_mongodb:
+    connections:
+        default:
+            server: %mongo_server%
+            options: {}
+    default_database: %mongo_default_database%
+    document_managers:
+        default:
+            auto_mapping: true
+
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
