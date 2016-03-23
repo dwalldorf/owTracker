@@ -3,6 +3,11 @@
 parameters:
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app_cache_warmer:
+        class: AppBundle\Cache\AppCacheWarmer
+        tags:
+            - { name: kernel.cache_warmer, priority: 0 }
+    app_cache_clearer:
+        class: AppBundle\Cache\AppCacheClearer
+        tags:
+            - { name: kernel.cache_clearer, priority: 0 }
