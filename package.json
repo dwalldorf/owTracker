@@ -12,6 +12,7 @@
     ],
     "main": "app.php",
     "dependencies": {
+        "angular": "^1.5.2",
         "jquery": "^2.2.2"
     },
     "directories": {
