@@ -11,3 +11,6 @@ services:
         class: AppBundle\Cache\AppCacheClearer
         tags:
             - { name: kernel.cache_clearer, priority: 0 }
+
+    user_userservice:
+        class: UserBundle\Service\UserService

@@ -3,14 +3,14 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends BaseController {
 
     /**
      * @Route("/")
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request) {
+    public function indexAction() {
         return $this->render('index');
     }
 }

@@ -21,6 +21,15 @@ abstract class BaseController extends Controller {
     }
 
     /**
+     * @param $content
+     * @param int $status
+     * @return Response
+     */
+    protected function response($content, $status = 200) {
+        return new Response($content, $status);
+    }
+
+    /**
      * @return string
      */
     protected function getBaseDir() {
