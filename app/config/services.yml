@@ -12,5 +12,12 @@ services:
         tags:
             - { name: kernel.cache_clearer, priority: 0 }
 
-    user_userservice:
+    app.base_service:
+        class: AppBundle\Service\BaseService
+        abstract: true
+        calls:
+            - [setContainer, ["@service_container"]]
+
+    user.user_service:
         class: UserBundle\Service\UserService
+        parent: app.base_service
