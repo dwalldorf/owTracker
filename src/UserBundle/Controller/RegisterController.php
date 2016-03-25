@@ -17,7 +17,7 @@ class RegisterController extends BaseController {
     private $userService;
 
     protected function init() {
-//        $this->userService =
+        $this->userService = $this->getService(UserService::SERVICE_NAME);
     }
 
     /**
@@ -26,6 +26,8 @@ class RegisterController extends BaseController {
      * @param Request $request
      */
     public function registerAction(Request $request) {
+        /* @var $user User */
         $user = $this->getEntityFromRequest($request, User::class);
+        $this->userService->register($user);
     }
 }

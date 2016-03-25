@@ -2,17 +2,18 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\IGetService;
+use AppBundle\Service\ServiceLoader;
 use AppBundle\Util\AppSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class BaseController extends Controller {
+abstract class BaseController extends Controller implements IGetService {
 
     public function setContainer(ContainerInterface $container = null) {
         parent::setContainer($container);
-
         $this->init();
     }
 
@@ -37,7 +38,7 @@ abstract class BaseController extends Controller {
      * @param int $status
      * @return Response
      */
-    private function response($content, $status = 200) {
+    protected function response($content, $status = 200) {
         return new Response($content, $status);
     }
 
@@ -46,7 +47,7 @@ abstract class BaseController extends Controller {
      * @param int $status
      * @return Response
      */
-    private function jsonResponse($content, $status = 200) {
+    protected function jsonResponse($content, $status = 200) {
         $jsonContent = AppSerializer::getInstance()->toJson($content);
         return $this->response($jsonContent, $status);
     }
@@ -61,9 +62,17 @@ abstract class BaseController extends Controller {
     }
 
     /**
+     * @param string $className
+     * @return object
+     */
+    public function getService($className) {
+        return ServiceLoader::getService($className, $this->container);
+    }
+
+    /**
      * @return string
      */
-    protected function getBaseDir() {
+    private function getBaseDir() {
         return realpath(dirname(__DIR__) . '/../../');
     }
 }

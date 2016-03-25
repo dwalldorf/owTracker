@@ -2,40 +2,41 @@
 
 namespace UserBundle\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @MongoDB\Document)
+ * @ODM\Document(collection="user", repositoryClass="UserBundle\Repository\UserRepository")
  */
 class User {
 
     /**
-     * @MongoDB\Id
-     * @var \MongoId
+     * @ODM\Id
+     * @var string
      */
     protected $id;
 
     /**
-     * @MongoDB\String
+     * @ODM\String(nullable=false)
+     * @ODM\Index(unique=true, order="asc")
      * @var string
      */
     protected $email;
 
     /**
-     * @MongoDB\String
+     * @ODM\String
      * @var string
      */
     protected $password;
 
     /**
-     * @return \MongoId
+     * @return string
      */
     public function getId() {
         return $this->id;
     }
 
     /**
-     * @param \MongoId $id
+     * @param string $id
      */
     public function setId($id) {
         $this->id = $id;
