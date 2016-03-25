@@ -1,1 +1,2 @@
 ZSH_THEME="linuxonly"
+export LC_ALL=C
