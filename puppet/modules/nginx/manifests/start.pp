@@ -5,9 +5,4 @@ class nginx::start inherits nginx {
         require => Package['nginx']
     }
 
-    service { 'php5-fpm':
-        ensure  => running,
-        require => Package['php5-fpm']
-    }
-
 }

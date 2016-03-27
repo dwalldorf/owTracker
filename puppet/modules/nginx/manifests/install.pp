@@ -7,26 +7,6 @@ class nginx::install inherits nginx {
         ensure => latest,
     }
 
-    package { 'php5':
-        ensure => latest,
-    }
-    package { 'php5-cgi':
-        ensure  => latest,
-        notify  => Service['php5-fpm'],
-    }
-    package { 'php5-fpm':
-        ensure => latest,
-    }
-    package { 'php5-memcached':
-        ensure  => latest,
-        require => Package['memcached'],
-        notify  => Service['php5-fpm'],
-    }
-    package { 'php5-intl':
-        ensure  => latest,
-        notify  => Service['php5-fpm'],
-    }
-
     package { 'memcached':
         ensure => latest,
     }
@@ -34,7 +14,7 @@ class nginx::install inherits nginx {
     package { 'ruby':
         ensure => latest,
     }
-    exec { 'sass':
+    exec { 'install_sass':
         user    => root,
         command => '/usr/bin/gem install sass',
         require => Package['ruby'],
@@ -52,11 +32,13 @@ class nginx::install inherits nginx {
     package { 'curl':
         ensure => installed,
     }
-    exec { 'install composer':
-        command => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
-        require => Package['curl', 'php5', 'git'],
-        creates =>'/usr/local/bin/composer',
-        path    => '/usr/bin',
-        cwd     => '/tmp'
+    exec { 'install_composer':
+        command    => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
+        require    => Package['curl', 'php5', 'git'],
+        environment=>'HOME=/home/vagrant',
+        user       => vagrant,
+        creates    =>'/usr/local/bin/composer',
+        path       => '/usr/bin',
+        cwd        => '/tmp'
     }
 }

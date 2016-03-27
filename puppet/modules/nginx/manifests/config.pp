@@ -41,15 +41,4 @@ class nginx::config inherits nginx {
         require => File['nginx_owt'],
     }
 
-    file { 'php5-fpm-www-conf':
-        path    => '/etc/php5/fpm/pool.d/www.conf',
-        source  => 'puppet:///modules/nginx/php5-fpm-www-pool',
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => 0644,
-        require => Package['php5-fpm'],
-        notify  => Service['php5-fpm'],
-    }
-
 }

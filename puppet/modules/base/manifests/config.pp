@@ -26,6 +26,13 @@ class base::config inherits base {
         require => Exec['install_my-zsh_vagrant'],
     }
 
+    exec { 'chsh_vagrant':
+        command => 'chsh -s /bin/zsh vagrant',
+        path    => '/usr/bin',
+        user    => root,
+        require => Package['zsh'],
+    }
+
     file { 'bash_profile_root':
         path    => '/root/.profile',
         source  => 'puppet:///modules/base/.profile',
@@ -49,7 +56,14 @@ class base::config inherits base {
         owner   => root,
         group   => root,
         mode    => 0644,
-        require => Exec['install_my-zsh_vagrant'],
+        require => Exec['install_my-zsh_root'],
+    }
+
+    exec { 'chsh_root':
+        command => 'chsh -s /bin/zsh',
+        path    => '/usr/bin',
+        user    => root,
+        require => Package['zsh'],
     }
 
 }

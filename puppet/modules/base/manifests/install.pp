@@ -20,33 +20,33 @@ class base::install inherits base {
     }
 
     exec { 'install_my-zsh_vagrant':
-        command => 'git clone https://github.com/dwalldorf/my-zsh /home/vagrant/.my-zsh && chsh -s /bin/zsh vagrant',
+        command => 'git clone https://github.com/dwalldorf/my-zsh /home/vagrant/.my-zsh',
         creates => '/home/vagrant/.my-zsh',
         path    => '/usr/bin',
         user    => vagrant,
-        require => [Package['git', 'zsh'], Exec['install_oh-my-zsh_vagrant']],
+        require => Package['git', 'zsh'],
     }
     exec { 'install_oh-my-zsh_vagrant':
-        command => 'git submodule update',
+        command => 'git submodule init && git submodule update',
         cwd     => '/home/vagrant/.my-zsh',
         path    => ['/usr/bin', '/bin'],
         user    => vagrant,
-        require => Package['git'],
+        require => Exec['install_my-zsh_vagrant'],
     }
 
-    exec { 'install_oh-my-zsh_root':
-        command => 'git clone https://github.com/robbyrussell/oh-my-zsh /root/.oh-my-zsh',
-        creates => '/root/.oh-my-zsh',
+    exec { 'install_my-zsh_root':
+        command => 'git clone https://github.com/dwalldorf/my-zsh /root/.my-zsh',
+        creates => '/root/.my-zsh',
         path    => '/usr/bin',
         user    => root,
         require => Package['git'],
     }
-    exec { 'install_my-zsh_root':
-        command => 'git submodule update',
+    exec { 'install_oh-my-zsh_root':
+        command => 'git submodule init && git submodule update',
         cwd     => '/root/.my-zsh',
         path    => ['/usr/bin', '/bin'],
         user    => root,
-        require => Package['git'],
+        require => Exec['install_my-zsh_root'],
     }
 
 }
