@@ -6,6 +6,10 @@ class nginx::install inherits nginx {
     package { 'default-jre':
         ensure => latest,
     }
+    package{ 'apache2':
+        ensure  => purged,
+        require => Package['php5', 'php5-cgi', 'php5-fpm', 'php5-intl'],
+    }
 
     package { 'memcached':
         ensure => latest,
