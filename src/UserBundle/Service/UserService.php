@@ -17,14 +17,14 @@ class UserService extends BaseService {
 
     protected function init() {
         $this->repository = $this->getRepository(UserRepository::ID);
-        ldd($this->repository);
     }
 
     /**
      * @param User $user
+     * @return int
      */
     public function register(User $user) {
-        ldd($this->repository);
+        return $this->repository->register($user);
     }
 
 }

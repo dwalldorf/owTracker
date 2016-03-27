@@ -23,11 +23,17 @@ class RegisterController extends BaseController {
     /**
      * @Route("/api/user")
      * @Method({"POST"})
+     *
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @internal $user User
      */
     public function registerAction(Request $request) {
-        /* @var $user User */
+//        /* @var $user User */
         $user = $this->getEntityFromRequest($request, User::class);
         $this->userService->register($user);
+
+        return $this->jsonResponse(null);
     }
 }

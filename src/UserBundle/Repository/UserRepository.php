@@ -14,8 +14,6 @@ class UserRepository extends BaseRepository {
      * @return int userId
      */
     public function register(User $user) {
-        ldd($this->dm->getRepository(User::class));
-        
         $this->dm->persist($user);
         $this->dm->flush();
 
