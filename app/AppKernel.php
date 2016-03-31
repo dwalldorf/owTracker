@@ -18,6 +18,7 @@ class AppKernel extends Kernel {
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),
+            new OverwatchBundle\OverwatchBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

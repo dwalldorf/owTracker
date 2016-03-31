@@ -21,3 +21,7 @@ services:
     user.user_service:
         class: UserBundle\Service\UserService
         parent: app.base_service
+
+    overwatch.overwatch_service:
+        class: OverwatchBundle\Service\OverwatchService
+        parent: app.base_service
