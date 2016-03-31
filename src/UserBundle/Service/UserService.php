@@ -4,6 +4,7 @@ namespace UserBundle\Service;
 
 use AppBundle\Service\BaseService;
 use UserBundle\Document\User;
+use UserBundle\Exception\RegisterUserException;
 use UserBundle\Repository\UserRepository;
 
 class UserService extends BaseService {
@@ -22,26 +23,23 @@ class UserService extends BaseService {
     /**
      * @param User $user
      * @return int
+     * @throws RegisterUserException
      */
     public function register(User $user) {
         $errors = [];
 
         if (!$user->getEmail()) {
-            $errors[] = 'email';
+            $errors[] = 'email is mandatory';
         }
         if (!$user->getPassword()) {
-            $errors[] = 'password';
+            $errors[] = 'password is mandatory';
         }
         if ($this->repository->findByEmail($user->getEmail())) {
-            $errors[] = 'duplicate';
+            $errors[] = 'email already registered';
         }
 
         if (count($errors) > 0) {
-            /*
-             * TODO: handle - throw error
-             * by dwalldorf at 22:16 29.03.16
-             */
-            return null;
+            throw new RegisterUserException($errors);
         }
 
         $user->setPassword($this->encryptPassword($user->getPassword()));

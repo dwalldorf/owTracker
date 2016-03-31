@@ -11,6 +11,10 @@ services:
         class: AppBundle\Cache\AppCacheClearer
         tags:
             - { name: kernel.cache_clearer, priority: 0 }
+    app.exception_listener:
+        class: AppBundle\Exception\ApiExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
 
     app.base_service:
         class: AppBundle\Service\BaseService
