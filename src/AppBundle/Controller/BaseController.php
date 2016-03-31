@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use UserBundle\Document\User;
+use UserBundle\Exception\NotLoggedInException;
 use UserBundle\Service\UserService;
 
 abstract class BaseController extends Controller implements IGetService {
@@ -58,7 +59,7 @@ abstract class BaseController extends Controller implements IGetService {
      * @param int $status
      * @return Response
      */
-    protected function response($content, $status = 200) {
+    protected final function response($content, $status = 200) {
         return new Response($content, $status);
     }
 
@@ -67,7 +68,7 @@ abstract class BaseController extends Controller implements IGetService {
      * @param int $status
      * @return Response
      */
-    protected function jsonResponse($content, $status = 200) {
+    protected final function jsonResponse($content, $status = 200) {
         $jsonContent = AppSerializer::getInstance()->toJson($content);
 
         $response = new Response($jsonContent, $status);
@@ -96,14 +97,23 @@ abstract class BaseController extends Controller implements IGetService {
     /**
      * @return bool
      */
-    protected function isLoggedIn() {
+    protected final function isLoggedIn() {
         return $this->session->get('user') != null;
+    }
+
+    /**
+     * @throws NotLoggedInException
+     */
+    protected final function requireLogin() {
+        if (!$this->isLoggedIn()) {
+            throw new NotLoggedInException();
+        }
     }
 
     /**
      * @return User|null
      */
-    protected function getCurrentUser() {
+    protected final function getCurrentUser() {
         if (!$this->isLoggedIn()) {
             return null;
         }

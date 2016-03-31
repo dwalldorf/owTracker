@@ -6,7 +6,7 @@ var app = angular.module('owTracker');
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider',
     function ($locationProvider, $urlRouterProvider, $stateProvider) {
         $urlRouterProvider.otherwise(function ($injector) {
-            $injector.get('$state').go('page');
+            $injector.get('$state').go('index');
         });
 
         $stateProvider.state('page', {

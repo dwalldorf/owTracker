@@ -28,21 +28,24 @@ class UserService extends BaseService {
     public function register(User $user) {
         $errors = [];
 
-        if (!$user->getEmail()) {
-            $errors[] = 'email is mandatory';
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+
+        if (!$email) {
+            $errors['email'][] = 'email is mandatory';
         }
-        if (!$user->getPassword()) {
+        if (!$password) {
             $errors[] = 'password is mandatory';
         }
-        if ($this->repository->findByEmail($user->getEmail())) {
-            $errors[] = 'email already registered';
+        if ($this->repository->findByEmail($email)) {
+            $errors['email'][] = 'email already exists';
         }
 
         if (count($errors) > 0) {
-            throw new RegisterUserException($errors);
+            throw new RegisterUserException($errors, 'registration failed');
         }
 
-        $user->setPassword($this->encryptPassword($user->getPassword()));
+        $user->setPassword($this->encryptPassword($password));
         return $this->repository->register($user);
     }
 

@@ -7,18 +7,16 @@ angular.module('overwatchModule')
             var OVERWATCH_URI = appConf.baseUrl + '/overwatch';
 
             var getOverwatchList = function () {
-                var promise = $http.get(OVERWATCH_URI, {cache: false});
+                return $http.get(OVERWATCH_URI, {cache: false});
+            };
 
-                return promise.then(function (res) {
-                    $rootScope.overwatch = res.data;
-                    return $rootScope.user;
-                }, function () {
-                    return promise;
-                });
+            var submitOverwatch = function (overwatch) {
+                return $http.post(OVERWATCH_URI, overwatch);
             };
 
             return {
-                getOverwatchList: getOverwatchList
+                getOverwatchList: getOverwatchList,
+                submitOverwatch: submitOverwatch
             }
         }
     ]);

@@ -15,10 +15,24 @@ class ApiExceptionListener {
         $ex = $event->getException();
 
         if ($ex instanceof ApiBaseException) {
-            $content = AppSerializer::getInstance()->toJson($ex->getErrors());
-            $httpStatus = $ex->getHttpStatusCode();
+            $response = new Response();
 
-            $response = new Response($content, $httpStatus);
+            $httpStatus = $ex->getHttpStatusCode();
+            $content = [];
+
+            if ($ex->getMessage()) {
+                $content ['reason'] = $ex->getMessage();
+            }
+            if ($ex->getErrors()) {
+                $content['errors'] = $ex->getErrors();
+            }
+
+            if (count($content) > 0) {
+                $response->setContent(AppSerializer::getInstance()->toJson($content));
+            }
+
+            $response->setStatusCode($httpStatus);
+            $response->headers->set('Content-Type', 'application/json');
             $event->setResponse($response);
         }
     }

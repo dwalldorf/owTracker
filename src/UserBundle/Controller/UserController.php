@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Document\User;
+use UserBundle\Exception\RegisterUserException;
 use UserBundle\Service\UserService;
 
 class UserController extends BaseController {
@@ -56,6 +57,7 @@ class UserController extends BaseController {
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws RegisterUserException
      *
      * @internal $user User
      */

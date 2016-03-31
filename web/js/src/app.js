@@ -6,9 +6,7 @@ app.run(['$rootScope', '$state', 'UserService', 'OverwatchService',
         function ($rootScope, $state, userService, overwatchService) {
             $rootScope.$state = $state;
 
-            userService.getMe().then(function () {
-                overwatchService.getOverwatchList();
-            });
+            userService.getMe();
         }
     ]
 );
