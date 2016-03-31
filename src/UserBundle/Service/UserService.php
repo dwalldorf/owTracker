@@ -74,27 +74,6 @@ class UserService extends BaseService {
     }
 
     /**
-     * temporary only - remove!
-     *
-     * @return User
-     */
-    public function getFakeUser() {
-        $user = new User();
-        $user->setId('123');
-        $user->setEmail('d.walldorf@me.com');
-
-        return $user;
-    }
-
-    /**
-     * @param string $id
-     * @return User|null
-     */
-    public function getUserById($id) {
-        return $this->getFakeUser();
-    }
-
-    /**
      * @param User $user
      * @return User
      */

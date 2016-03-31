@@ -3,8 +3,6 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use UserBundle\Document\User;
-use UserBundle\Service\UserService;
 
 class IndexController extends BaseController {
 

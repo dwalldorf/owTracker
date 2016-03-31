@@ -20,22 +20,6 @@ class OverwatchService extends BaseService {
         $this->repository = $this->getRepository(OverwatchRepository::ID);
     }
 
-    /*
-     * TODO: remove
-     * by dwalldorf at 20:16 28.03.16
-     */
-    public function getFakeOverwatchList() {
-        $overwatch = new Overwatch();
-        $overwatch->setId('123fake');
-        $overwatch->setMap(1);
-        $overwatch->setAimAssist(true);
-        $overwatch->setVisionAssist(true);
-        $overwatch->setOtherAssist(false);
-        $overwatch->setGriefing(false);
-
-        return [$overwatch];
-    }
-
     /**
      * @param Overwatch $overwatch
      * @return Overwatch
