@@ -8,6 +8,13 @@ use UserBundle\Document\User;
 class UserRepository extends BaseRepository {
 
     const ID = 'UserBundle:User';
+
+    /**
+     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     */
+    private function getRepository() {
+        return $this->dm->getRepository('UserBundle:User');
+    }
     
     /**
      * @param User $user
@@ -18,5 +25,20 @@ class UserRepository extends BaseRepository {
         $this->dm->flush();
 
         return $user->getId();
+    }
+
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function findByEmail($email) {
+        return $this->getRepository()->findOneBy(['email' => $email]);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getAll() {
+        return $this->getRepository()->findAll();
     }
 }

@@ -13,8 +13,6 @@ class IndexController extends BaseController {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction() {
-        $user = new User();
-        $this->getService(UserService::SERVICE_NAME)->register($user);
         return $this->render('index');
     }
 }

@@ -14,7 +14,12 @@ class AppCacheWarmer extends CacheWarmer {
             'jquery/dist/jquery.js',
             'jquery/dist/jquery.min.js',
             'angular/angular.js',
-            'angular/angular.min.js'
+            'angular/angular.min.js',
+            'angular-cookies/angular-cookies.js',
+            'angular-cookies/angular-cookies.min.js',
+            'angular-cookies/angular-cookies.min.js.map',
+            'angular-ui-router/release/angular-ui-router.js',
+            'angular-ui-router/release/angular-ui-router.min.js',
         ],
     ];
 
