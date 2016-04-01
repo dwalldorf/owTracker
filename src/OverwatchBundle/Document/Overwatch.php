@@ -9,7 +9,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  */
 class Overwatch {
 
-    private $mapPool = [
+    private static $mapPool = [
         0  => 'de_dust2',
         1  => 'de_inferno',
         2  => 'de_nuke',
@@ -190,15 +190,15 @@ class Overwatch {
     /**
      * @return array
      */
-    public function getMapPool() {
-        return $this->mapPool;
+    public static function getMapPool() {
+        return self::$mapPool;
     }
 
     /**
      * @return bool
      */
     public function hasValidMap() {
-        if (array_search($this->getMap(), $this->getMapPool()) !== false) {
+        if (array_search($this->getMap(), self::getMapPool()) !== false) {
             return true;
         }
         return false;
