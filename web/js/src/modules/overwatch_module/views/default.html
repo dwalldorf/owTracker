@@ -7,9 +7,10 @@
             <div class="form-group">
                 <label for="ov_map"
                        class="control-label">Map:</label>
-                <input type="text"
-                       id="ov_map"
-                       data-ng-model="newOverwatch.map"/>
+                <select id="ov_map"
+                        data-ng-model="newOverwatch.map"
+                        data-ng-options="map.name for map in mapPool track by map.id">
+                </select>
             </div>
             <div class="form-group">
                 <label for="ov_aim">Aim assist:</label>

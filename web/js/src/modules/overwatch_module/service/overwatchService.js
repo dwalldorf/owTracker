@@ -10,13 +10,18 @@ angular.module('overwatchModule')
                 return $http.get(OVERWATCH_URI, {cache: false});
             };
 
+            var getMapPool = function () {
+                return $http.get(appConf.baseUrl + '/overwatch/mappool', {cache: false});
+            };
+
             var submitOverwatch = function (overwatch) {
                 return $http.post(OVERWATCH_URI, overwatch);
             };
 
             return {
                 getOverwatchList: getOverwatchList,
-                submitOverwatch: submitOverwatch
+                submitOverwatch: submitOverwatch,
+                getMapPool: getMapPool
             }
         }
     ]);

@@ -39,30 +39,34 @@ class OverwatchController extends BaseController {
     }
 
     /**
+     * @Route("/api/overwatch/mappool")
+     * @Method({"GET"})
+     *
+     * @return Response
+     */
+    public function getMapPoolAction() {
+        return $this->jsonResponse(Overwatch::getMapPool());
+    }
+
+    /**
      * @Route("/api/overwatch")
      * @Method({"POST"})
      *
      * @param Request $request
      * @return Response
+     *
+     * @throws InvalidArgumentException
      * @throws NotLoggedInException
      */
     public function submitAction(Request $request) {
         $this->requireLogin();
 
-        $user = $this->getCurrentUser();
-
         /* @var $overwatch Overwatch */
         $overwatch = $this->getEntityFromRequest($request, Overwatch::class);
-        if (!$overwatch->hasValidMap()) {
-            throw new InvalidArgumentException('invalid map');
-        }
+        $dbOverwatch = $this->overwatchService->save($overwatch);
 
-        $overwatch->setUserId($user->getId());
-
-        $overwatch = $this->overwatchService->save($overwatch);
-
-        if ($overwatch->getId()) {
-            return $this->jsonResponse($overwatch, 201);
+        if ($dbOverwatch->getId()) {
+            return $this->jsonResponse($dbOverwatch, Response::HTTP_CREATED);
         }
         return $this->jsonResponse('handle this', 400);
     }

@@ -7,6 +7,9 @@ app.run(['$rootScope', '$state', 'UserService', 'OverwatchService',
             $rootScope.$state = $state;
 
             userService.getMe();
+            overwatchService.getMapPool().then(function (res) {
+                $rootScope.mapPool = res.data;
+            });
         }
     ]
 );

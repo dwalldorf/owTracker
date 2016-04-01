@@ -1,29 +1,34 @@
 'use strict';
 
 angular.module('owTracker')
-    .controller('OverwatchController', ['$scope', 'OverwatchService', function ($scope, overwatchService) {
+    .controller('OverwatchController', ['$rootScope', '$scope', 'OverwatchService', function ($rootScope, $scope, overwatchService) {
+
+        var newOverwatch = {
+            map: {id: 0},
+            aimAssist: false,
+            visualAssist: false,
+            otherAssist: false,
+            griefing: false
+        };
+
+        function resetOverwatchForm() {
+            $scope.newOverwatch = angular.copy(newOverwatch);
+        }
 
         function init() {
-            $scope.newOverwatch = {
-                map: 'de_dust2',
-                aim: false,
-                visual: false,
-                other: false,
-                griefing: false
-            };
+            resetOverwatchForm();
 
+            $scope.overwatches = [];
             overwatchService.getOverwatchList().then(function (res) {
                 $scope.overwatches = res.data;
-                console.log(res);
-
-
             });
         }
 
         $scope.submitOverwatch = function () {
-            overwatchService.submitOverwatch($scope.newOverwatch);
+            overwatchService.submitOverwatch($scope.newOverwatch).then(function (res) {
+                $scope.overwatches.push(res.data);
+            });
         };
-
 
         init();
     }]);
