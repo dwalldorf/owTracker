@@ -42,7 +42,7 @@ class UserService extends BaseService {
         }
 
         if (count($errors) > 0) {
-            throw new RegisterUserException($errors, 'registration failed');
+            throw new RegisterUserException('registration failed', $errors);
         }
 
         $user->setPassword($this->encryptPassword($password));
