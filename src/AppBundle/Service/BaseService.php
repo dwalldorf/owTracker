@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use UserBundle\Document\User;
 
 abstract class BaseService implements ContainerAwareInterface, IGetService, IGetRepository {
 
@@ -38,5 +39,12 @@ abstract class BaseService implements ContainerAwareInterface, IGetService, IGet
             ->get('doctrine_mongodb')
             ->getManager()
             ->getRepository($repository);
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getCurrentUser() {
+        return $this->session->get('user');
     }
 }
