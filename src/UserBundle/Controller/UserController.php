@@ -3,6 +3,7 @@
 namespace UserBundle\Controller;
 
 use AppBundle\Controller\BaseController;
+use AppBundle\Exception\BadRequestException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,15 +41,17 @@ class UserController extends BaseController {
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws BadRequestException
      */
     public function loginAction(Request $request) {
+        /* @var $user User */
         $user = $this->getEntityFromRequest($request, User::class);
-        $user = $this->userService->login($user);
+        $dbUser = $this->userService->login($user);
 
-        if ($user) {
-            return $this->jsonResponse($user);
+        if ($dbUser->getId()) {
+            return $this->jsonResponse($dbUser);
         }
-        return $this->jsonResponse(['message' => 'bad credentials'], 400);
+        throw new BadRequestException('invalid credentials');
     }
 
     /**
