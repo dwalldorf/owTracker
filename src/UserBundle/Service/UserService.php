@@ -26,6 +26,20 @@ class UserService extends BaseService {
      * @throws RegisterUserException
      */
     public function register(User $user) {
+        $errors = $this->validateUser($user);
+        if (count($errors) > 0) {
+            throw new RegisterUserException('registration failed', $errors);
+        }
+
+        $user->setPassword($this->encryptPassword($user->getPassword()));
+        return $this->repository->register($user);
+    }
+
+    /**
+     * @param User $user
+     * @return array|null
+     */
+    private function validateUser(User $user) {
         $errors = [];
 
         $email = $user->getEmail();
@@ -42,11 +56,9 @@ class UserService extends BaseService {
         }
 
         if (count($errors) > 0) {
-            throw new RegisterUserException('registration failed', $errors);
+            return $errors;
         }
-
-        $user->setPassword($this->encryptPassword($password));
-        return $this->repository->register($user);
+        return null;
     }
 
     /**
