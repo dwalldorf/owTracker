@@ -3,15 +3,14 @@
 angular.module('owTracker')
     .controller('UserController', ['$scope', 'UserService', function ($scope, userService) {
 
+        var initialUser = {
+            email: '',
+            password: ''
+        };
+
         function init() {
-            $scope.loginUser = {
-                email: '',
-                password: ''
-            };
-            $scope.registerUser = {
-                email: '',
-                password: ''
-            };
+            $scope.loginUser = angular.copy(initialUser);
+            $scope.registerUser = angular.copy(initialUser);
         }
 
         $scope.login = function () {
