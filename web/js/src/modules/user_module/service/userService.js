@@ -23,7 +23,9 @@ angular.module('userModule')
 
             var login = function (user) {
                 return $http.post(LOGIN_URI, user).then(function (res) {
-                    $rootScope.user = res.data;
+                    if (res.status == 200) {
+                        $rootScope.user = res.data;
+                    }
                 });
             };
 

@@ -15,9 +15,7 @@ angular.module('owTracker')
         }
 
         $scope.login = function () {
-            userService.login($scope.loginUser).then(function () {
-
-            });
+            userService.login($scope.loginUser);
         };
 
         $scope.register = function () {

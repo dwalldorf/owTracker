@@ -20,7 +20,9 @@ angular.module('owTracker')
 
             $scope.overwatches = [];
             overwatchService.getOverwatchList().then(function (res) {
-                $scope.overwatches = res.data;
+                if (res.status == 200) {
+                    $scope.overwatches = res.data;
+                }
             });
         }
 
