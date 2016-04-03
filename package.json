@@ -13,8 +13,9 @@
     "main": "app.php",
     "dependencies": {
         "angular": "^1.5.2",
-        "angular-ui-router": "^0.2.18",
         "angular-cookies": "~1.5.3",
+        "angular-ui-router": "^0.2.18",
+        "bootstrap": "^3.3.6",
         "jquery": "^2.2.2"
     },
     "directories": {
