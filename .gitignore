@@ -1,6 +1,7 @@
 /.idea/
 /.vagrant/
 /.dbshell
+/.sass-cache
 /node_modules/
 
 /app/config/parameters_prod.yml
