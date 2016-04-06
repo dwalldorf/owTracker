@@ -19,6 +19,17 @@ class base::install inherits base {
         ensure => latest,
     }
 
+    package { 'python-software-properties':
+        ensure => latest,
+    }
+    package { 'build-essential':
+        ensure => latest,
+    }
+
+    package { 'curl':
+        ensure => installed,
+    }
+
     exec { 'install_my-zsh_vagrant':
         command => 'git clone https://github.com/dwalldorf/my-zsh /home/vagrant/.my-zsh',
         creates => '/home/vagrant/.my-zsh',
@@ -28,6 +39,7 @@ class base::install inherits base {
     }
     exec { 'install_oh-my-zsh_vagrant':
         command => 'git submodule init && git submodule update',
+        creates => '/home/vagrant/.my-zsh/oh-my-zsh/oh-my-zsh.sh',
         cwd     => '/home/vagrant/.my-zsh',
         path    => ['/usr/bin', '/bin'],
         user    => vagrant,
@@ -43,6 +55,7 @@ class base::install inherits base {
     }
     exec { 'install_oh-my-zsh_root':
         command => 'git submodule init && git submodule update',
+        creates => '/root/.my-zsh/oh-my-zsh/oh-my-zsh.sh',
         cwd     => '/root/.my-zsh',
         path    => ['/usr/bin', '/bin'],
         user    => root,
