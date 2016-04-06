@@ -1,10 +1,14 @@
-<div class="overwatch_container">
+<div class="row overwatch_container">
 
-    <h3>New Overwatch Case</h3>
-    <div class="overwatch_add_container">
+    <div class="new-overwatch-container col-md-12">
         <form role="form"
               data-ng-submit="submitOverwatch()">
-            <div class="form-group">
+
+            <div class="header-form-group">
+                <strong>New Overwatch Case</strong>
+            </div>
+
+            <div class="header-form-group">
                 <label for="ov_map"
                        class="control-label">Map:</label>
                 <select id="ov_map"
@@ -12,42 +16,75 @@
                         data-ng-options="map.name for map in mapPool track by map.id">
                 </select>
             </div>
-            <div class="form-group">
+
+            <div class="header-form-group">
                 <label for="ov_aim">Aim assist:</label>
                 <input type="checkbox"
                        id="ov_aim"
                        data-ng-model="newOverwatch.aim"/>
             </div>
-            <div class="form-group">
+
+            <div class="header-form-group">
                 <label for="ov_visual">Visual assist:</label>
                 <input type="checkbox"
                        id="ov_visual"
                        data-ng-model="newOverwatch.visual"/>
             </div>
-            <div class="form-group">
+
+            <div class="header-form-group">
                 <label for="ov_other">Other assist:</label>
                 <input type="checkbox"
                        id="ov_other"
                        data-ng-model="newOverwatch.other"/>
             </div>
-            <div class="form-group">
+
+            <div class="header-form-group">
                 <label for="ov_griefing">Griefing:</label>
                 <input type="checkbox"
                        id="ov_griefing"
                        data-ng-model="newOverwatch.griefing"/>
             </div>
-            <div class="form-group">
-                <button type="submit">Submit</button>
+
+            <div class="header-form-group">
+                <button type="submit"
+                        class="btn btn-success">Submit
+                </button>
             </div>
+
         </form>
     </div>
 
-    <h2>Your Overwatches</h2>
-    <div class="overwatch_list_container">
-        <div class="overwatch_line">
-            <ul>
-                <li data-ng-repeat="(key, value) in overwatches">{{value.map}}</li>
-            </ul>
+    <div class="row overwatch_list_container">
+        <div class="col-sm-12">
+            <h2>Your Overwatch verdicts</h2>
+
+            <table class="table table-hover">
+                <thead>
+                <th>#</th>
+                <th>Map</th>
+                <th>Aim assist</th>
+                <th>Visual assist</th>
+                <th>Other assist</th>
+                <th>Griefing</th>
+                </thead>
+
+                <tbody>
+                <tr data-ng-repeat="(key, value) in overwatches">
+                    <td></td>
+                    <td>{{value.map}}</td>
+                    <td>{{value.aimAssist}}</td>
+                    <td>{{value.visionAssist}}</td>
+                    <td>{{value.otherAssist}}</td>
+                    <td>{{value.griefing}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="row overwatch_line"
+                 data-ng-repeat="(key, value) in overwatches">
+                <div class="col-sm-2"></div>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
