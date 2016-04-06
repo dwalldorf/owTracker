@@ -48,10 +48,11 @@ class UserController extends BaseController {
         $user = $this->getEntityFromRequest($request, User::class);
         $dbUser = $this->userService->login($user);
 
-        if ($dbUser->getId()) {
-            return $this->jsonResponse($dbUser);
+        if (!$dbUser) {
+            throw new BadRequestException('invalid credentials');
         }
-        throw new BadRequestException('invalid credentials');
+
+        return $this->jsonResponse($dbUser);
     }
 
     /**
