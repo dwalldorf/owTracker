@@ -5,11 +5,13 @@
 }
 
 #main-wrapper {
-    max-width: 1600px !important;
+    max-width: 1500px !important;
 }
 
 .overwatch_container {
+
     .new-overwatch-container {
+
         .header-form-group {
             float: left;
             padding: 10px 0 0 15px;
@@ -18,9 +20,15 @@
                 font-weight: normal;
             }
         }
+
+        .header-form-btn-group {
+            float: left;
+            padding: 5px 0 0 15px;
+        }
     }
 
     .overwatch_list_container {
+
         .overwatch_list_container {
         }
     }
