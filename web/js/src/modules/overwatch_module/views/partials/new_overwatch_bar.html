@@ -1,0 +1,53 @@
+<div class="col-md-12 new-overwatch-container">
+    <form role="form"
+          data-ng-submit="submitOverwatch()">
+
+        <div class="header-form-group">
+            <strong>New Overwatch Case</strong>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_map"
+                   class="control-label">Map:</label>
+            <select id="ov_map"
+                    data-ng-model="newOverwatch.map"
+                    data-ng-options="map.name for map in mapPool track by map.id">
+            </select>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_aim">Aim assist:</label>
+            <input type="checkbox"
+                   id="ov_aim"
+                   data-ng-model="newOverwatch.aimAssist"/>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_visual">Visual assist:</label>
+            <input type="checkbox"
+                   id="ov_visual"
+                   data-ng-model="newOverwatch.visionAssist"/>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_other">Other assist:</label>
+            <input type="checkbox"
+                   id="ov_other"
+                   data-ng-model="newOverwatch.otherAssist"/>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_griefing">Griefing:</label>
+            <input type="checkbox"
+                   id="ov_griefing"
+                   data-ng-model="newOverwatch.griefing"/>
+        </div>
+
+        <div class="header-form-btn-group">
+            <button type="submit"
+                    class="btn btn-success btn-sm">Submit
+            </button>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,33 @@
+<div class="col-sm-8 overwatch_list_container">
+    <h2>Your Overwatch verdicts</h2>
+
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Map</th>
+            <th>Aim assist</th>
+            <th>Visual assist</th>
+            <th>Other assist</th>
+            <th>Griefing</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr data-ng-repeat="(key, value) in overwatches">
+            <td></td>
+            <td>{{value.map}}</td>
+            <td>{{value.aimAssist}}</td>
+            <td>{{value.visionAssist}}</td>
+            <td>{{value.otherAssist}}</td>
+            <td>{{value.griefing}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row overwatch_line"
+         data-ng-repeat="(key, value) in overwatches">
+        <div class="col-sm-2"></div>
+        </ul>
+    </div>
+</div>
