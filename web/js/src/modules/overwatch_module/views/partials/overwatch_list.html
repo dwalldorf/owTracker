@@ -1,26 +1,46 @@
 <div class="col-sm-8 overwatch_list_container">
     <h2>Your Overwatch verdicts</h2>
 
-    <table class="table table-condensed table-hover">
+    <table class="table table-condensed table-bordered table-hover">
         <thead>
         <tr>
             <th>Date</th>
             <th>Map</th>
-            <th>Aim assist</th>
-            <th>Visual assist</th>
-            <th>Other assist</th>
-            <th>Griefing</th>
+            <th class="text-center">Aim assist</th>
+            <th class="text-center">Visual assist</th>
+            <th class="text-center">Other assist</th>
+            <th class="text-center">Griefing</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr data-ng-repeat="(key, value) in overwatches">
-            <td></td>
+        <tr data-ng-repeat="(key, value) in overwatches | orderBy:value.creationDate.timestamp:true">
+            <td>{{value.displayDate}}</td>
             <td>{{value.map}}</td>
-            <td>{{value.aimAssist}}</td>
-            <td>{{value.visionAssist}}</td>
-            <td>{{value.otherAssist}}</td>
-            <td>{{value.griefing}}</td>
+            <td class="text-center">
+                <span data-ng-if="value.aimAssist   "
+                      class="glyphicon glyphicon-ok"></span>
+                <span data-ng-if="!value.aimAssist   "
+                      class="glyphicon glyphicon-remove"></span>
+            </td>
+            <td class="text-center">
+                <span data-ng-if="value.visionAssist"
+                      class="glyphicon glyphicon-ok"></span>
+                <span data-ng-if="!value.visionAssist"
+                      class="glyphicon glyphicon-remove"></span>
+            </td>
+            <td class="text-center">
+                <span data-ng-if="value.otherAssist"
+                      class="glyphicon glyphicon-ok"></span>
+                <span data-ng-if="!value.otherAssist"
+                      class="glyphicon glyphicon-remove"></span>
+            </td>
+            <td class="text-center">
+                <span data-ng-if="value.griefing"
+                      class="glyphicon glyphicon-ok"></span>
+                <span data-ng-if="!value.griefing"
+                      class="glyphicon glyphicon-remove"></span>
+            </td>
         </tr>
         </tbody>
     </table>
