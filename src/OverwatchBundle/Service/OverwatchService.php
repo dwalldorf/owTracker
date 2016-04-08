@@ -42,14 +42,37 @@ class OverwatchService extends BaseService {
      * @return Overwatch[]
      */
     public function getByUser(User $user) {
-        return $this->repository->getByUserId($user->getId());
+        $overwatchCases = $this->repository->getByUserId($user->getId());
+        return $this->prepareDto($overwatchCases);
+    }
+
+    /**
+     * @param Overwatch[] $overwatchCases
+     * @return Overwatch[]
+     */
+    private function prepareDto(array $overwatchCases) {
+        $retVal = [];
+        $count = 0;
+        $format = 'Y-m-d H:i';
+
+        foreach ($overwatchCases as $overwatchCase) {
+            $overwatchCase->setDisplayDate($overwatchCase->getCreationDate()->format($format));
+            $retVal[] = $overwatchCase;
+
+            $count++;
+        }
+
+        return $retVal;
     }
 
     /**
      * @param Overwatch $overwatch
      * @return array|null
      */
-    private function validateOverwatch(Overwatch $overwatch) {
+    private
+    function validateOverwatch(
+        Overwatch $overwatch
+    ) {
         $errors = [];
 
         if (!$overwatch->hasValidMap()) {

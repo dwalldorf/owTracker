@@ -75,6 +75,13 @@ class Overwatch {
      */
     private $griefing = false;
 
+    /**
+     * not persisted
+     *
+     * @var string
+     */
+    private $displayDate;
+
     public function __construct() {
         $this->setCreationDate(new \DateTime());
     }
@@ -196,6 +203,20 @@ class Overwatch {
      */
     public static function getMapPool() {
         return self::$mapPool;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayDate() {
+        return $this->displayDate;
+    }
+
+    /**
+     * @param string $displayDate
+     */
+    public function setDisplayDate($displayDate) {
+        $this->displayDate = $displayDate;
     }
 
     /**
