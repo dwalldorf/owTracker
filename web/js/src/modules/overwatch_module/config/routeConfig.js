@@ -7,7 +7,7 @@ app.constant('STATE_INDEX', 'index');
 app.config(['$stateProvider', 'STATE_INDEX', function ($stateProvider, STATE_INDEX) {
     $stateProvider.state(STATE_INDEX, {
         parent: 'page',
-        data: {requireLogin: false},
+        data: {requireLogin: true},
         controller: 'OverwatchController',
         templateUrl: 'js/src/modules/overwatch_module/views/default.html',
         url: '/'

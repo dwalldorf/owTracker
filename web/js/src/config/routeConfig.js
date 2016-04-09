@@ -15,3 +15,35 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider',
         });
     }]
 );
+
+app.run(['$rootScope', '$state', 'UserService', 'STATE_LOGIN',
+    function ($rootScope, $state, userService, STATE_LOGIN) {
+
+        /* jshint maxparams: false */
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+            event.preventDefault();
+            var stateName = toState.name,
+                stateData = toState.data || {};
+
+            if (stateData.requireLogin) {
+                userService.getMe().then(function () {
+                    // go on
+                    $state.go(stateName, toParams, {notify: false}).then(function () {
+                        $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
+                    });
+                }, function () {
+                    // not logged in - go to login
+                    $state.go(STATE_LOGIN, toParams, {notify: false}).then(function () {
+                        $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
+                    });
+                });
+            } else {
+                // page does not require login - go on
+                $state.go(stateName, toParams, {notify: false}).then(function () {
+                    $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
+                });
+            }
+        });
+
+    }]
+);

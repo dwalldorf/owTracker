@@ -13,7 +13,7 @@ angular.module('userModule')
 
                 return promise.then(function (res) {
                     $rootScope.user = res.data;
-                    return $rootScope.user;
+                    return promise;
                 }, function () {
                     // error - user not logged in anymore
                     $rootScope.user = undefined;
@@ -26,6 +26,7 @@ angular.module('userModule')
                     if (res.status == 200) {
                         $rootScope.user = res.data;
                     }
+                    return res;
                 });
             };
 

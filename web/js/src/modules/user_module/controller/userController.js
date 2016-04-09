@@ -1,25 +1,36 @@
 'use strict';
 
 angular.module('owTracker')
-    .controller('UserController', ['$scope', 'UserService', function ($scope, userService) {
+    .controller('UserController', ['$scope', '$state', 'UserService', 'STATE_INDEX',
+        function ($scope, $state, userService, STATE_INDEX) {
 
-        var initialUser = {
-            email: '',
-            password: ''
-        };
+            var initialUser = {
+                email: '',
+                password: ''
+            };
 
-        function init() {
-            $scope.loginUser = angular.copy(initialUser);
-            $scope.registerUser = angular.copy(initialUser);
-        }
+            function init() {
+                userService.getMe().then(function (res) {
+                    if (res.status === 200) {
+                        $state.go(STATE_INDEX);
+                    }
+                });
 
-        $scope.login = function () {
-            userService.login($scope.loginUser);
-        };
+                $scope.loginUser = angular.copy(initialUser);
+                $scope.registerUser = angular.copy(initialUser);
+            }
 
-        $scope.register = function () {
-            userService.register($scope.registerUser);
-        };
+            $scope.login = function () {
+                userService.login($scope.loginUser).then(function (res) {
+                    if (res.status === 200) {
+                        $state.go(STATE_INDEX);
+                    }
+                });
+            };
 
-        init();
-    }]);
+            $scope.register = function () {
+                userService.register($scope.registerUser);
+            };
+
+            init();
+        }]);
