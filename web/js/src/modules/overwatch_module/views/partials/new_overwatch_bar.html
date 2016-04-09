@@ -16,11 +16,19 @@
         </div>
 
         <div class="header-form-group">
+            <label for="ov_date">Date:</label>
+            <input type="date"
+                   id="ov_date"
+                   data-ng-model="newOverwatch.overwatchDate">
+        </div>
+
+        <div class="header-form-group">
             <label for="ov_aim">Aim assist:</label>
             <input type="checkbox"
                    id="ov_aim"
                    data-ng-model="newOverwatch.aimAssist"/>
         </div>
+
 
         <div class="header-form-group">
             <label for="ov_visual">Visual assist:</label>

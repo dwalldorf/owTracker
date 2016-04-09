@@ -6,6 +6,7 @@ angular.module('owTracker')
 
             var newOverwatch = {
                 map: {id: 0},
+                overwatchDate: new Date(),
                 aimAssist: false,
                 visualAssist: false,
                 otherAssist: false,
@@ -33,6 +34,23 @@ angular.module('owTracker')
                     $scope.overwatches.push(res.data);
                 });
             };
+
+            function getTodayDate() {
+                var today = new Date();
+                var day = today.getDate();
+                var month = today.getMonth() + 1; //January is 0!
+
+                var year = today.getFullYear();
+                if (day < 10) {
+                    day = '0' + day
+                }
+                if (month < 10) {
+                    month = '0' + month
+                }
+                today = month + '/' + day + '/' + year;
+
+                return today;
+            }
 
             init();
         }]
