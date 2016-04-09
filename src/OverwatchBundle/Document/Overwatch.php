@@ -46,6 +46,12 @@ class Overwatch {
     private $creationDate;
 
     /**
+     * @ODM\Date(nullable=false)
+     * @var \DateTime
+     */
+    private $overwatchDate;
+
+    /**
      * @ODM\String(nullable=false)
      * @var string
      */
@@ -126,6 +132,20 @@ class Overwatch {
      */
     public function setCreationDate($creationDate) {
         $this->creationDate = $creationDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getOverwatchDate() {
+        return $this->overwatchDate;
+    }
+
+    /**
+     * @param \DateTime $overwatchDate
+     */
+    public function setOverwatchDate($overwatchDate) {
+        $this->overwatchDate = $overwatchDate;
     }
 
     /**
