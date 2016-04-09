@@ -34,7 +34,8 @@ class OverwatchService extends BaseService {
 
         $overwatch->setUserId($this->getCurrentUser()->getId());
 
-        return $this->repository->save($overwatch);
+        $persistedOverwatch = $this->repository->save($overwatch);
+        return $this->prepareDto($persistedOverwatch);
     }
 
     /**
@@ -43,26 +44,36 @@ class OverwatchService extends BaseService {
      */
     public function getByUser(User $user) {
         $overwatchCases = $this->repository->getByUserId($user->getId());
-        return $this->prepareDto($overwatchCases);
+        return $this->prepareDtoList($overwatchCases);
     }
 
     /**
      * @param Overwatch[] $overwatchCases
      * @return Overwatch[]
      */
-    private function prepareDto(array $overwatchCases) {
+    private function prepareDtoList(array $overwatchCases) {
         $retVal = [];
         $count = 0;
-        $format = 'Y-m-d H:i';
 
         foreach ($overwatchCases as $overwatchCase) {
-            $overwatchCase->setDisplayDate($overwatchCase->getCreationDate()->format($format));
+            $overwatchCase = $this->prepareDto($overwatchCase);
             $retVal[] = $overwatchCase;
 
             $count++;
         }
 
         return $retVal;
+    }
+
+    /**
+     * @param Overwatch $overwatchCase
+     * @return Overwatch
+     */
+    private function prepareDto(Overwatch $overwatchCase) {
+        $dateFormat = 'Y-m-d H:i';
+
+        $overwatchCase->setDisplayDate($overwatchCase->getCreationDate()->format($dateFormat));
+        return $overwatchCase;
     }
 
     /**
