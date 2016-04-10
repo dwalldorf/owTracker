@@ -856,12 +856,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMongoDBBundle.git",
-                "reference": "2ea4124bd30b29153242fdefdc59f6d72e06426c"
+                "reference": "5ecd5d553816a258bb5860a5a2eddb67b4446f75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/2ea4124bd30b29153242fdefdc59f6d72e06426c",
-                "reference": "2ea4124bd30b29153242fdefdc59f6d72e06426c",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/5ecd5d553816a258bb5860a5a2eddb67b4446f75",
+                "reference": "5ecd5d553816a258bb5860a5a2eddb67b4446f75",
                 "shasum": ""
             },
             "require": {
@@ -920,7 +920,7 @@
                 "persistence",
                 "symfony"
             ],
-            "time": "2016-03-30 06:25:12"
+            "time": "2016-04-10 19:04:45"
         },
         {
             "name": "doctrine/orm",
