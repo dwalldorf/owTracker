@@ -17,6 +17,6 @@ composer install
 echo
 echo
 echo
-echo "symfony cache warmup..."
+echo "preparing static vendor files..."
 echo
-./bin/console cache:warmup
+./bin/console app:prepareWebDist
