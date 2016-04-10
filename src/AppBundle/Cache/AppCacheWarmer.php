@@ -3,6 +3,7 @@
 namespace AppBundle\Cache;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
+use Symfony\Component\Yaml\Parser;
 
 class AppCacheWarmer extends CacheWarmer {
 
@@ -132,13 +133,5 @@ class AppCacheWarmer extends CacheWarmer {
      */
     private function getFontsVendorPath() {
         return self::VENDOR_TARGET . self::FONTS_VENDOR_TARGET_PREFIX;
-    }
-
-    /**
-     * @param string $filename
-     * @return string
-     */
-    private function getJsVendorTarget($filename) {
-        return $this->getJsVendorPath() . '/' . $filename;
     }
 }

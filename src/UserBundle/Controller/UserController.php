@@ -49,7 +49,7 @@ class UserController extends BaseController {
         $dbUser = $this->userService->login($user);
 
         if (!$dbUser) {
-            throw new BadRequestException('invalid credentials');
+            throw new BadRequestException('invalid credentials or user does not exist');
         }
 
         return $this->jsonResponse($dbUser);
@@ -75,15 +75,5 @@ class UserController extends BaseController {
         }
 
         return $this->jsonResponse(null, 400);
-    }
-
-    /**
-     * @Route("/api/users")
-     * @Method({"GET"})
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function getAllAction(Request $request) {
-        return $this->jsonResponse($this->userService->getAllUsers());
     }
 }

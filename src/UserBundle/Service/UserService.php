@@ -37,7 +37,7 @@ class UserService extends BaseService {
 
     /**
      * @param User $user
-     * @return array|null
+     * @return array|null array of errors or null
      */
     private function validateUser(User $user) {
         $errors = [];
@@ -77,12 +77,9 @@ class UserService extends BaseService {
             $this->session->set('user', $dbUser);
 
             return $dbUser;
-        } else {
-            /*
-             * TODO: handle
-             * by dwalldorf at 00:43 31.03.16
-             */
         }
+
+        return null;
     }
 
     /**
@@ -103,19 +100,5 @@ class UserService extends BaseService {
             'cost' => 12,
         ];
         return password_hash($password, PASSWORD_BCRYPT, $options);
-    }
-
-    /**
-     * @return User[]
-     */
-    public function getAllUsers() {
-        $retVal = [];
-        $users = $this->repository->getAll();
-
-        foreach ($users as $user) {
-            $retVal[] = $this->getSecureUserCopy($user);
-        }
-
-        return $retVal;
     }
 }
