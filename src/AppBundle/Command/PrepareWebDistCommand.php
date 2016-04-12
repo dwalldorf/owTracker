@@ -18,6 +18,11 @@ class PrepareWebDistCommand extends ContainerAwareCommand {
 
     const TARGET_PREFIX = './web/lib/';
 
+    /**
+     * @var int
+     */
+    private $copyCount = 0;
+
     protected function configure() {
         $this->setName('app:prepareWebDist')
             ->setDescription('Copies static vendor files to web directory');
@@ -37,6 +42,10 @@ class PrepareWebDistCommand extends ContainerAwareCommand {
 
         $resources = $this->container->getParameter(self::DIST_FILES_PARAMETER_NAME);
         $this->processResources($resources);
+
+        $output->writeln('');
+        $output->writeln('<info> [OK] copied ' . $this->copyCount . ' files</info>');
+        $output->writeln('');
     }
 
     /**
@@ -77,6 +86,7 @@ class PrepareWebDistCommand extends ContainerAwareCommand {
             unlink($target);
         }
         copy($source, $target);
+        $this->copyCount++;
     }
 
     /**
