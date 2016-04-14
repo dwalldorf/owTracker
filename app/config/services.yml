@@ -21,3 +21,6 @@ services:
     overwatch.overwatch_service:
         class: OverwatchBundle\Service\OverwatchService
         parent: app.base_service
+    overwatch.overwatch_user_score_service:
+        class: OverwatchBundle\Service\OverwatchUserScoreService
+        parent: app.base_service
