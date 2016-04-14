@@ -83,6 +83,13 @@ class UserService extends BaseService {
     }
 
     /**
+     * @return \UserBundle\Document\User[]
+     */
+    public function getAllActiveUsers() {
+        return $this->repository->getAll();
+    }
+
+    /**
      * @param User $user
      * @return User
      */
