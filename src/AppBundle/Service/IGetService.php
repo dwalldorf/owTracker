@@ -5,8 +5,8 @@ namespace AppBundle\Service;
 interface IGetService {
 
     /**
-     * @param $className
+     * @param string $serviceId
      * @return object
      */
-    public function getService($className);
+    public function getService($serviceId);
 }

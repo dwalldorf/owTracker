@@ -30,8 +30,8 @@ abstract class BaseService implements ContainerAwareInterface, IGetService, IGet
     protected function init() {
     }
 
-    public function getService($className) {
-        return ServiceLoader::getService($className, $this->container);
+    public function getService($serviceId) {
+        return $this->container->get($serviceId);
     }
 
     public function getRepository($repository) {

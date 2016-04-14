@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\IGetService;
-use AppBundle\Service\ServiceLoader;
 use AppBundle\Util\AppSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -85,12 +84,8 @@ abstract class BaseController extends Controller implements IGetService {
         return AppSerializer::getInstance()->fromJson($request->getContent(), $targetEntity);
     }
 
-    /**
-     * @param string $className
-     * @return object
-     */
-    public function getService($className) {
-        return ServiceLoader::getService($className, $this->container);
+    public function getService($serviceId) {
+        return $this->container->get($serviceId);
     }
 
     /**
