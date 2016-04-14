@@ -13,9 +13,9 @@ class UserRepository extends BaseRepository {
      * @return \Doctrine\ODM\MongoDB\DocumentRepository
      */
     private function getRepository() {
-        return $this->dm->getRepository('UserBundle:User');
+        return $this->dm->getRepository(self::ID);
     }
-    
+
     /**
      * @param User $user
      * @return int userId
