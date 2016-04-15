@@ -2,6 +2,7 @@
 
 namespace OverwatchBundle\Document;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Date;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Int;
@@ -35,6 +36,12 @@ class OverwatchUserScore {
      * @var string
      */
     private $userId;
+
+    /**
+     * @Date(nullable=false)
+     * @var \DateTime
+     */
+    private $calculated;
 
     /**
      * @Int(name="count", nullable=false)
@@ -91,6 +98,20 @@ class OverwatchUserScore {
      */
     public function setUserId($userId) {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCalculated() {
+        return $this->calculated;
+    }
+
+    /**
+     * @param \DateTime $calculated
+     */
+    public function setCalculated($calculated) {
+        $this->calculated = $calculated;
     }
 
     /**

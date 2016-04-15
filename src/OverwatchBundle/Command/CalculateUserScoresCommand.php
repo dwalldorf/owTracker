@@ -89,6 +89,7 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
                 }
             }
         }
+        $userScore->setCalculated(new \DateTime());
 
         return $userScore;
     }
