@@ -75,6 +75,8 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
      * @return OverwatchUserScore
      */
     private function getUserScore($period, User $user, array $overwatchCases) {
+        $start = microtime(true);
+
         $userScore = new OverwatchUserScore($period, $user->getId());
 
         foreach ($overwatchCases as $overwatchCase) {
@@ -90,6 +92,7 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
             }
         }
         $userScore->setCalculated(new \DateTime());
+        $userScore->setCalulatedInMs(microtime(true) - $start);
 
         return $userScore;
     }
