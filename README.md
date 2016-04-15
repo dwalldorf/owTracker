@@ -1,5 +1,7 @@
 # owTracker - The CS:GO Overwatch tracker
 
+A tool to persist your CS:GO overwatch cases and gives you some statistics.
+
 # dev setup
 
 ## Requirements
