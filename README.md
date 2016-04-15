@@ -15,7 +15,8 @@ Once vagrant has finished it's setup, connect to the vm and set up the project:
     vagrant ssh
     ./bin/build.sh
 
-This will install all required composer and npm packages and warmup the Symfony cache. Now you can point your browser to [localhost:8080/app.php](http://localhost:8080/app.php) or [localhost:8080/app_dev.php](http://localhost:8080/app_dev.php).
+This will install all required composer and npm packages and prepare the frontend application. 
+Now you can point your browser to [localhost:8080/app.php](http://localhost:8080/app.php) or [localhost:8080/app_dev.php](http://localhost:8080/app_dev.php).
 
 If you fiddle around with styling, use the watchSass script to watch for changes and compile your scss to css: 
 
