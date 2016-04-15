@@ -19,7 +19,6 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider',
 app.run(['$rootScope', '$state', 'UserService', 'STATE_LOGIN',
     function ($rootScope, $state, userService, STATE_LOGIN) {
 
-        /* jshint maxparams: false */
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
             event.preventDefault();
             var stateName = toState.name,

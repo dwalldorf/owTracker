@@ -18,10 +18,17 @@ angular.module('overwatchModule')
                 return $http.post(OVERWATCH_URI, overwatch);
             };
 
+            var getOverwatchUserScores = function () {
+                /*
+                 * TODO: implement
+                 */
+            };
+
             return {
                 getOverwatchList: getOverwatchList,
                 submitOverwatch: submitOverwatch,
-                getMapPool: getMapPool
+                getMapPool: getMapPool,
+                getOverwatchUserScores: getOverwatchUserScores
             }
         }
     ]);
