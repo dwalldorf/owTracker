@@ -5,7 +5,11 @@ namespace OverwatchBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\Document(collection="overwatch", repositoryClass="OverwatchBundle\Repository\OverwatchRepository")
+ * @ODM\Document(
+ *     db="owt", 
+ *     collection="overwatch", 
+ *     repositoryClass="OverwatchBundle\Repository\OverwatchRepository"
+ * )
  */
 class Overwatch {
 

@@ -10,7 +10,11 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\Int;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 
 /**
- * @Document(collection="overwatch_stats", db="user_scores", repositoryClass="OverwatchBundle\Repository\OverwatchUserScoreRepository")
+ * @Document(
+ *     db="owt",
+ *     collection="overwatch_stats",
+ *     repositoryClass="OverwatchBundle\Repository\OverwatchUserScoreRepository"
+ * )
  */
 class OverwatchUserScore {
 

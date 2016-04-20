@@ -21,21 +21,29 @@ app.run(['$rootScope', '$state', 'UserService', 'STATE_LOGIN',
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
             event.preventDefault();
+
             var stateName = toState.name,
                 stateData = toState.data || {};
 
             if (stateData.requireLogin) {
+                var loggedIn = false;
+                if ($rootScope.user !== undefined) {
+                    loggedIn = true;
+                }
                 userService.getMe().then(function () {
-                    // go on
+                    loggedIn = true;
+                });
+
+                if (loggedIn) {
                     $state.go(stateName, toParams, {notify: false}).then(function () {
                         $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
                     });
-                }, function () {
+                } else {
                     // not logged in - go to login
                     $state.go(STATE_LOGIN, toParams, {notify: false}).then(function () {
                         $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
                     });
-                });
+                }
             } else {
                 // page does not require login - go on
                 $state.go(stateName, toParams, {notify: false}).then(function () {

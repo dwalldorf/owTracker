@@ -3,6 +3,7 @@
 namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
+use OverwatchBundle\Document\OverwatchUserScore;
 use OverwatchBundle\Service\OverwatchUserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,12 +26,24 @@ class OverwatchUserScoreController extends BaseController {
      *
      * @throws NotLoggedInException
      */
-    public function getAction() {
+    public function getByUserAction() {
         $this->requireLogin();
 
         $user = $this->getCurrentUser();
         $userScores = $this->overwatchUserScoreService->getByUser($user);
 
         return $this->jsonResponse($userScores);
+    }
+
+    /**
+     * @Route("/api/overwatch/scoreboard")
+     * @Method({"GET"})
+     *
+     * @throws NotLoggedInException
+     */
+    public function getScoreboardAction() {
+        $this->requireLogin();
+
+        return $this->jsonResponse($this->overwatchUserScoreService->getScoreboard(OverwatchUserScore::MONTHLY_PERIOD));
     }
 }

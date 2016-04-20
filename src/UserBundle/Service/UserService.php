@@ -22,7 +22,7 @@ class UserService extends BaseService {
 
     /**
      * @param User $user
-     * @return int
+     * @return string
      * @throws RegisterUserException
      */
     public function register(User $user) {

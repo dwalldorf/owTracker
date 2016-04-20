@@ -30,9 +30,8 @@ class UserController extends BaseController {
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function meAction(Request $request) {
-        $user = $this->getCurrentUser();
-
-        return $this->jsonResponse($user);
+        $this->requireLogin();
+        return $this->jsonResponse($this->getCurrentUser());
     }
 
     /**

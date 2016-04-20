@@ -30,7 +30,7 @@ class OverwatchController extends BaseController {
      * @return Response
      * @throws NotLoggedInException
      */
-    public function getAction() {
+    public function getByUserAction() {
         $this->requireLogin();
 
         $user = $this->getCurrentUser();
