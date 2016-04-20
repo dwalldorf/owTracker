@@ -9,11 +9,15 @@ use OverwatchBundle\Service\OverwatchUserScoreService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use UserBundle\Document\User;
 use UserBundle\Service\UserService;
 
 class CalculateUserScoresCommand extends ContainerAwareCommand {
 
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
     /**
@@ -37,9 +41,13 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $start = microtime(true);
+
         $this->initServices();
 
-        $this->calculateUserScores();
+        $count = $this->calculateUserScores();
+
+        $output->writeln(sprintf('Calculated %d user scores in %f seconds', $count, microtime(true) - $start));
     }
 
     private function initServices() {
@@ -50,7 +58,11 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
         $this->overwatchUserScoreService = $this->container->get(OverwatchUserScoreService::ID);
     }
 
+    /**
+     * @return int
+     */
     private function calculateUserScores() {
+        $count = 0;
         $users = $this->userService->getAllActiveUsers();
 
         foreach ($users as $user) {
@@ -64,8 +76,12 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
                 $this->overwatchUserScoreService->save($dailyScore);
                 $this->overwatchUserScoreService->save($weeklyScore);
                 $this->overwatchUserScoreService->save($monthlyScore);
+
+                $count = $count + 3;
             }
         }
+
+        return $count;
     }
 
     /**
