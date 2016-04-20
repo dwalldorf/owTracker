@@ -4,7 +4,9 @@ namespace OverwatchBundle\Service;
 
 use AppBundle\Service\BaseService;
 use OverwatchBundle\Document\OverwatchUserScore;
+use OverwatchBundle\DTO\OverwatchScoreboard;
 use OverwatchBundle\Repository\OverwatchUserScoreRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use UserBundle\Document\User;
 
 class OverwatchUserScoreService extends BaseService {
@@ -40,5 +42,17 @@ class OverwatchUserScoreService extends BaseService {
      */
     public function getByUser(User $user) {
         return $this->repository->findByUser($user);
+    }
+
+    /**
+     * @param int $period
+     * @return OverwatchScoreboard
+     */
+    public function getScoreboard($period) {
+        $top10 = $this->repository->getTopTen($period);
+        $userScore = $this->repository->findByUserAndPeriod($this->getCurrentUser(), $period);
+        $next10 = $this->repository->getNextTen($userScore, $period);
+
+        return new OverwatchScoreboard($period, $top10, $userScore, $next10);
     }
 }
