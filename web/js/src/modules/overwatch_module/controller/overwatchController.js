@@ -13,6 +13,10 @@ angular.module('owTracker')
                 });
             }
 
+            $rootScope.$on('newOverwatch', function (event, overwatch) {
+                $scope.overwatches.push(overwatch);
+            });
+
             init();
         }]
     );

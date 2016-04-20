@@ -20,7 +20,8 @@ angular.module('owTracker')
             $scope.submitOverwatch = function () {
                 overwatchService.submitOverwatch($scope.newOverwatch).then(function (res) {
                     resetOverwatchForm();
-                    $scope.overwatches.push(res.data);
+
+                    $rootScope.$broadcast('newOverwatch', res.data);
                 });
             };
 

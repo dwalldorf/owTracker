@@ -26,24 +26,17 @@ app.run(['$rootScope', '$state', 'UserService', 'STATE_LOGIN',
                 stateData = toState.data || {};
 
             if (stateData.requireLogin) {
-                var loggedIn = false;
-                if ($rootScope.user !== undefined) {
-                    loggedIn = true;
-                }
-                userService.getMe().then(function () {
-                    loggedIn = true;
+                userService.getMe().then(function (res) {
+                    if (res.status === 200) {
+                        $state.go(stateName, toParams, {notify: false}).then(function () {
+                            $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
+                        });
+                    } else {
+                        $state.go(STATE_LOGIN, toParams, {notify: false}).then(function () {
+                            $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
+                        });
+                    }
                 });
-
-                if (loggedIn) {
-                    $state.go(stateName, toParams, {notify: false}).then(function () {
-                        $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
-                    });
-                } else {
-                    // not logged in - go to login
-                    $state.go(STATE_LOGIN, toParams, {notify: false}).then(function () {
-                        $rootScope.$broadcast('$stateChangeSuccess', toState, toParams);
-                    });
-                }
             } else {
                 // page does not require login - go on
                 $state.go(stateName, toParams, {notify: false}).then(function () {
