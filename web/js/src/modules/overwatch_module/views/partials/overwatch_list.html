@@ -16,7 +16,12 @@
         </thead>
 
         <tbody>
-        <tr data-ng-repeat="(key, value) in overwatches | orderBy:value.creationDate.timestamp:true">
+        <tr data-ng-repeat="
+          (key, value) in overwatches
+        | orderBy:value.creationDate.timestamp:true
+        | startFrom:currentPage*itemsPerPage
+        | limitTo:itemsPerPage">
+
             <td>{{value.displayDate}}</td>
             <td>{{value.map}}</td>
             <td class="text-center">
@@ -47,9 +52,13 @@
         </tbody>
     </table>
 
-    <div class="row overwatch_line"
-         data-ng-repeat="(key, value) in overwatches">
-        <div class="col-sm-2"></div>
-        </ul>
-    </div>
+    <button data-ng-disabled="currentPage == 0"
+            data-ng-click="currentPage=currentPage-1">
+        Previous
+    </button>
+    {{currentPage+1}}/{{numberOfPages()}}
+    <button data-ng-disabled="currentPage >= overwatches.length/itemsPerPage - 1"
+            data-ng-click="currentPage=currentPage+1">
+        Next
+    </button>
 </div>
