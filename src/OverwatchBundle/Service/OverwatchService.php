@@ -32,8 +32,6 @@ class OverwatchService extends BaseService {
             throw new InvalidArgumentException('invalid map');
         }
 
-        $overwatch->setUserId($this->getCurrentUser()->getId());
-
         $persistedOverwatch = $this->repository->save($overwatch);
         return $this->prepareDto($persistedOverwatch);
     }

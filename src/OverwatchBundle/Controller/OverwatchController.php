@@ -63,6 +63,8 @@ class OverwatchController extends BaseController {
 
         /* @var $overwatch Overwatch */
         $overwatch = $this->getEntityFromRequest($request, Overwatch::class);
+        $overwatch->setUserId($this->getCurrentUser()->getId());
+
         $dbOverwatch = $this->overwatchService->save($overwatch);
 
         if ($dbOverwatch->getId()) {
