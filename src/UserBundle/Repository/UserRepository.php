@@ -17,6 +17,13 @@ class UserRepository extends BaseRepository {
     }
 
     /**
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    private function getQueryBuilder() {
+        return $this->dm->createQueryBuilder(self::ID);
+    }
+
+    /**
      * @param User $user
      * @return string userId
      */
@@ -46,7 +53,25 @@ class UserRepository extends BaseRepository {
     /**
      * @return User[]
      */
+    public function getTestUsers() {
+        return $this->getRepository()->findBy(['email' => new \MongoRegex('/^owtTestUser_/')]);
+    }
+
+    /**
+     * @return User[]
+     */
     public function getAll() {
         return $this->getRepository()->findAll();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function remove(User $user) {
+        $this->getQueryBuilder()
+            ->remove()
+            ->field('_id')->equals($user->getId())
+            ->getQuery()
+            ->execute();
     }
 }

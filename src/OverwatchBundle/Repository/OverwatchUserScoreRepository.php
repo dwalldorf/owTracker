@@ -21,7 +21,7 @@ class OverwatchUserScoreRepository extends BaseRepository {
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     private function getQueryBuilder() {
-        return $this->getRepository()->dm->createQueryBuilder(self::ID);
+        return $this->dm->createQueryBuilder(self::ID);
     }
 
     /**

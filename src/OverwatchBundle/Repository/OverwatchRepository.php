@@ -13,7 +13,14 @@ class OverwatchRepository extends BaseRepository {
      * @return \Doctrine\ODM\MongoDB\DocumentRepository
      */
     private function getRepository() {
-        return $this->dm->getRepository('OverwatchBundle:Overwatch');
+        return $this->dm->getRepository(self::ID);
+    }
+
+    /**
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    private function getQueryBuilder() {
+        return $this->dm->createQueryBuilder(self::ID);
     }
 
     /**
@@ -33,5 +40,16 @@ class OverwatchRepository extends BaseRepository {
      */
     public function getByUserId($userId) {
         return $this->getRepository()->findBy(['userId' => $userId]);
+    }
+
+    /**
+     * @param string $userId
+     */
+    public function deleteByUser($userId) {
+        $this->getQueryBuilder()
+            ->remove()
+            ->field('userId')->equals($userId)
+            ->getQuery()
+            ->execute();
     }
 }

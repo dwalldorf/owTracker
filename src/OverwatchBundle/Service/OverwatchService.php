@@ -39,6 +39,13 @@ class OverwatchService extends BaseService {
     }
 
     /**
+     * @return array
+     */
+    public static function getMapPool() {
+        return self::$mapPool;
+    }
+
+    /**
      * @param Overwatch $overwatch
      * @return Overwatch
      * @throws InvalidArgumentException
@@ -60,6 +67,13 @@ class OverwatchService extends BaseService {
     public function getByUser(User $user) {
         $overwatchCases = $this->repository->getByUserId($user->getId());
         return $this->prepareDtoList($overwatchCases);
+    }
+
+    /**
+     * @param User $user
+     */
+    public function deleteByUser(User $user) {
+        $this->repository->deleteByUser($user->getId());
     }
 
     /**
@@ -106,12 +120,5 @@ class OverwatchService extends BaseService {
             return $errors;
         }
         return null;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getMapPool() {
-        return self::$mapPool;
     }
 }

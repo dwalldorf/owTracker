@@ -106,6 +106,20 @@ class UserService extends BaseService {
     }
 
     /**
+     * @return User[]
+     */
+    public function getTestUsers() {
+        return $this->repository->getTestUsers();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function deleteUser(User $user) {
+        $this->repository->remove($user);
+    }
+
+    /**
      * @param User $user
      * @return User
      */
