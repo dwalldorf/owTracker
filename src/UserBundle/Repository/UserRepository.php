@@ -36,6 +36,14 @@ class UserRepository extends BaseRepository {
     }
 
     /**
+     * @param string $id
+     * @return User
+     */
+    public function findById($id) {
+        return $this->getRepository()->find($id);
+    }
+
+    /**
      * @return User[]
      */
     public function getAll() {

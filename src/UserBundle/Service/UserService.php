@@ -83,6 +83,22 @@ class UserService extends BaseService {
     }
 
     /**
+     * @param string $id
+     * @return User
+     */
+    public function findById($id) {
+        return $this->repository->findById($id);
+    }
+
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function findByEmail($email) {
+        return $this->repository->findByEmail($email);
+    }
+
+    /**
      * @return \UserBundle\Document\User[]
      */
     public function getAllActiveUsers() {
