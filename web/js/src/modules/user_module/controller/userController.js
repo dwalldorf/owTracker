@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('owTracker')
-    .controller('UserController', ['$scope', '$state', 'UserService', 'STATE_INDEX',
-        function ($scope, $state, userService, STATE_INDEX) {
+    .controller('UserController', ['$scope', '$state', 'UserService', 'STATE_INDEX', 'STATE_LOGIN',
+        function ($scope, $state, userService, STATE_INDEX, STATE_LOGIN) {
 
             var initialUser = {
                 email: '',
@@ -29,7 +29,11 @@ angular.module('owTracker')
             };
 
             $scope.register = function () {
-                userService.register($scope.registerUser);
+                userService.register($scope.registerUser).then(function (res) {
+                    if (res.status === 201) {
+                        $state.go(STATE_LOGIN);
+                    }
+                });
             };
 
             init();
