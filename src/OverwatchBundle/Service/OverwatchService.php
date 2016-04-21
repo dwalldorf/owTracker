@@ -10,6 +10,23 @@ use UserBundle\Document\User;
 
 class OverwatchService extends BaseService {
 
+    /**
+     * @var array
+     */
+    private static $mapPool = [
+        'de_dust2',
+        'de_inferno',
+        'de_nuke',
+        'de_train',
+        'de_mirage',
+        'de_cache',
+        'de_cbbl',
+        'de_overpass',
+        'de_tuscan',
+        'de_season',
+        'de_santorini',
+    ];
+
     const ID = 'overwatch.overwatch_service';
 
     /**
@@ -78,13 +95,10 @@ class OverwatchService extends BaseService {
      * @param Overwatch $overwatch
      * @return array|null
      */
-    private
-    function validateOverwatch(
-        Overwatch $overwatch
-    ) {
+    private function validateOverwatch(Overwatch $overwatch) {
         $errors = [];
 
-        if (!$overwatch->hasValidMap()) {
+        if (!in_array($overwatch->getMap(), self::$mapPool)) {
             $errors['map'] = 'invalid map';
         }
 
@@ -92,5 +106,12 @@ class OverwatchService extends BaseService {
             return $errors;
         }
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getMapPool() {
+        return self::$mapPool;
     }
 }

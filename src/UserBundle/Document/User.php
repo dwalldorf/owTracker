@@ -5,7 +5,11 @@ namespace UserBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\Document(collection="user", repositoryClass="UserBundle\Repository\UserRepository")
+ * @ODM\Document(
+ *     db="owt",
+ *     collection="users",
+ *     repositoryClass="UserBundle\Repository\UserRepository"
+ * )
  */
 class User {
 

@@ -36,7 +36,7 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
     private $overwatchUserScoreService;
 
     protected function configure() {
-        $this->setName('overwatch:userScores')
+        $this->setName('owt:userScores')
             ->setDescription('Calculates and sums user submitted verdicts');
     }
 

@@ -45,7 +45,7 @@ class OverwatchController extends BaseController {
      * @return Response
      */
     public function getMapPoolAction() {
-        return $this->jsonResponse(Overwatch::getMapPool());
+        return $this->jsonResponse($this->overwatchService->getMapPool());
     }
 
     /**

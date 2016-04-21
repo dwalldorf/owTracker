@@ -12,8 +12,8 @@
             <label for="ov_map"
                    class="control-label">Map:</label>
             <select id="ov_map"
-                    data-ng-model="newOverwatch.map"
-                    data-ng-options="map.name for map in mapPool track by map.id">
+                    data-ng-model="newOverwatch.map">
+                <option data-ng-repeat="map in mapPool" value="{{map}}">{{map}}</option>
             </select>
         </div>
 

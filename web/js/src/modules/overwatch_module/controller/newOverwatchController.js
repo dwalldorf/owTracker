@@ -5,7 +5,7 @@ angular.module('owTracker')
         function ($rootScope, $scope, overwatchService) {
 
             var newOverwatch = {
-                map: {id: 0},
+                map: 'de_dust2',
                 overwatchDate: new Date(),
                 aimAssist: false,
                 visualAssist: false,

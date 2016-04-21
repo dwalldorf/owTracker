@@ -6,30 +6,12 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\Document(
- *     db="owt", 
- *     collection="overwatch", 
+ *     db="owt",
+ *     collection="verdicts",
  *     repositoryClass="OverwatchBundle\Repository\OverwatchRepository"
  * )
  */
 class Overwatch {
-
-    /*
-     * TODO: just duplicate this in js, remove mappool endpoint
-     * by dwalldorf at 01:06 02.04.16
-     */
-    private static $mapPool = [
-        0  => ['id' => 0, 'name' => 'de_dust2'],
-        1  => ['id' => 1, 'name' => 'de_inferno'],
-        2  => ['id' => 2, 'name' => 'de_nuke'],
-        3  => ['id' => 3, 'name' => 'de_train'],
-        4  => ['id' => 4, 'name' => 'de_mirage'],
-        5  => ['id' => 5, 'name' => 'de_cache'],
-        6  => ['id' => 6, 'name' => 'de_cbbl'],
-        7  => ['id' => 7, 'name' => 'de_overpass'],
-        8  => ['id' => 8, 'name' => 'de_tuscan'],
-        9  => ['id' => 9, 'name' => 'de_season'],
-        10 => ['id' => 10, 'name' => 'de_santorini'],
-    ];
 
     /**
      * @ODM\Id
@@ -160,10 +142,10 @@ class Overwatch {
     }
 
     /**
-     * @param array $map
+     * @param string $map
      */
-    public function setMap(array $map) {
-        $this->map = self::$mapPool[$map['id']]['name'];
+    public function setMap($map) {
+        $this->map = $map;
     }
 
     /**
@@ -223,13 +205,6 @@ class Overwatch {
     }
 
     /**
-     * @return array
-     */
-    public static function getMapPool() {
-        return self::$mapPool;
-    }
-
-    /**
      * @return string
      */
     public function getDisplayDate() {
@@ -241,17 +216,5 @@ class Overwatch {
      */
     public function setDisplayDate($displayDate) {
         $this->displayDate = $displayDate;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasValidMap() {
-        foreach (self::$mapPool as $map) {
-            if ($map['name'] == $this->map) {
-                return true;
-            }
-        }
-        return false;
     }
 }

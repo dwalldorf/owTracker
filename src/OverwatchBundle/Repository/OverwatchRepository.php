@@ -28,27 +28,10 @@ class OverwatchRepository extends BaseRepository {
     }
 
     /**
-     * @param Overwatch $overwatch
-     * @return array|null
-     */
-    private function validateOverwatch(Overwatch $overwatch) {
-        $errors = [];
-
-        if (!$overwatch->hasValidMap()) {
-            $errors['map'] = 'invalid map';
-        }
-
-        if (count($errors) > 0) {
-            return $errors;
-        }
-        return null;
-    }
-
-    /**
      * @param string $userId
      * @return Overwatch[]
      */
     public function getByUserId($userId) {
-        return $this->getRepository()->findBy(['userId'=>$userId]);
+        return $this->getRepository()->findBy(['userId' => $userId]);
     }
 }
