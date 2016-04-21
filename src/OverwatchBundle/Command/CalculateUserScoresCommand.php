@@ -43,14 +43,12 @@ class CalculateUserScoresCommand extends ContainerAwareCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $start = microtime(true);
 
-        $this->initServices();
-
         $count = $this->calculateUserScores();
 
         $output->writeln(sprintf('Calculated %d user scores in %f seconds', $count, microtime(true) - $start));
     }
 
-    private function initServices() {
+    protected function initServices() {
         $this->container = $this->getContainer();
 
         $this->userService = $this->container->get(UserService::ID);

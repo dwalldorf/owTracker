@@ -73,8 +73,6 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $start = microtime(true);
 
-        $this->initServices();
-
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
         $this->verdictAmount = $input->getOption(self::OPT_VERDICT_AMOUNT_NAME);
 
@@ -111,7 +109,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         } else {
             if (!$this->userAmount) {
                 $this->userAmount = self::OPT_USER_AMOUNT_DEFAULT;
-                $this->info(sprintf('amount of users to generate not set. using default of %d', $this->verdictAmount));
+                $this->info(sprintf('amount of users to generate not set. using default of %d', $this->userAmount));
             }
 
             $this->createTestData();
@@ -120,7 +118,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $output->writeln(sprintf('Runtime: %f second', microtime(true) - $start));
     }
 
-    private function initServices() {
+    protected function initServices() {
         $this->userService = $this->container->get(UserService::ID);
         $this->overwatchService = $this->container->get(OverwatchService::ID);
     }
@@ -131,7 +129,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private function createTestData() {
         for ($i = 0; $i < $this->userAmount; $i++) {
             $user = new User();
-            $user->setEmail('test_' . $this->getRandomString() . '@' . $this->getRandomString(5) . '.com');
+            $user->setEmail('owtTestUser_' . $this->getRandomString() . '@' . $this->getRandomString(5) . '.com');
             $user->setPassword($this->getRandomString());
 
             $this->userService->register($user);

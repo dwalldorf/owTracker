@@ -28,7 +28,11 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
         $this->container = $this->getContainer();
         $this->output = $output;
 
+        $this->initServices();
         $this->executeCommand($input, $output);
+    }
+
+    protected function initServices() {
     }
 
     /**
