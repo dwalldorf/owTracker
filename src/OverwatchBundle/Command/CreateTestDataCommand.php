@@ -29,6 +29,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private $specificUser;
 
     /**
+     * @var bool
+     */
+    private $verbose = false;
+
+    /**
      * @var int
      */
     private $verdictAmount;
@@ -37,6 +42,16 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @var int
      */
     private $userAmount;
+
+    /**
+     * @var int
+     */
+    private $createdUsers = 0;
+
+    /**
+     * @var int
+     */
+    private $createdVerdicts = 0;
 
     const OPT_USER_NAME = 'user';
 
@@ -73,6 +88,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $start = microtime(true);
 
+        $this->verbose = $input->getOption('verbose');
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
         $this->verdictAmount = $input->getOption(self::OPT_VERDICT_AMOUNT_NAME);
 
@@ -96,16 +112,18 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 die(1);
             }
 
-            $this->info(
-                sprintf(
-                    'creating %d verdicts for user with email %s and id %s',
-                    $this->verdictAmount,
-                    $user->getEmail(),
-                    $user->getId()
-                )
-            );
+            if ($this->verbose) {
+                $this->info(
+                    sprintf(
+                        'creating %d verdicts for user with email %s and id %s',
+                        $this->verdictAmount,
+                        $user->getEmail(),
+                        $user->getId()
+                    )
+                );
+            }
 
-            $this->createVerdicts($this->verdictAmount, $user, true);
+            $this->createVerdicts($this->verdictAmount, $user);
         } else {
             if (!$this->userAmount) {
                 $this->userAmount = self::OPT_USER_AMOUNT_DEFAULT;
@@ -115,7 +133,14 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->createTestData();
         }
 
-        $output->writeln(sprintf('Runtime: %f second', microtime(true) - $start));
+        $output->writeln(
+            sprintf(
+                'Created %d users and %d verdicts in %f second',
+                $this->createdUsers,
+                $this->createdVerdicts,
+                microtime(true) - $start
+            )
+        );
     }
 
     protected function initServices() {
@@ -137,10 +162,13 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $amountOfOverwatches = mt_rand(3, 50);
             $this->createVerdicts($amountOfOverwatches, $user);
 
-            $this->info();
-            $this->info(sprintf('created user %s', $user->getEmail()));
-            $this->info(sprintf('created %d verdicts', $amountOfOverwatches));
+            if ($this->verbose) {
+                $this->info(sprintf('created user %s', $user->getEmail()));
+                $this->info(sprintf('created %d verdicts', $amountOfOverwatches));
+                $this->info();
+            }
 
+            $this->createdUsers++;
             unset($user);
         }
     }
@@ -148,10 +176,9 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @param int $amount
      * @param User $user
-     * @param bool $showStats
      */
-    private function createVerdicts($amount, User $user, $showStats = false) {
-        if ($showStats) {
+    private function createVerdicts($amount, User $user) {
+        if ($this->verbose) {
             $this->info();
             $this->info('aim | vision | other | griefing | map');
         }
@@ -168,7 +195,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
             $this->overwatchService->save($overwatch);
 
-            if ($showStats) {
+            if ($this->verbose) {
                 $this->info(
                     sprintf(
                         ' %s   |  %s  |   %s    |   %s       | %s',
@@ -180,6 +207,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                     )
                 );
             }
+
+            $this->createdVerdicts++;
             unset($overwatch);
         }
     }
