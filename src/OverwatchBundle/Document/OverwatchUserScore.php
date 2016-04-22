@@ -12,17 +12,11 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 /**
  * @Document(
  *     db="owt",
- *     collection="overwatch_stats",
+ *     collection="verdict_stats",
  *     repositoryClass="OverwatchBundle\Repository\OverwatchUserScoreRepository"
  * )
  */
 class OverwatchUserScore {
-
-    const DAILY_PERIOD = 1;
-
-    const WEEKLY_PERIOD = 7;
-
-    const MONTHLY_PERIOD = 30;
 
     /**
      * @Id

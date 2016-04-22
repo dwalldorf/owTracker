@@ -13,6 +13,24 @@ class OverwatchUserScoreService extends BaseService {
 
     const ID = 'overwatch.overwatch_user_score_service';
 
+    const PERIOD_ALL_TIME = 'all time';
+
+    const PERIOD_LAST_24H = 'last 24h';
+
+    const PERIOD_LAST_7_DAYS = 'last 7 days';
+
+    const PERIOD_LAST_30_DAYS = 'last 30 days';
+
+    /**
+     * @var array
+     */
+    private static $periods = [
+        self::PERIOD_ALL_TIME     => 0,
+        self::PERIOD_LAST_24H     => 1,
+        self::PERIOD_LAST_7_DAYS  => 7,
+        self::PERIOD_LAST_30_DAYS => 30,
+    ];
+
     /**
      * @var OverwatchUserScoreRepository
      */
@@ -20,6 +38,21 @@ class OverwatchUserScoreService extends BaseService {
 
     protected function init() {
         $this->repository = $this->getRepository(OverwatchUserScoreRepository::ID);
+    }
+
+    /**
+     * @return array [name => int value]
+     */
+    public function getAvailablePeriods() {
+        return self::$periods;
+    }
+
+    /**
+     * @param string $periodName
+     * @return int
+     */
+    public function getPeriod($periodName) {
+        return self::$periods[$periodName];
     }
 
     /**
@@ -38,21 +71,33 @@ class OverwatchUserScoreService extends BaseService {
 
     /**
      * @param User $user
-     * @return OverwatchUserScore[]
+     * @param int $period
+     * @return array|OverwatchUserScore
      */
-    public function getByUser(User $user) {
-        return $this->repository->findByUser($user);
+    public function getByUser(User $user, $period = null) {
+        $retVal = $this->repository->findByUser($user, $period);
+
+        if (count($retVal) === 1) {
+            $retVal = $retVal[0];
+        }
+
+        return $retVal;
     }
 
     /**
-     * @param int $period
-     * @return OverwatchScoreboard
+     * @param $period
+     * @return OverwatchUserScore[]
      */
-    public function getScoreboard($period) {
-        $top10 = $this->repository->getTopTen($period);
-        $userScore = $this->repository->findByUserAndPeriod($this->getCurrentUser(), $period);
-        $next10 = $this->repository->getNextTen($userScore, $period);
+    public function getTopTen($period) {
+        return $this->repository->getTopTen($period);
+    }
 
-        return new OverwatchScoreboard($period, $top10, $userScore, $next10);
+    /**
+     * @param OverwatchUserScore $userScore
+     * @param int $period
+     * @return OverwatchUserScore[]
+     */
+    public function getNextTen(OverwatchUserScore $userScore, $period) {
+        return $this->repository->getNextTen($userScore, $period);
     }
 }
