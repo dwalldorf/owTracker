@@ -232,7 +232,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return \DateTime
      */
     private function getRandomDate() {
-        $from = new \DateTime('-20 days');
+        $from = new \DateTime('-120 days');
         $to = new \DateTime();
 
         $random = new \DateTime();
