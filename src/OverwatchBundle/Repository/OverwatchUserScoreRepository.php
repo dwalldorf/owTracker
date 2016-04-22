@@ -39,10 +39,16 @@ class OverwatchUserScoreRepository extends BaseRepository {
 
     /**
      * @param User $user
-     * @return OverwatchUserScore | OverwatchUserScore[]
+     * @param int $period
+     * @return OverwatchUserScore|\OverwatchBundle\Document\OverwatchUserScore[]
      */
-    public function findByUser(User $user) {
-        return $this->getRepository()->findBy(['user_id' => $user->getId()]);
+    public function findByUser(User $user, $period = null) {
+        $criteria = ['user_id' => $user->getId()];
+
+        if ($period) {
+            $criteria['period'] = $period;
+        }
+        return $this->getRepository()->findBy($criteria);
     }
 
     /**

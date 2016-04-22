@@ -12,32 +12,19 @@ class OverwatchScoreboard {
     private $period;
 
     /**
-     * @var OverwatchUserScore[]
+     * @var OverwatchScore[]
      */
     private $top10 = [];
 
     /**
-     * @var OverwatchUserScore
+     * @var OverwatchScore
      */
     private $userScore;
 
     /**
-     * @var OverwatchUserScore[]
+     * @var OverwatchScore[]
      */
     private $next10;
-
-    /**
-     * @param $period
-     * @param OverwatchUserScore[] $top10
-     * @param OverwatchUserScore $userScore
-     * @param OverwatchUserScore[] $next10
-     */
-    public function __construct($period, array $top10, OverwatchUserScore $userScore, array $next10) {
-        $this->period = $period;
-        $this->top10 = $top10;
-        $this->userScore = $userScore;
-        $this->next10 = $next10;
-    }
 
     /**
      * @return int
@@ -54,7 +41,7 @@ class OverwatchScoreboard {
     }
 
     /**
-     * @return \OverwatchBundle\Document\OverwatchUserScore[]
+     * @return OverwatchScore[]
      */
     public function getTop10() {
         return $this->top10;
@@ -68,7 +55,7 @@ class OverwatchScoreboard {
     }
 
     /**
-     * @return \OverwatchBundle\Document\OverwatchUserScore[]
+     * @return OverwatchScore[]
      */
     public function getNext10() {
         return $this->next10;

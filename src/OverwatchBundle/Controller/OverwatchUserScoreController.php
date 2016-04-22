@@ -42,8 +42,25 @@ class OverwatchUserScoreController extends BaseController {
      * @throws NotLoggedInException
      */
     public function getScoreboardAction() {
-        $this->requireLogin();
+        /*
+         * TODO: think of something that makes sense
+         * by dwalldorf at 18:50 22.04.16
+         */
 
-        return $this->jsonResponse($this->overwatchUserScoreService->getScoreboard(OverwatchUserScore::MONTHLY_PERIOD));
+        $retVal = [];
+
+        $this->requireLogin();
+        $user = $this->getCurrentUser();
+
+        $period = $this->overwatchUserScoreService->getPeriod(OverwatchUserScoreService::PERIOD_LAST_30_DAYS);
+        $top10 = $this->overwatchUserScoreService->getTopTen($period);
+        $userScore = $this->overwatchUserScoreService->getByUser($user, $period);
+        $nextTen = $this->overwatchUserScoreService->getNextTen($userScore, $period);
+
+        foreach ($top10 as $userScore) {
+//            $retVal[$userScore->getNumberOfOverwatches()] = new OverwatchUserScore($period, $userScore->getUserId());
+        }
+
+        return $this->jsonResponse('implement me');
     }
 }
