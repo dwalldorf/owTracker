@@ -46,13 +46,13 @@ class UserScore {
      * @Float(nullable=false)
      * @var float
      */
-    private $calulatedInMs;
+    private $calculatedInMs;
 
     /**
      * @Int(name="count", nullable=false)
      * @var int
      */
-    private $numberOfOverwatches = 0;
+    private $verdicts = 0;
 
     /**
      * @param int $period
@@ -122,32 +122,32 @@ class UserScore {
     /**
      * @return float
      */
-    public function getCalulatedInMs() {
-        return $this->calulatedInMs;
+    public function getCalculatedInMs() {
+        return $this->calculatedInMs;
     }
 
     /**
-     * @param float $calulatedInMs
+     * @param float $calculatedInMs
      */
-    public function setCalulatedInMs($calulatedInMs) {
-        $this->calulatedInMs = $calulatedInMs;
+    public function setCalculatedInMs($calculatedInMs) {
+        $this->calculatedInMs = $calculatedInMs;
     }
 
     /**
      * @return int
      */
-    public function getNumberOfOverwatches() {
-        return $this->numberOfOverwatches;
+    public function getVerdicts() {
+        return $this->verdicts;
     }
 
     /**
-     * @param int $numberOfOverwatches
+     * @param int $verdicts
      */
-    public function setNumberOfOverwatches($numberOfOverwatches) {
-        $this->numberOfOverwatches = $numberOfOverwatches;
+    public function setVerdicts($verdicts) {
+        $this->verdicts = $verdicts;
     }
 
     public function addOverwatch() {
-        $this->numberOfOverwatches++;
+        $this->verdicts++;
     }
 }
