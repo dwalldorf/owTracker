@@ -58,7 +58,7 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
         $users = $this->userService->getAllActiveUsers();
 
         foreach ($users as $user) {
-            $verdicts = $this->overwatchService->getByUserId($user);
+            $verdicts = $this->overwatchService->getByUserId($user->getId());
 
             if ($verdicts) {
                 foreach ($periods as $period) {

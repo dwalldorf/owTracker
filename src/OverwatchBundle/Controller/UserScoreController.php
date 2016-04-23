@@ -66,7 +66,6 @@ class UserScoreController extends BaseController {
             $retVal[] = $score;
         }
 
-        ldd($retVal);
         return $this->jsonResponse($retVal);
     }
 }
