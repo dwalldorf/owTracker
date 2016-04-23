@@ -2,7 +2,7 @@
 
 namespace OverwatchBundle\DTO;
 
-use OverwatchBundle\Document\OverwatchUserScore;
+use OverwatchBundle\Document\UserScore;
 
 class OverwatchScoreboard {
 
@@ -48,7 +48,7 @@ class OverwatchScoreboard {
     }
 
     /**
-     * @return OverwatchUserScore
+     * @return UserScore
      */
     public function getUserScore() {
         return $this->userScore;

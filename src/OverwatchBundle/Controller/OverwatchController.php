@@ -4,7 +4,7 @@ namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
 use AppBundle\Exception\InvalidArgumentException;
-use OverwatchBundle\Document\Overwatch;
+use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,18 +24,18 @@ class OverwatchController extends BaseController {
     }
 
     /**
-     * @Route("/api/overwatch")
+     * @Route("/api/overwatch/verdicts/{userId}")
      * @Method({"GET"})
      *
+     * @param string $userId
      * @return Response
      * @throws NotLoggedInException
      */
-    public function getByUserAction() {
+    public function getByUserAction($userId) {
         $this->requireLogin();
 
-        $user = $this->getCurrentUser();
-        $overwatchCases = $this->overwatchService->getByUser($user);
-        return $this->jsonResponse($overwatchCases);
+        $verdicts = $this->overwatchService->getByUserId($userId);
+        return $this->jsonResponse($verdicts);
     }
 
     /**
@@ -49,7 +49,7 @@ class OverwatchController extends BaseController {
     }
 
     /**
-     * @Route("/api/overwatch")
+     * @Route("/api/overwatch/verdicts")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -61,14 +61,14 @@ class OverwatchController extends BaseController {
     public function submitAction(Request $request) {
         $this->requireLogin();
 
-        /* @var $overwatch Overwatch */
-        $overwatch = $this->getEntityFromRequest($request, Overwatch::class);
-        $overwatch->setUserId($this->getCurrentUser()->getId());
+        /* @var $verdict Verdict */
+        $verdict = $this->getEntityFromRequest($request, Verdict::class);
+        $verdict->setUserId($this->getCurrentUser()->getId());
 
-        $dbOverwatch = $this->overwatchService->save($overwatch);
+        $dbVerdict = $this->overwatchService->save($verdict);
 
-        if ($dbOverwatch->getId()) {
-            return $this->jsonResponse($dbOverwatch, Response::HTTP_CREATED);
+        if ($dbVerdict->getId()) {
+            return $this->jsonResponse($dbVerdict, Response::HTTP_CREATED);
         }
         return $this->jsonResponse('handle this', 400);
     }

@@ -3,15 +3,15 @@
 namespace OverwatchBundle\Service;
 
 use AppBundle\Service\BaseService;
-use OverwatchBundle\Document\OverwatchUserScore;
+use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\DTO\OverwatchScoreboard;
-use OverwatchBundle\Repository\OverwatchUserScoreRepository;
+use OverwatchBundle\Repository\UserScoreRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use UserBundle\Document\User;
 
-class OverwatchUserScoreService extends BaseService {
+class UserScoreService extends BaseService {
 
-    const ID = 'overwatch.overwatch_user_score_service';
+    const ID = 'overwatch.user_score_service';
 
     const PERIOD_ALL_TIME = 'all time';
 
@@ -32,12 +32,12 @@ class OverwatchUserScoreService extends BaseService {
     ];
 
     /**
-     * @var OverwatchUserScoreRepository
+     * @var UserScoreRepository
      */
     private $repository;
 
     protected function init() {
-        $this->repository = $this->getRepository(OverwatchUserScoreRepository::ID);
+        $this->repository = $this->getRepository(UserScoreRepository::ID);
     }
 
     /**
@@ -56,14 +56,14 @@ class OverwatchUserScoreService extends BaseService {
     }
 
     /**
-     * @param OverwatchUserScore $userScore
+     * @param UserScore $userScore
      */
-    public function save(OverwatchUserScore $userScore) {
+    public function save(UserScore $userScore) {
         $this->repository->save($userScore);
     }
 
     /**
-     * @return OverwatchUserScore[]
+     * @return UserScore[]
      */
     public function getAll() {
         return $this->repository->findAll();
@@ -72,7 +72,7 @@ class OverwatchUserScoreService extends BaseService {
     /**
      * @param User $user
      * @param int $period
-     * @return array|OverwatchUserScore
+     * @return array|UserScore
      */
     public function getByUser(User $user, $period = null) {
         $retVal = $this->repository->findByUser($user, $period);
@@ -86,18 +86,18 @@ class OverwatchUserScoreService extends BaseService {
 
     /**
      * @param $period
-     * @return OverwatchUserScore[]
+     * @return UserScore[]
      */
     public function getTopTen($period) {
         return $this->repository->getTopTen($period);
     }
 
     /**
-     * @param OverwatchUserScore $userScore
+     * @param UserScore $userScore
      * @param int $period
-     * @return OverwatchUserScore[]
+     * @return UserScore[]
      */
-    public function getNextTen(OverwatchUserScore $userScore, $period) {
+    public function getNextTen(UserScore $userScore, $period) {
         return $this->repository->getNextTen($userScore, $period);
     }
 }

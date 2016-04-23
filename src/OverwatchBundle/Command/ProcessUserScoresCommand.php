@@ -3,10 +3,10 @@
 namespace OverwatchBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
-use OverwatchBundle\Document\Overwatch;
-use OverwatchBundle\Document\OverwatchUserScore;
+use OverwatchBundle\Document\Verdict;
+use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Service\OverwatchService;
-use OverwatchBundle\Service\OverwatchUserScoreService;
+use OverwatchBundle\Service\UserScoreService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use UserBundle\Document\User;
@@ -25,9 +25,9 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     private $overwatchService;
 
     /**
-     * @var OverwatchUserScoreService
+     * @var UserScoreService
      */
-    private $overwatchUserScoreService;
+    private $userScoreService;
 
     /**
      * @var int
@@ -50,20 +50,20 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     protected function initServices() {
         $this->userService = $this->container->get(UserService::ID);
         $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->overwatchUserScoreService = $this->container->get(OverwatchUserScoreService::ID);
+        $this->userScoreService = $this->container->get(UserScoreService::ID);
     }
 
     private function calculateUserScores() {
-        $periods = $this->overwatchUserScoreService->getAvailablePeriods();
+        $periods = $this->userScoreService->getAvailablePeriods();
         $users = $this->userService->getAllActiveUsers();
 
         foreach ($users as $user) {
-            $overwatchCases = $this->overwatchService->getByUser($user);
+            $verdicts = $this->overwatchService->getByUserId($user);
 
-            if ($overwatchCases) {
+            if ($verdicts) {
                 foreach ($periods as $period) {
-                    $userScore = $this->getUserScore($period, $user, $overwatchCases);
-                    $this->overwatchUserScoreService->save($userScore);
+                    $userScore = $this->getUserScore($period, $user, $verdicts);
+                    $this->userScoreService->save($userScore);
                 }
             }
         }
@@ -72,27 +72,23 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     /**
      * @param int $period
      * @param User $user
-     * @param Overwatch[] $overwatchCases
-     * @return OverwatchUserScore
+     * @param Verdict[] $verdicts
+     * @return UserScore
      */
-    private function getUserScore($period, User $user, array $overwatchCases) {
+    private function getUserScore($period, User $user, array $verdicts) {
         $start = microtime(true);
 
-        $userScore = new OverwatchUserScore($period, $user->getId());
+        $userScore = new UserScore($period, $user->getId());
 
         if ($period === 0) {
-            $userScore->setNumberOfOverwatches(count($overwatchCases));
+            $userScore->setNumberOfOverwatches(count($verdicts));
         } else {
-            foreach ($overwatchCases as $overwatchCase) {
-                $until = new \DateTime(sprintf('-%d day', $period));
-                $untilTimestamp = $until->getTimestamp();
-                $overwatchDate = $overwatchCase->getOverwatchDate();
+            foreach ($verdicts as $verdict) {
+                $until = strtotime(sprintf('-%d days', $period));
+                $verdictTimestamp = $verdict->getOverwatchDate()->getTimestamp();
 
-                if ($overwatchDate) {
-                    $overwatchTimestamp = $overwatchDate->getTimestamp();
-                    if ($overwatchTimestamp > $untilTimestamp) {
-                        $userScore->addOverwatch();
-                    }
+                if ($verdictTimestamp > $until) {
+                    $userScore->addOverwatch();
                 }
             }
         }

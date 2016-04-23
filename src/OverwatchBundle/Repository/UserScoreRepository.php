@@ -3,12 +3,12 @@
 namespace OverwatchBundle\Repository;
 
 use AppBundle\Repository\BaseRepository;
-use OverwatchBundle\Document\OverwatchUserScore;
+use OverwatchBundle\Document\UserScore;
 use UserBundle\Document\User;
 
-class OverwatchUserScoreRepository extends BaseRepository {
+class UserScoreRepository extends BaseRepository {
 
-    const ID = 'OverwatchBundle:OverwatchUserScore';
+    const ID = 'OverwatchBundle:UserScore';
 
     /**
      * @return \Doctrine\ODM\MongoDB\DocumentRepository
@@ -25,9 +25,9 @@ class OverwatchUserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param OverwatchUserScore $userScore
+     * @param UserScore $userScore
      */
-    public function save(OverwatchUserScore $userScore) {
+    public function save(UserScore $userScore) {
         $oldUserScore = $this->findByUserIdAndPeriod($userScore->getUserId(), $userScore->getPeriod());
         if ($oldUserScore) {
             $this->remove($oldUserScore);
@@ -40,7 +40,7 @@ class OverwatchUserScoreRepository extends BaseRepository {
     /**
      * @param User $user
      * @param int $period
-     * @return OverwatchUserScore|\OverwatchBundle\Document\OverwatchUserScore[]
+     * @return UserScore|\OverwatchBundle\Document\UserScore[]
      */
     public function findByUser(User $user, $period = null) {
         $criteria = ['user_id' => $user->getId()];
@@ -54,7 +54,7 @@ class OverwatchUserScoreRepository extends BaseRepository {
     /**
      * @param User $user
      * @param int $period
-     * @return OverwatchUserScore
+     * @return UserScore
      */
     public function findByUserAndPeriod(User $user, $period = 1) {
         $criteria = [
@@ -67,13 +67,13 @@ class OverwatchUserScoreRepository extends BaseRepository {
 
     /**
      * @param int $period
-     * @return OverwatchUserScore[]
+     * @return UserScore[]
      */
     public function getTopTen($period) {
         $scores = $this->getQueryBuilder()
             ->field('period')->equals($period)
             ->limit(10)
-            ->sort('number_of_overwatches', 'desc')
+            ->sort('count', 'desc')
             ->eagerCursor(true)
             ->getQuery()
             ->execute()
@@ -83,16 +83,16 @@ class OverwatchUserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param OverwatchUserScore $userScore
+     * @param UserScore $userScore
      * @param int $period
-     * @return \OverwatchBundle\Document\OverwatchUserScore[]
+     * @return \OverwatchBundle\Document\UserScore[]
      */
-    public function getNextTen(OverwatchUserScore $userScore, $period) {
+    public function getNextTen(UserScore $userScore, $period) {
         $scores = $this->getQueryBuilder()
             ->field('period')->equals($period)
-            ->field('number_of_overwatches' < $userScore->getNumberOfOverwatches())
+            ->field('count')->lt($userScore->getNumberOfOverwatches())
             ->limit(10)
-            ->sort('number_of_overwatches', 'desc')
+            ->sort('count', 'desc')
             ->eagerCursor(true)
             ->getQuery()
             ->execute()
@@ -102,16 +102,16 @@ class OverwatchUserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param OverwatchUserScore $userScore
+     * @param UserScore $userScore
      */
-    private function remove(OverwatchUserScore $userScore) {
+    private function remove(UserScore $userScore) {
         $this->dm->remove($userScore);
     }
 
     /**
      * @param string $userId
      * @param int $period
-     * @return OverwatchUserScore
+     * @return UserScore
      */
     private function findByUserIdAndPeriod($userId, $period) {
         return $this->getRepository()->findOneBy(['user_id' => $userId, 'period' => $period]);

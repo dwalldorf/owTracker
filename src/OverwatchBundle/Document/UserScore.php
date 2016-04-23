@@ -12,11 +12,11 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 /**
  * @Document(
  *     db="owt",
- *     collection="verdict_stats",
- *     repositoryClass="OverwatchBundle\Repository\OverwatchUserScoreRepository"
+ *     collection="user_scores",
+ *     repositoryClass="OverwatchBundle\Repository\UserScoreRepository"
  * )
  */
-class OverwatchUserScore {
+class UserScore {
 
     /**
      * @Id

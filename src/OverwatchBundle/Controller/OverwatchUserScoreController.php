@@ -3,8 +3,8 @@
 namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
-use OverwatchBundle\Document\OverwatchUserScore;
-use OverwatchBundle\Service\OverwatchUserScoreService;
+use OverwatchBundle\Document\UserScore;
+use OverwatchBundle\Service\UserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use UserBundle\Exception\NotLoggedInException;
@@ -12,12 +12,12 @@ use UserBundle\Exception\NotLoggedInException;
 class OverwatchUserScoreController extends BaseController {
 
     /**
-     * @var OverwatchUserScoreService
+     * @var UserScoreService
      */
-    private $overwatchUserScoreService;
+    private $UserScoreService;
 
     protected function init() {
-        $this->overwatchUserScoreService = $this->getService(OverwatchUserScoreService::ID);
+        $this->UserScoreService = $this->getService(UserScoreService::ID);
     }
 
     /**
@@ -30,7 +30,7 @@ class OverwatchUserScoreController extends BaseController {
         $this->requireLogin();
 
         $user = $this->getCurrentUser();
-        $userScores = $this->overwatchUserScoreService->getByUser($user);
+        $userScores = $this->UserScoreService->getByUser($user);
 
         return $this->jsonResponse($userScores);
     }
@@ -42,25 +42,31 @@ class OverwatchUserScoreController extends BaseController {
      * @throws NotLoggedInException
      */
     public function getScoreboardAction() {
-        /*
-         * TODO: think of something that makes sense
-         * by dwalldorf at 18:50 22.04.16
-         */
-
         $retVal = [];
 
         $this->requireLogin();
         $user = $this->getCurrentUser();
 
-        $period = $this->overwatchUserScoreService->getPeriod(OverwatchUserScoreService::PERIOD_LAST_30_DAYS);
-        $top10 = $this->overwatchUserScoreService->getTopTen($period);
-        $userScore = $this->overwatchUserScoreService->getByUser($user, $period);
-        $nextTen = $this->overwatchUserScoreService->getNextTen($userScore, $period);
+        $period = $this->UserScoreService->getPeriod(UserScoreService::PERIOD_LAST_24H);
+        $top10 = $this->UserScoreService->getTopTen($period);
+        $userScore = $this->UserScoreService->getByUser($user, $period);
+        $nextTen = $this->UserScoreService->getNextTen($userScore, $period);
 
-        foreach ($top10 as $userScore) {
-//            $retVal[$userScore->getNumberOfOverwatches()] = new OverwatchUserScore($period, $userScore->getUserId());
+        foreach ($top10 as $currentScore) {
+            $score = new UserScore($period, $currentScore->getUserId());
+            $score->setNumberOfOverwatches($currentScore->getNumberOfOverwatches());
+            $retVal[] = $score;
+        }
+        $score = new UserScore($period, $userScore->getUserId());
+        $score->setNumberOfOverwatches($userScore->getNumberOfOverwatches());
+        $retVal[] = $score;
+        foreach ($nextTen as $currentScore) {
+            $score = new UserScore($period, $currentScore->getUserId());
+            $score->setNumberOfOverwatches($currentScore->getNumberOfOverwatches());
+            $retVal[] = $score;
         }
 
-        return $this->jsonResponse('implement me');
+        ldd($retVal);
+        return $this->jsonResponse($retVal);
     }
 }

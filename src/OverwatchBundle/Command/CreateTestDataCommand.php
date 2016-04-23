@@ -3,7 +3,7 @@
 namespace OverwatchBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
-use OverwatchBundle\Document\Overwatch;
+use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -184,32 +184,35 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         }
 
         for ($i = 0; $i < $amount; $i++) {
-            $overwatch = new Overwatch();
-            $overwatch->setUserId($user->getId());
-            $overwatch->setMap($this->getRandomMap());
-            $overwatch->setCreationDate($this->getRandomDate());
-            $overwatch->setAimAssist($this->getRandomBool());
-            $overwatch->setVisionAssist($this->getRandomBool());
-            $overwatch->setOtherAssist($this->getRandomBool());
-            $overwatch->setGriefing($this->getRandomBool());
+            $verdict = new Verdict();
+            $verdict->setUserId($user->getId());
+            $verdict->setMap($this->getRandomMap());
+            $verdict->setAimAssist($this->getRandomBool());
+            $verdict->setVisionAssist($this->getRandomBool());
+            $verdict->setOtherAssist($this->getRandomBool());
+            $verdict->setGriefing($this->getRandomBool());
 
-            $this->overwatchService->save($overwatch);
+            $date = $this->getRandomDate();
+            $verdict->setCreationDate($date);
+            $verdict->setOverwatchDate($date);
+
+            $this->overwatchService->save($verdict);
 
             if ($this->verbose) {
                 $this->info(
                     sprintf(
                         ' %s   |  %s  |   %s    |   %s       | %s',
-                        $this->xIf($overwatch->isAimAssist()),
-                        $this->xIf($overwatch->isVisionAssist()),
-                        $this->xIf($overwatch->isOtherAssist()),
-                        $this->xIf($overwatch->isGriefing()),
-                        $overwatch->getMap()
+                        $this->xIf($verdict->isAimAssist()),
+                        $this->xIf($verdict->isVisionAssist()),
+                        $this->xIf($verdict->isOtherAssist()),
+                        $this->xIf($verdict->isGriefing()),
+                        $verdict->getMap()
                     )
                 );
             }
 
             $this->createdVerdicts++;
-            unset($overwatch);
+            unset($verdict);
         }
     }
 
@@ -232,11 +235,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return \DateTime
      */
     private function getRandomDate() {
-        $from = new \DateTime('-120 days');
-        $to = new \DateTime();
+        $from = strtotime('-40 days');
+        $to = time();
 
         $random = new \DateTime();
-        $random->setTimestamp(rand($from->getTimestamp(), $to->getTimestamp()));
+        $random->setTimestamp(mt_rand($from, $to));
         return $random;
     }
 

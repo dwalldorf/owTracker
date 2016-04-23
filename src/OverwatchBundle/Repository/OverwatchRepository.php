@@ -3,11 +3,11 @@
 namespace OverwatchBundle\Repository;
 
 use AppBundle\Repository\BaseRepository;
-use OverwatchBundle\Document\Overwatch;
+use OverwatchBundle\Document\Verdict;
 
 class OverwatchRepository extends BaseRepository {
 
-    const ID = 'OverwatchBundle:Overwatch';
+    const ID = 'OverwatchBundle:Verdict';
 
     /**
      * @return \Doctrine\ODM\MongoDB\DocumentRepository
@@ -24,19 +24,19 @@ class OverwatchRepository extends BaseRepository {
     }
 
     /**
-     * @param Overwatch $overwatch
-     * @return Overwatch
+     * @param Verdict $verdict
+     * @return Verdict
      */
-    public function save(Overwatch $overwatch) {
-        $this->dm->persist($overwatch);
+    public function save(Verdict $verdict) {
+        $this->dm->persist($verdict);
         $this->dm->flush();
 
-        return $overwatch;
+        return $verdict;
     }
 
     /**
      * @param string $userId
-     * @return Overwatch[]
+     * @return Verdict[]
      */
     public function getByUserId($userId) {
         return $this->getRepository()->findBy(['userId' => $userId]);

@@ -11,7 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *     repositoryClass="OverwatchBundle\Repository\OverwatchRepository"
  * )
  */
-class Overwatch {
+class Verdict {
 
     /**
      * @ODM\Id

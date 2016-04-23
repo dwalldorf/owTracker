@@ -4,10 +4,11 @@ angular.module('overwatchModule')
     .service('OverwatchService', ['$rootScope', '$http', '$q', '$cacheFactory', '$cookieStore', 'appConf',
         function ($rootScope, $http, $q, $cacheFactory, $cookieStore, appConf) {
 
-            var OVERWATCH_URI = appConf.baseUrl + '/overwatch';
+            var OVERWATCH_URI = appConf.baseUrl + '/overwatch/verdicts';
 
             var getOverwatchList = function () {
-                return $http.get(OVERWATCH_URI, {cache: false});
+                var userId = $rootScope.user.id;
+                return $http.get(OVERWATCH_URI + '/' + userId, {cache: false});
             };
 
             var getMapPool = function () {

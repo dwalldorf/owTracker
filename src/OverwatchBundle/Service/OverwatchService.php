@@ -4,7 +4,7 @@ namespace OverwatchBundle\Service;
 
 use AppBundle\Exception\InvalidArgumentException;
 use AppBundle\Service\BaseService;
-use OverwatchBundle\Document\Overwatch;
+use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Repository\OverwatchRepository;
 use UserBundle\Document\User;
 
@@ -46,27 +46,27 @@ class OverwatchService extends BaseService {
     }
 
     /**
-     * @param Overwatch $overwatch
-     * @return Overwatch
+     * @param Verdict $verdict
+     * @return Verdict
      * @throws InvalidArgumentException
      */
-    public function save(Overwatch $overwatch) {
-        $errors = $this->validateOverwatch($overwatch);
+    public function save(Verdict $verdict) {
+        $errors = $this->validateVerdict($verdict);
         if ($errors) {
             throw new InvalidArgumentException('invalid map');
         }
 
-        $persistedOverwatch = $this->repository->save($overwatch);
-        return $this->prepareDto($persistedOverwatch);
+        $dbVerdict = $this->repository->save($verdict);
+        return $this->prepareDto($dbVerdict);
     }
 
     /**
-     * @param User $user
-     * @return Overwatch[]
+     * @param string $userId
+     * @return Verdict[]
      */
-    public function getByUser(User $user) {
-        $overwatchCases = $this->repository->getByUserId($user->getId());
-        return $this->prepareDtoList($overwatchCases);
+    public function getByUserId($userId) {
+        $verdicts = $this->repository->getByUserId($userId);
+        return $this->prepareDtoList($verdicts);
     }
 
     /**
@@ -77,16 +77,16 @@ class OverwatchService extends BaseService {
     }
 
     /**
-     * @param Overwatch[] $overwatchCases
-     * @return Overwatch[]
+     * @param Verdict[] $verdicts
+     * @return Verdict[]
      */
-    private function prepareDtoList(array $overwatchCases) {
+    private function prepareDtoList(array $verdicts) {
         $retVal = [];
         $count = 0;
 
-        foreach ($overwatchCases as $overwatchCase) {
-            $overwatchCase = $this->prepareDto($overwatchCase);
-            $retVal[] = $overwatchCase;
+        foreach ($verdicts as $verdict) {
+            $verdict = $this->prepareDto($verdict);
+            $retVal[] = $verdict;
 
             $count++;
         }
@@ -95,24 +95,24 @@ class OverwatchService extends BaseService {
     }
 
     /**
-     * @param Overwatch $overwatchCase
-     * @return Overwatch
+     * @param Verdict $verdicts
+     * @return Verdict
      */
-    private function prepareDto(Overwatch $overwatchCase) {
+    private function prepareDto(Verdict $verdicts) {
         $dateFormat = 'Y-m-d H:i';
 
-        $overwatchCase->setDisplayDate($overwatchCase->getCreationDate()->format($dateFormat));
-        return $overwatchCase;
+        $verdicts->setDisplayDate($verdicts->getCreationDate()->format($dateFormat));
+        return $verdicts;
     }
 
     /**
-     * @param Overwatch $overwatch
+     * @param Verdict $verdict
      * @return array|null
      */
-    private function validateOverwatch(Overwatch $overwatch) {
+    private function validateVerdict(Verdict $verdict) {
         $errors = [];
 
-        if (!in_array($overwatch->getMap(), self::$mapPool)) {
+        if (!in_array($verdict->getMap(), self::$mapPool)) {
             $errors['map'] = 'invalid map';
         }
 
