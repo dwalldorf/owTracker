@@ -2,11 +2,14 @@
 
 namespace OverwatchBundle\Controller;
 
+use AppBundle\Command\BaseContainerAwareCommand;
 use AppBundle\Controller\BaseController;
+use OverwatchBundle\Command\ProcessUserScoresCommand;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Service\UserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Process\Process;
 use UserBundle\Exception\NotLoggedInException;
 
 class UserScoreController extends BaseController {
@@ -54,15 +57,15 @@ class UserScoreController extends BaseController {
 
         foreach ($top10 as $currentScore) {
             $score = new UserScore($period, $currentScore->getUserId());
-            $score->setNumberOfOverwatches($currentScore->getNumberOfOverwatches());
+            $score->setVerdicts($currentScore->getVerdicts());
             $retVal[] = $score;
         }
         $score = new UserScore($period, $userScore->getUserId());
-        $score->setNumberOfOverwatches($userScore->getNumberOfOverwatches());
+        $score->setVerdicts($userScore->getVerdicts());
         $retVal[] = $score;
         foreach ($nextTen as $currentScore) {
             $score = new UserScore($period, $currentScore->getUserId());
-            $score->setNumberOfOverwatches($currentScore->getNumberOfOverwatches());
+            $score->setVerdicts($currentScore->getVerdicts());
             $retVal[] = $score;
         }
 

@@ -81,7 +81,7 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
         $userScore = new UserScore($period, $user->getId());
 
         if ($period === 0) {
-            $userScore->setNumberOfOverwatches(count($verdicts));
+            $userScore->setVerdicts(count($verdicts));
         } else {
             foreach ($verdicts as $verdict) {
                 $until = strtotime(sprintf('-%d days', $period));
@@ -94,7 +94,7 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
         }
 
         $userScore->setCalculated(new \DateTime());
-        $userScore->setCalulatedInMs(microtime(true) - $start);
+        $userScore->setCalculatedInMs(microtime(true) - $start);
 
         $this->processed++;
         return $userScore;
