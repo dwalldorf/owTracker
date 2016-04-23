@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use UserBundle\Exception\NotLoggedInException;
 
-class OverwatchUserScoreController extends BaseController {
+class UserScoreController extends BaseController {
 
     /**
      * @var UserScoreService
