@@ -4,9 +4,7 @@ namespace OverwatchBundle\Service;
 
 use AppBundle\Service\BaseService;
 use OverwatchBundle\Document\UserScore;
-use OverwatchBundle\DTO\OverwatchScoreboard;
 use OverwatchBundle\Repository\UserScoreRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use UserBundle\Document\User;
 
 class UserScoreService extends BaseService {
@@ -85,11 +83,12 @@ class UserScoreService extends BaseService {
     }
 
     /**
+     * @param UserScore $user
      * @param $period
      * @return UserScore[]
      */
-    public function getTopTen($period) {
-        return $this->repository->getTopTen($period);
+    public function getTopTen(UserScore $user, $period) {
+        return $this->repository->getTopTen($user, $period);
     }
 
     /**

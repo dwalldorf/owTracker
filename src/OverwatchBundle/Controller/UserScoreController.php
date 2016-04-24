@@ -2,14 +2,11 @@
 
 namespace OverwatchBundle\Controller;
 
-use AppBundle\Command\BaseContainerAwareCommand;
 use AppBundle\Controller\BaseController;
-use OverwatchBundle\Command\ProcessUserScoresCommand;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Service\UserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Process\Process;
 use UserBundle\Exception\NotLoggedInException;
 
 class UserScoreController extends BaseController {
@@ -50,9 +47,14 @@ class UserScoreController extends BaseController {
         $this->requireLogin();
         $user = $this->getCurrentUser();
 
+        /*
+         * TODO: configure via path param
+         * by dwalldorf at 22:23 23.04.16
+         */
         $period = $this->UserScoreService->getPeriod(UserScoreService::PERIOD_LAST_24H);
-        $top10 = $this->UserScoreService->getTopTen($period);
+
         $userScore = $this->UserScoreService->getByUser($user, $period);
+        $top10 = $this->UserScoreService->getTopTen($userScore, $period);
         $nextTen = $this->UserScoreService->getNextTen($userScore, $period);
 
         foreach ($top10 as $currentScore) {

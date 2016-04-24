@@ -66,17 +66,14 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
+     * @param UserScore $userScore
      * @param int $period
      * @return UserScore[]
      */
-    public function getTopTen($period) {
-        /*
-         * TODO: only get scores that are higher than user's score!
-         * by dwalldorf at 22:20 23.04.16
-         */
-
+    public function getTopTen(UserScore $userScore, $period) {
         $scores = $this->getQueryBuilder()
             ->field('period')->equals($period)
+            ->field('count')->gt($userScore->getVerdicts())
             ->limit(10)
             ->sort('count', 'desc')
             ->eagerCursor(true)
@@ -90,7 +87,7 @@ class UserScoreRepository extends BaseRepository {
     /**
      * @param UserScore $userScore
      * @param int $period
-     * @return \OverwatchBundle\Document\UserScore[]
+     * @return UserScore[]
      */
     public function getNextTen(UserScore $userScore, $period) {
         $scores = $this->getQueryBuilder()
