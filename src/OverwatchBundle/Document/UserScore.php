@@ -25,7 +25,7 @@ class UserScore {
     private $id;
 
     /**
-     * @Int
+     * @Int(nullable=false)
      * @var int
      */
     private $period;
@@ -49,19 +49,10 @@ class UserScore {
     private $calculatedInMs;
 
     /**
-     * @Int(name="count", nullable=false)
+     * @Int(nullable=false)
      * @var int
      */
     private $verdicts = 0;
-
-    /**
-     * @param int $period
-     * @param string $userId
-     */
-    public function __construct($period, $userId = null) {
-        $this->period = $period;
-        $this->userId = $userId;
-    }
 
     /**
      * @return string

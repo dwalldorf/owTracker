@@ -78,7 +78,9 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     private function getUserScore($period, User $user, array $verdicts) {
         $start = microtime(true);
 
-        $userScore = new UserScore($period, $user->getId());
+        $userScore = new UserScore();
+        $userScore->setPeriod($period);
+        $userScore->setUserId($userScore->getId());
 
         if ($period === 0) {
             $userScore->setVerdicts(count($verdicts));
