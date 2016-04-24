@@ -19,17 +19,18 @@ angular.module('overwatchModule')
                 return $http.post(OVERWATCH_URI, overwatch);
             };
 
-            var getOverwatchUserScores = function () {
-                /*
-                 * TODO: implement
-                 */
+            var getScoreboard = function (period) {
+                if (period === undefined) {
+                    period = 30;
+                }
+                return $http.get(appConf.baseUrl + '/overwatch/scoreboard/' + period, {cache: false});
             };
 
             return {
                 getVerdicts: getVerdicts,
                 submitVerdict: submitVerdict,
                 getMapPool: getMapPool,
-                getOverwatchUserScores: getOverwatchUserScores
+                getScoreboard: getScoreboard
             }
         }
     ]);

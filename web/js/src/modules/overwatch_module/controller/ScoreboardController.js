@@ -6,7 +6,7 @@ angular.module('owTracker')
 
             function init() {
                 $scope.userScores = [];
-                overwatchService.getOverwatchUserScores().then(function (res) {
+                overwatchService.getScoreboard().then(function (res) {
                     if (res.status == 200) {
                         $scope.userScores = res.data;
                     }
