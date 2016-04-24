@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('owTracker')
-    .controller('NewOverwatchController', ['$rootScope', '$scope', 'OverwatchService',
+    .controller('NewVerdictController', ['$rootScope', '$scope', 'OverwatchService',
         function ($rootScope, $scope, overwatchService) {
 
-            var newOverwatch = {
+            var newVerdict = {
                 map: 'de_dust2',
                 overwatchDate: new Date(),
                 aimAssist: false,
@@ -13,18 +13,18 @@ angular.module('owTracker')
                 griefing: false
             };
 
-            function resetOverwatchForm() {
-                $scope.newOverwatch = angular.copy(newOverwatch);
+            function resetVerdictForm() {
+                $scope.newVerdict = angular.copy(newVerdict);
             }
 
-            $scope.submitOverwatch = function () {
-                overwatchService.submitOverwatch($scope.newOverwatch).then(function (res) {
-                    resetOverwatchForm();
+            $scope.submitVerdict = function () {
+                overwatchService.submitVerdict($scope.newVerdict).then(function (res) {
+                    resetVerdictForm();
 
-                    $rootScope.$broadcast('newOverwatch', res.data);
+                    $rootScope.$broadcast('newVerdict', res.data);
                 });
             };
 
-            resetOverwatchForm();
+            resetVerdictForm();
         }]
     );

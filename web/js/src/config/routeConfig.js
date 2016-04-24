@@ -9,9 +9,13 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider',
             $injector.get('$state').go('index');
         });
 
-        $stateProvider.state('page', {
+        $stateProvider.state('loggedOut', {
             abstract: true,
-            templateUrl: 'js/src/views/base.html'
+            templateUrl: 'js/src/views/base_logged_out.html'
+        });
+        $stateProvider.state('loggedIn', {
+            abstract: true,
+            templateUrl: 'js/src/views/base_logged_in.html'
         });
     }]
 );

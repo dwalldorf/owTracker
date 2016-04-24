@@ -6,7 +6,7 @@ angular.module('overwatchModule')
 
             var OVERWATCH_URI = appConf.baseUrl + '/overwatch/verdicts';
 
-            var getOverwatchList = function () {
+            var getVerdicts = function () {
                 var userId = $rootScope.user.id;
                 return $http.get(OVERWATCH_URI + '/' + userId, {cache: false});
             };
@@ -15,7 +15,7 @@ angular.module('overwatchModule')
                 return $http.get(appConf.baseUrl + '/overwatch/mappool', {cache: false});
             };
 
-            var submitOverwatch = function (overwatch) {
+            var submitVerdict = function (overwatch) {
                 return $http.post(OVERWATCH_URI, overwatch);
             };
 
@@ -26,8 +26,8 @@ angular.module('overwatchModule')
             };
 
             return {
-                getOverwatchList: getOverwatchList,
-                submitOverwatch: submitOverwatch,
+                getVerdicts: getVerdicts,
+                submitVerdict: submitVerdict,
                 getMapPool: getMapPool,
                 getOverwatchUserScores: getOverwatchUserScores
             }

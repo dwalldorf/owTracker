@@ -1,4 +1,4 @@
-<div class="col-sm-8 overwatch_list_container"
+<div class="col-sm-8 verdict_list_container"
      data-ng-controller="OverwatchController">
 
     <h2>Your Overwatch verdicts</h2>
@@ -17,35 +17,35 @@
 
         <tbody>
         <tr data-ng-repeat="
-          (key, value) in overwatches
-        | orderBy:value.creationDate.timestamp:true
+          (key, verdict) in verdicts
+        | orderBy:verdict.creationDate.timestamp:true
         | startFrom:currentPage*itemsPerPage
         | limitTo:itemsPerPage">
 
-            <td>{{value.displayDate}}</td>
-            <td>{{value.map}}</td>
+            <td>{{verdict.displayDate}}</td>
+            <td>{{verdict.map}}</td>
             <td class="text-center">
-                <span data-ng-if="value.aimAssist   "
+                <span data-ng-if="verdict.aimAssist   "
                       class="glyphicon glyphicon-ok"></span>
-                <span data-ng-if="!value.aimAssist   "
+                <span data-ng-if="!verdict.aimAssist   "
                       class="glyphicon glyphicon-remove"></span>
             </td>
             <td class="text-center">
-                <span data-ng-if="value.visionAssist"
+                <span data-ng-if="verdict.visionAssist"
                       class="glyphicon glyphicon-ok"></span>
-                <span data-ng-if="!value.visionAssist"
+                <span data-ng-if="!verdict.visionAssist"
                       class="glyphicon glyphicon-remove"></span>
             </td>
             <td class="text-center">
-                <span data-ng-if="value.otherAssist"
+                <span data-ng-if="verdict.otherAssist"
                       class="glyphicon glyphicon-ok"></span>
-                <span data-ng-if="!value.otherAssist"
+                <span data-ng-if="!verdict.otherAssist"
                       class="glyphicon glyphicon-remove"></span>
             </td>
             <td class="text-center">
-                <span data-ng-if="value.griefing"
+                <span data-ng-if="verdict.griefing"
                       class="glyphicon glyphicon-ok"></span>
-                <span data-ng-if="!value.griefing"
+                <span data-ng-if="!verdict.griefing"
                       class="glyphicon glyphicon-remove"></span>
             </td>
         </tr>
@@ -57,7 +57,7 @@
         Previous
     </button>
     {{currentPage+1}}/{{numberOfPages()}}
-    <button data-ng-disabled="currentPage >= overwatches.length/itemsPerPage - 1"
+    <button data-ng-disabled="currentPage >= verdicts.length/itemsPerPage - 1"
             data-ng-click="currentPage=currentPage+1">
         Next
     </button>

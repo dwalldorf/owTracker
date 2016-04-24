@@ -5,23 +5,23 @@ angular.module('owTracker')
         function ($rootScope, $scope, overwatchService) {
 
             function init() {
-                $scope.overwatches = [];
+                $scope.verdicts = [];
                 $scope.currentPage = 0;
                 $scope.itemsPerPage = 25;
 
-                overwatchService.getOverwatchList().then(function (res) {
+                overwatchService.getVerdicts().then(function (res) {
                     if (res.status == 200) {
-                        $scope.overwatches = res.data;
+                        $scope.verdicts = res.data;
                     }
                 });
             }
 
             $scope.numberOfPages = function () {
-                return Math.ceil($scope.overwatches.length / $scope.itemsPerPage)
+                return Math.ceil($scope.verdicts.length / $scope.itemsPerPage)
             };
 
-            $rootScope.$on('newOverwatch', function (event, overwatch) {
-                $scope.overwatches.push(overwatch);
+            $rootScope.$on('newVerdict', function (event, verdict) {
+                $scope.verdicts.push(verdict);
             });
 
             init();
