@@ -21,6 +21,11 @@ abstract class BaseController extends Controller implements IGetService {
     protected $session;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @var UserService
      */
     private $userService;
@@ -28,6 +33,7 @@ abstract class BaseController extends Controller implements IGetService {
     public function setContainer(ContainerInterface $container = null) {
         parent::setContainer($container);
 
+        $this->request = $this->container->get('request_stack')->getCurrentRequest();
         $this->session = $this->container->get('session');
         $this->session->start();
 
@@ -112,6 +118,15 @@ abstract class BaseController extends Controller implements IGetService {
             return null;
         }
         return $this->session->get('user');
+    }
+
+    /**
+     * @param string $paramName
+     * @param mixed $default
+     * @return mixed
+     */
+    protected function getQueryParam($paramName, $default = null) {
+        return $this->request->query->get($paramName, $default);
     }
 
     /**
