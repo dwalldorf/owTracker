@@ -4,6 +4,7 @@ namespace OverwatchBundle\Service;
 
 use AppBundle\Service\BaseService;
 use OverwatchBundle\Document\UserScore;
+use OverwatchBundle\DTO\UserScoreCollection;
 use OverwatchBundle\Repository\UserScoreRepository;
 use UserBundle\Document\User;
 
@@ -68,12 +69,12 @@ class UserScoreService extends BaseService {
     }
 
     /**
-     * @param User $user
+     * @param string $userId
      * @param int $period
      * @return array|UserScore
      */
-    public function getByUser(User $user, $period = null) {
-        $retVal = $this->repository->findByUser($user, $period);
+    public function getByUserId($userId, $period = null) {
+        $retVal = $this->repository->findByUserId($userId, $period);
 
         if (count($retVal) === 1) {
             $retVal = $retVal[0];
@@ -83,20 +84,42 @@ class UserScoreService extends BaseService {
     }
 
     /**
-     * @param UserScore $user
-     * @param $period
-     * @return UserScore[]
+     * @param string $userId
+     * @param int $period
+     * @param int $limit
+     * @param int $offset
+     * @return UserScoreCollection
      */
-    public function getTopTen(UserScore $user, $period) {
-        return $this->repository->getTopTen($user, $period);
+    public function getHigherThan($userId, $period, $limit, $offset) {
+        $scoreCollection = new UserScoreCollection();
+
+        $userScore = $this->getByUserId($userId, $period);
+        $scores = $this->repository->getHigherThan($userScore->getVerdicts(), $period, $limit + 1, $offset);
+
+        $limitCount = 0;
+        foreach ($scores as $score) {
+            if ($limitCount < $limit) {
+                $scoreCollection->addScore($score);
+            }
+            $limitCount++;
+        }
+
+        if ($limitCount > $limit) {
+            $scoreCollection->setHasMore();
+        }
+
+        return $scoreCollection;
     }
 
     /**
-     * @param UserScore $userScore
+     * @param string $userId
      * @param int $period
+     * @param int $limit
+     * @param int $offset
      * @return UserScore[]
      */
-    public function getNextTen(UserScore $userScore, $period) {
-        return $this->repository->getNextTen($userScore, $period);
+    public function getLowerThan($userId, $period, $limit = 10, $offset = 0) {
+        $userScore = $this->getByUserId($userId, $period);
+        return $this->repository->getLowerThan($userScore->getVerdicts(), $period, $limit, $offset);
     }
 }

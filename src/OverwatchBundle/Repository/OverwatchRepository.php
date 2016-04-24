@@ -39,7 +39,7 @@ class OverwatchRepository extends BaseRepository {
      * @return Verdict[]
      */
     public function getByUserId($userId) {
-        return $this->getRepository()->findBy(['userId' => $userId]);
+        return $this->getRepository()->findBy(['user_id' => $userId]);
     }
 
     /**

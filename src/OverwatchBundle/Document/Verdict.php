@@ -20,7 +20,7 @@ class Verdict {
     private $id;
 
     /**
-     * @ODM\String(nullable=false)
+     * @ODM\String(name="user_id", nullable=false)
      * @var string
      */
     private $userId;

@@ -3,10 +3,11 @@
 namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
-use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Service\UserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Exception\NotLoggedInException;
 
 class UserScoreController extends BaseController {
@@ -14,63 +15,89 @@ class UserScoreController extends BaseController {
     /**
      * @var UserScoreService
      */
-    private $UserScoreService;
+    private $userScoreService;
 
     protected function init() {
-        $this->UserScoreService = $this->getService(UserScoreService::ID);
+        $this->userScoreService = $this->getService(UserScoreService::ID);
     }
 
     /**
-     * @Route("/api/overwatch/userscores")
+     * @Route("/api/overwatch/scores/{userId}")
      * @Method({"GET"})
      *
+     * @param string $userId
+     * @return Response
      * @throws NotLoggedInException
      */
-    public function getByUserAction() {
+    public function getByUserAction($userId) {
         $this->requireLogin();
 
-        $user = $this->getCurrentUser();
-        $userScores = $this->UserScoreService->getByUser($user);
+        $period = intval($this->getQueryParam('period'));
+        $userScores = $this->userScoreService->getByUserId($userId, $period);
 
         return $this->jsonResponse($userScores);
     }
 
     /**
-     * @Route("/api/overwatch/scoreboard")
-     * @Method({"GET"})
+     * @Route(
+     *     "/api/overwatch/scores/higher/{userId}/{period}",
+     *     requirements={"period" = "\d+"}
+     * )
+     * @Method("GET")
      *
+     * @param string $userId
+     * @param int $period
+     * @return Response
      * @throws NotLoggedInException
      */
-    public function getScoreboardAction() {
-        $retVal = [];
-
+    public function getHigherThanUserAction($userId, $period = 30) {
         $this->requireLogin();
-        $user = $this->getCurrentUser();
 
-        /*
-         * TODO: configure via path param
-         * by dwalldorf at 22:23 23.04.16
-         */
-        $period = $this->UserScoreService->getPeriod(UserScoreService::PERIOD_LAST_24H);
+        $period = intval($period);
+        $limit = $this->getLimit();
+        $offset = $this->getOffset();
 
-        $userScore = $this->UserScoreService->getByUser($user, $period);
-        $top10 = $this->UserScoreService->getTopTen($userScore, $period);
-        $nextTen = $this->UserScoreService->getNextTen($userScore, $period);
+        $scores = $this->userScoreService->getHigherThan($userId, $period, $limit, $offset);
+        return $this->jsonResponse($scores);
+    }
 
-        foreach ($top10 as $currentScore) {
-            $score = new UserScore($period, $currentScore->getUserId());
-            $score->setVerdicts($currentScore->getVerdicts());
-            $retVal[] = $score;
+    /**
+     * @Route(
+     *     "/api/overwatch/scores/lower/{userId}/{period}",
+     *     requirements={"period" = "\d+"}
+     * )
+     * @Method("GET")
+     *
+     * @param string $userId
+     * @param int $period
+     * @return Response
+     * @throws NotLoggedInException
+     */
+    public function getLowerThanUserAction($userId, $period = 30) {
+        $this->requireLogin();
+
+        $period = intval($period);
+        $limit = $this->getLimit();
+        $offset = $this->getOffset();
+
+        $scores = $this->userScoreService->getLowerThan($userId, $period, $limit, $offset);
+        return $this->jsonResponse($scores);
+    }
+
+    private function getOffset() {
+        return intval($this->getQueryParam('offset', 0));
+    }
+
+    /**
+     * @return int
+     */
+    private function getLimit() {
+        $limit = intval($this->getQueryParam('limit', 10));
+
+        if ($limit > 50) {
+            $limit = 50;
         }
-        $score = new UserScore($period, $userScore->getUserId());
-        $score->setVerdicts($userScore->getVerdicts());
-        $retVal[] = $score;
-        foreach ($nextTen as $currentScore) {
-            $score = new UserScore($period, $currentScore->getUserId());
-            $score->setVerdicts($currentScore->getVerdicts());
-            $retVal[] = $score;
-        }
 
-        return $this->jsonResponse($retVal);
+        return $limit;
     }
 }

@@ -21,7 +21,7 @@ class UserScoreRepository extends BaseRepository {
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     private function getQueryBuilder() {
-        return $this->dm->createQueryBuilder(self::ID);
+        return $this->getRepository()->dm->createQueryBuilder(self::ID);
     }
 
     /**
@@ -38,12 +38,12 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param User $user
+     * @param string $userId
      * @param int $period
      * @return UserScore[]
      */
-    public function findByUser(User $user, $period = null) {
-        $criteria = ['user_id' => $user->getId()];
+    public function findByUserId($userId, $period = null) {
+        $criteria = ['user_id' => $userId];
 
         if ($period) {
             $criteria['period'] = $period;
@@ -52,55 +52,57 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param User $user
+     * @param int $higherThan
      * @param int $period
-     * @return UserScore
-     */
-    public function findByUserAndPeriod(User $user, $period = 1) {
-        $criteria = [
-            'user_id' => $user->getId(),
-            'period'  => $period,
-        ];
-
-        return $this->getRepository()->findOneBy($criteria);
-    }
-
-    /**
-     * @param UserScore $userScore
-     * @param int $period
+     * @param int $limit
+     * @param int $offset
+     *
      * @return UserScore[]
      */
-    public function getTopTen(UserScore $userScore, $period) {
-        $scores = $this->getQueryBuilder()
-            ->field('period')->equals($period)
-            ->field('count')->gt($userScore->getVerdicts())
-            ->limit(10)
-            ->sort('count', 'desc')
-            ->eagerCursor(true)
+    public function getHigherThan($higherThan, $period, $limit = 10, $offset = 0) {
+        $qb = $this->getQueryBuilder()
+            ->field('period')->equals($period);
+
+        if ($higherThan > 0) {
+            $qb->field('verdicts')->gt($higherThan);
+        }
+
+        $scores = $qb
+            ->skip($offset)
+            ->limit($limit)
+            ->sort('verdicts', 'desc')
             ->getQuery()
             ->execute()
             ->toArray();
 
-        return $scores;
+        return array_values($scores);
     }
 
     /**
-     * @param UserScore $userScore
+     * @param int $lowerThan
      * @param int $period
+     * @param int $limit
+     * @param int $offset
      * @return UserScore[]
      */
-    public function getNextTen(UserScore $userScore, $period) {
-        $scores = $this->getQueryBuilder()
-            ->field('period')->equals($period)
-            ->field('count')->lt($userScore->getVerdicts())
-            ->limit(10)
-            ->sort('count', 'desc')
-            ->eagerCursor(true)
+    public function getLowerThan($lowerThan, $period, $limit = 10, $offset = 0) {
+        $qb = $this->getQueryBuilder()
+            ->field('period')->equals($period);
+
+        if ($lowerThan > 0) {
+            $qb->field('verdicts')->lt($lowerThan);
+        }
+
+        $scores = $qb->sort('verdicts', 'desc')
+            ->skip($offset)
+            ->limit($limit)
             ->getQuery()
             ->execute()
             ->toArray();
 
-        return $scores;
+        ldd($scores);
+
+        return array_values($scores);
     }
 
     /**
