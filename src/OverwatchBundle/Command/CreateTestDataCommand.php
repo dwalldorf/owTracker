@@ -64,7 +64,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     const OPT_USER_AMOUNT_DEFAULT = 20;
 
     protected function configure() {
-        $this->setName('owt:testData')
+        $this->setName('owt:createTestData')
             ->addOption(
                 self::OPT_USER_NAME,
                 'u',
@@ -159,7 +159,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
             $this->userService->register($user);
 
-            $amountOfOverwatches = mt_rand(3, 50);
+            $amountOfOverwatches = mt_rand(3, 150);
             $this->createVerdicts($amountOfOverwatches, $user);
 
             if ($this->verbose) {
@@ -235,7 +235,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return \DateTime
      */
     private function getRandomDate() {
-        $from = strtotime('-40 days');
+        $from = strtotime('-60 days');
         $to = time();
 
         $random = new \DateTime();
