@@ -1,0 +1,7 @@
+@import "colors";
+
+.scoreboard-container {
+    .score-list-user-score {
+        background: darken($background-color, 5%);
+    }
+}
