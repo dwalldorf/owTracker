@@ -1,23 +1,29 @@
 <h1>Scores</h1>
 
-<table class="table table-condensed table-bordered table-hover">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Map</th>
-        <th class="text-center">Aim assist</th>
-        <th class="text-center">Visual assist</th>
-        <th class="text-center">Other assist</th>
-        <th class="text-center">Griefing</th>
-    </tr>
-    </thead>
+<div class="row">
+    <div class="col-sm-8 scores_list_container">
+        <table class="table table-condensed table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">User</th>
+                <th class="text-center">Verdicts</th>
+            </tr>
+            </thead>
 
-    <tbody>
-    <tr data-ng-repeat="
-          (key, score) in userScores
-        | orderBy:score.verdict:true">
-
-        <td>bla</td>
-    </tr>
-    </tbody>
-</table>
+            <tbody>
+            <tr data-ng-repeat="(key, score) in scoresHigh.scores | orderBy:score.verdict">
+                <td>{{score.username}}</td>
+                <td>{{score.score}}</td>
+            </tr>
+            <tr>
+                <td>{{user.username}}</td>
+                <td>{{myScore.score}}</td>
+            </tr>
+            <tr data-ng-repeat="(key, score) in scoresLow.scores | orderBy:score.verdict">
+                <td>{{score.username}}</td>
+                <td>{{score.score}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

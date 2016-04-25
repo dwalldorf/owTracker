@@ -43,11 +43,19 @@ class AppSerializer {
     }
 
     /**
-     * @param string $json
-     * @param $target
+     * @param $json
+     * @param string $target
      * @return object
      */
     public function fromJson($json, $target) {
         return $this->serializer->deserialize($json, $target, self::FORMAT);
+    }
+
+    /**
+     * @param $json
+     * @return array
+     */
+    public function toArray($json) {
+        return json_decode($json, true);
     }
 }

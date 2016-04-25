@@ -2,12 +2,10 @@
 
 namespace OverwatchBundle\DTO;
 
-use OverwatchBundle\Document\UserScore;
-
 class UserScoreCollection {
 
     /**
-     * @var UserScore[]
+     * @var UserScoreDto[]
      */
     private $scores = [];
 
@@ -22,16 +20,16 @@ class UserScoreCollection {
     private $hasMore = false;
 
     /**
-     * @return UserScore[]
+     * @return UserScoreDto[]
      */
     public function getScores() {
         return $this->scores;
     }
 
     /**
-     * @param UserScore $score
+     * @param UserScoreDto $score
      */
-    public function addScore(UserScore $score) {
+    public function addScore(UserScoreDto $score) {
         if (!is_array($this->scores)) {
             $this->scores = [];
         }
@@ -41,7 +39,7 @@ class UserScoreCollection {
     }
 
     /**
-     * @param UserScore[] $scores
+     * @param UserScoreDto[] $scores
      */
     public function setScores($scores) {
         $this->scores = $scores;
@@ -58,7 +56,7 @@ class UserScoreCollection {
     /**
      * @return boolean
      */
-    public function hasMore() {
+    public function getHasMore() {
         return $this->hasMore;
     }
 

@@ -5,8 +5,9 @@ namespace OverwatchBundle\Service;
 use AppBundle\Service\BaseService;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\DTO\UserScoreCollection;
+use OverwatchBundle\DTO\UserScoreDto;
 use OverwatchBundle\Repository\UserScoreRepository;
-use UserBundle\Document\User;
+use UserBundle\Service\UserService;
 
 class UserScoreService extends BaseService {
 
@@ -31,12 +32,18 @@ class UserScoreService extends BaseService {
     ];
 
     /**
+     * @var UserService
+     */
+    private $userService;
+
+    /**
      * @var UserScoreRepository
      */
     private $repository;
 
     protected function init() {
         $this->repository = $this->getRepository(UserScoreRepository::ID);
+        $this->userService = $this->getService(UserService::ID);
     }
 
     /**
@@ -71,10 +78,10 @@ class UserScoreService extends BaseService {
     /**
      * @param string $userId
      * @param int $period
-     * @return array|UserScore
+     * @return array|UserScoreDto
      */
     public function getByUserId($userId, $period = null) {
-        $retVal = $this->repository->findByUserId($userId, $period);
+        $retVal = $this->toDto($this->repository->findByUserId($userId, $period));
 
         if (count($retVal) === 1) {
             $retVal = $retVal[0];
@@ -93,20 +100,14 @@ class UserScoreService extends BaseService {
     public function getHigherThan($userId, $period, $limit, $offset) {
         $scoreCollection = new UserScoreCollection();
 
-        $userScore = $this->getByUserId($userId, $period);
-        $scores = $this->repository->getHigherThan($userScore->getVerdicts(), $period, $limit + 1, $offset);
+        $userVerdicts = $this->getUserScoreVerdictCount($userId, $period);
+        $scores = $this->repository->getHigherThan($userVerdicts, $period, $limit + 1, $offset);
 
-        $limitCount = 0;
-        foreach ($scores as $score) {
-            if ($limitCount < $limit) {
-                $scoreCollection->addScore($score);
-            }
-            $limitCount++;
-        }
-
-        if ($limitCount > $limit) {
-            $scoreCollection->setHasMore();
-        }
+        /*
+         * TODO: fix hasMore
+         * by dwalldorf at 19:55 25.04.16
+         */
+        $scoreCollection->setScores($this->toDto($scores, $limit));
 
         return $scoreCollection;
     }
@@ -119,7 +120,53 @@ class UserScoreService extends BaseService {
      * @return UserScore[]
      */
     public function getLowerThan($userId, $period, $limit = 10, $offset = 0) {
+        $scoreCollection = new UserScoreCollection();
+
+        $userVerdicts = $this->getUserScoreVerdictCount($userId, $period);
+        $scores = $this->repository->getLowerThan($userVerdicts, $period, $limit + 1, $offset);
+
+        $scoreCollection->setScores($this->toDto($scores, $limit));
+
+        return $scoreCollection;
+    }
+
+    /**
+     * @param string $userId
+     * @param int $period
+     * @return int
+     */
+    private function getUserScoreVerdictCount($userId, $period) {
         $userScore = $this->getByUserId($userId, $period);
-        return $this->repository->getLowerThan($userScore->getVerdicts(), $period, $limit, $offset);
+
+        if (!$userScore) {
+            return 0;
+        }
+        return $userScore->getScore();
+    }
+
+    /**
+     * @param UserScore[] $scores
+     * @param int $limit
+     * @return UserScoreDto[]
+     */
+    private function toDto(array $scores, $limit = null) {
+        $retVal = [];
+        $count = 0;
+
+        foreach ($scores as $score) {
+            if ($limit && $count >= $limit) {
+                break;
+            }
+
+            $user = $this->userService->findById($score->getUserId());
+
+            $dto = new UserScoreDto();
+            $dto->setUsername($user->getUsername());
+            $dto->setScore($score->getVerdicts());
+
+            $retVal[] = $dto;
+            $count++;
+        }
+        return $retVal;
     }
 }

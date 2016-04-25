@@ -5,6 +5,7 @@ angular.module('owTracker')
         function ($scope, $state, userService, STATE_INDEX, STATE_LOGIN) {
 
             var initialUser = {
+                username: '',
                 email: '',
                 password: ''
             };

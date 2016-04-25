@@ -32,6 +32,8 @@ class UserService extends BaseService {
         }
 
         $user->setPassword($this->encryptPassword($user->getPassword()));
+        $user->setRegistered(time());
+
         return $this->repository->register($user);
     }
 
@@ -51,7 +53,7 @@ class UserService extends BaseService {
         if (!$password) {
             $errors[] = 'password is mandatory';
         }
-        if ($this->repository->findByEmail($email)) {
+        if ($this->repository->findByUsernameOrEmail($email)) {
             $errors['email'][] = 'email already exists';
         }
 
@@ -62,17 +64,18 @@ class UserService extends BaseService {
     }
 
     /**
-     * @param User $user
+     * @param $loginName
+     * @param $password
      * @return User
      */
-    public function login(User $user) {
-        $dbUser = $this->repository->findByEmail($user->getEmail());
+    public function login($loginName, $password) {
+        $dbUser = $this->repository->findByUsernameOrEmail($loginName);
 
         if (!$dbUser) {
             return null;
         }
 
-        if (password_verify($user->getPassword(), $dbUser->getPassword())) {
+        if (password_verify($password, $dbUser->getPassword())) {
             $dbUser = $this->getSecureUserCopy($dbUser);
             $this->session->set('user', $dbUser);
 
@@ -95,7 +98,7 @@ class UserService extends BaseService {
      * @return User
      */
     public function findByEmail($email) {
-        return $this->repository->findByEmail($email);
+        return $this->repository->findByUsernameOrEmail($email);
     }
 
     /**

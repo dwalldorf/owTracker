@@ -80,7 +80,7 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
 
         $userScore = new UserScore();
         $userScore->setPeriod($period);
-        $userScore->setUserId($userScore->getId());
+        $userScore->setUserId($user->getId());
 
         if ($period === 0) {
             $userScore->setVerdicts(count($verdicts));

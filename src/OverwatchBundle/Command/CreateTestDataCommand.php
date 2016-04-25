@@ -154,12 +154,24 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private function createTestData() {
         for ($i = 0; $i < $this->userAmount; $i++) {
             $user = new User();
-            $user->setEmail('owtTestUser_' . $this->getRandomString() . '@' . $this->getRandomString(5) . '.com');
+
+            $username = 'owtTestUser_' . $this->getRandomString();
+            $email = $username . '@' . $this->getRandomString(5) . '.com';
+
+            $user->setUsername($username);
+            $user->setEmail($email);
             $user->setPassword($this->getRandomString());
 
             $this->userService->register($user);
 
-            $amountOfOverwatches = mt_rand(3, 150);
+            $dice = mt_rand(0, 100);
+
+            if ($dice < 25) {
+                $amountOfOverwatches = mt_rand(100, 150);
+            } else {
+                $amountOfOverwatches = mt_rand(0, 40);
+            }
+
             $this->createVerdicts($amountOfOverwatches, $user);
 
             if ($this->verbose) {

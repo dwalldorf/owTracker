@@ -82,12 +82,26 @@ abstract class BaseController extends Controller implements IGetService {
     }
 
     /**
-     * @param Request $request
      * @param $targetEntity
      * @return object
      */
-    protected function getEntityFromRequest(Request $request, $targetEntity) {
-        return AppSerializer::getInstance()->fromJson($request->getContent(), $targetEntity);
+    protected function getEntityFromRequest($targetEntity) {
+        $payload = $this->request->getContent();
+        return AppSerializer::getInstance()->fromJson($payload, $targetEntity);
+    }
+
+    /**
+     * @param string $name
+     * @param null $default
+     * @return mixed|null
+     */
+    protected function getFromPayload($name, $default = null) {
+        $payload = AppSerializer::getInstance()->toArray($this->request->getContent());
+
+        if (is_array($payload) && array_key_exists($name, $payload)) {
+            return $payload[$name];
+        }
+        return $default;
     }
 
     public function getService($serviceId) {

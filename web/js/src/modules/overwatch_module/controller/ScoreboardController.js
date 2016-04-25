@@ -6,9 +6,22 @@ angular.module('owTracker')
 
             function init() {
                 $scope.userScores = [];
-                overwatchService.getScoreboard().then(function (res) {
+                var userId = $rootScope.user.id,
+                    period = 30;
+
+                overwatchService.getHigherScores(userId, period).then(function (res) {
                     if (res.status == 200) {
-                        $scope.userScores = res.data;
+                        $scope.scoresHigh = res.data;
+                    }
+                });
+                overwatchService.getLowerScores(userId, period).then(function (res) {
+                    if (res.status == 200) {
+                        $scope.scoresLow = res.data;
+                    }
+                });
+                overwatchService.getMyScore(userId, period).then(function (res) {
+                    if (res.status == 200) {
+                        $scope.myScore = res.data;
                     }
                 });
             }

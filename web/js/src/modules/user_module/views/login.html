@@ -5,13 +5,13 @@
           data-ng-submit="login()">
 
         <div class="form-group">
-            <label for="loginEmail"
-                   class="control-label">Username:</label>
-            <input type="email"
-                   id="loginEmail"
-                   name="email"
+            <label for="loginUsername"
+                   class="control-label">Username or e-mail:</label>
+            <input type="text"
+                   id="loginUsername"
+                   name="username"
                    class="form-control"
-                   data-ng-model="loginUser.email"
+                   data-ng-model="loginUser.username"
                    data-ng-required="true"/>
         </div>
         <div class="row">

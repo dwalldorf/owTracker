@@ -52,17 +52,16 @@ class OverwatchController extends BaseController {
      * @Route("/api/overwatch/verdicts")
      * @Method({"POST"})
      *
-     * @param Request $request
      * @return Response
      *
      * @throws InvalidArgumentException
      * @throws NotLoggedInException
      */
-    public function submitAction(Request $request) {
+    public function submitAction() {
         $this->requireLogin();
 
         /* @var $verdict Verdict */
-        $verdict = $this->getEntityFromRequest($request, Verdict::class);
+        $verdict = $this->getEntityFromRequest(Verdict::class);
         $verdict->setUserId($this->getCurrentUser()->getId());
 
         $dbVerdict = $this->overwatchService->save($verdict);

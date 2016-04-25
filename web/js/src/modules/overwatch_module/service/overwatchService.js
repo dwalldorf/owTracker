@@ -19,18 +19,24 @@ angular.module('overwatchModule')
                 return $http.post(OVERWATCH_URI, overwatch);
             };
 
-            var getScoreboard = function (period) {
-                if (period === undefined) {
-                    period = 30;
-                }
-                return $http.get(appConf.baseUrl + '/overwatch/scoreboard/' + period, {cache: false});
+            var getHigherScores = function (userId, period) {
+                return $http.get(appConf.baseUrl + '/overwatch/scores/higher/' + userId + '/' + period);
+            };
+            var getLowerScores = function (userId, period) {
+                return $http.get(appConf.baseUrl + '/overwatch/scores/lower/' + userId + '/' + period);
+            };
+
+            var getMyScore = function (userId, period) {
+                return $http.get(appConf.baseUrl + '/overwatch/scores/' + userId + '?period=' + period);
             };
 
             return {
                 getVerdicts: getVerdicts,
                 submitVerdict: submitVerdict,
                 getMapPool: getMapPool,
-                getScoreboard: getScoreboard
+                getHigherScores: getHigherScores,
+                getLowerScores: getLowerScores,
+                getMyScore: getMyScore
             }
         }
     ]);

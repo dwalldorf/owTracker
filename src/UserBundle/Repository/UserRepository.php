@@ -35,11 +35,19 @@ class UserRepository extends BaseRepository {
     }
 
     /**
-     * @param string $email
+     * @param string $usernameOrEmail
      * @return User
      */
-    public function findByEmail($email) {
-        return $this->getRepository()->findOneBy(['email' => $email]);
+    public function findByUsernameOrEmail($usernameOrEmail) {
+        $qb = $this->getQueryBuilder();
+
+        $usernameExpr = $qb->expr()->field('username')->equals($usernameOrEmail);
+        $emailExpr = $qb->expr()->field('email')->equals($usernameOrEmail);
+
+        return $qb->addOr($usernameExpr)
+            ->addOr($emailExpr)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     /**

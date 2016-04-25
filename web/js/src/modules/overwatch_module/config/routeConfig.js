@@ -9,6 +9,7 @@ app.config(['$stateProvider', 'STATE_INDEX', 'STATE_USER_SCORES', function ($sta
     $stateProvider.state(STATE_INDEX, {
             parent: 'loggedIn',
             data: {requireLogin: true},
+            controller: 'OverwatchController',
             templateUrl: 'js/src/modules/overwatch_module/views/index.html',
             url: '/'
         },

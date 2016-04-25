@@ -4,7 +4,6 @@ namespace OverwatchBundle\Repository;
 
 use AppBundle\Repository\BaseRepository;
 use OverwatchBundle\Document\UserScore;
-use UserBundle\Document\User;
 
 class UserScoreRepository extends BaseRepository {
 
@@ -99,8 +98,6 @@ class UserScoreRepository extends BaseRepository {
             ->getQuery()
             ->execute()
             ->toArray();
-
-        ldd($scores);
 
         return array_values($scores);
     }
