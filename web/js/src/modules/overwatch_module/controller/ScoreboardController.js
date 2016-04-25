@@ -5,7 +5,8 @@ angular.module('owTracker')
         function ($rootScope, $scope, overwatchService) {
 
             function init() {
-                $scope.userScores = [];
+                $scope.dataLoaded = false;
+
                 var userId = $rootScope.user.id,
                     period = 30;
 
@@ -25,6 +26,10 @@ angular.module('owTracker')
                     }
                 });
             }
+
+            $scope.restFinished = function () {
+                return ($scope.scoresHigh !== undefined && $scope.scoresLow !== undefined && $scope.myScore !== undefined);
+            };
 
             init();
         }]

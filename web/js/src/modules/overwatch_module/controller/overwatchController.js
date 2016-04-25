@@ -5,12 +5,14 @@ angular.module('owTracker')
         function ($rootScope, $scope, overwatchService) {
 
             function init() {
+                $scope.restFinished = false;
                 $scope.verdicts = [];
                 $scope.currentPage = 0;
                 $scope.itemsPerPage = 25;
 
                 overwatchService.getVerdicts().then(function (res) {
                     if (res.status == 200) {
+                        $scope.restFinished = true;
                         $scope.verdicts = res.data;
                     }
                 });
