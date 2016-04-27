@@ -100,11 +100,9 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 $this->info(sprintf('amount of verdicts to generate not set. using default of %d', $this->verdictAmount));
             }
 
-            $user = null;
-            if (!strpos($this->specificUser, '@')) {
-                $user = $this->userService->findById($this->specificUser);
-            } else {
-                $user = $this->userService->findByEmail($this->specificUser);
+            $user = $this->userService->findById($this->specificUser);
+            if (!$user) {
+                $user = $this->userService->findByUsernameOrEmail($this->specificUser);
             }
 
             if (!$user) {
