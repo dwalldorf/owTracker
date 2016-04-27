@@ -97,7 +97,7 @@ class UserService extends BaseService {
      * @param string $email
      * @return User
      */
-    public function findByEmail($email) {
+    public function findByUsernameOrEmail($email) {
         return $this->repository->findByUsernameOrEmail($email);
     }
 

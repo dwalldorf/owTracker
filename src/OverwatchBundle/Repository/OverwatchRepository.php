@@ -57,4 +57,27 @@ class OverwatchRepository extends BaseRepository {
             ->getQuery()
             ->execute();
     }
+
+    public function getUserscores($period = null) {
+        $qb = $this->getQueryBuilder();
+
+        if ($period) {
+            $beforeDate = new \MongoDate(strtotime(sprintf('-%d days', $period)));
+            $qb->field('creationDate')->gte($beforeDate);
+        }
+
+        return $qb->map('function() { emit(this.user_id, 1); }')
+            ->reduce(
+                'function(k, values) {
+                var sum = 0;
+                for (var i in values) {
+                    sum = sum + 1;
+                }
+                return sum;
+            }'
+            )
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
 }

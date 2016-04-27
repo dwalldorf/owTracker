@@ -78,10 +78,10 @@ class UserScoreService extends BaseService {
     /**
      * @param string $userId
      * @param int $period
-     * @return array|UserScoreDto
+     * @return array|UserScore
      */
     public function getByUserId($userId, $period = null) {
-        $retVal = $this->toDto($this->repository->findByUserId($userId, $period));
+        $retVal = $this->repository->findByUserId($userId, $period);
 
         if (count($retVal) === 1) {
             $retVal = $retVal[0];
@@ -100,8 +100,8 @@ class UserScoreService extends BaseService {
     public function getHigherThan($userId, $period, $limit, $offset) {
         $scoreCollection = new UserScoreCollection();
 
-        $userVerdicts = $this->getUserScoreVerdictCount($userId, $period);
-        $scores = $this->repository->getHigherThan($userVerdicts, $period, $limit + 1, $offset);
+        $userScore = $this->getByUserId($userId, $period);
+        $scores = $this->repository->getHigherThan($userScore, $period, $limit + 1, $offset);
 
         /*
          * TODO: fix hasMore
@@ -122,26 +122,12 @@ class UserScoreService extends BaseService {
     public function getLowerThan($userId, $period, $limit = 10, $offset = 0) {
         $scoreCollection = new UserScoreCollection();
 
-        $userVerdicts = $this->getUserScoreVerdictCount($userId, $period);
-        $scores = $this->repository->getLowerThan($userVerdicts, $period, $limit + 1, $offset);
+        $userScore = $this->getByUserId($userId, $period);
+        $scores = $this->repository->getLowerThan($userScore, $period, $limit + 1, $offset);
 
         $scoreCollection->setScores($this->toDto($scores, $limit));
 
         return $scoreCollection;
-    }
-
-    /**
-     * @param string $userId
-     * @param int $period
-     * @return int
-     */
-    private function getUserScoreVerdictCount($userId, $period) {
-        $userScore = $this->getByUserId($userId, $period);
-
-        if (!$userScore) {
-            return 0;
-        }
-        return $userScore->getScore();
     }
 
     /**
@@ -159,13 +145,14 @@ class UserScoreService extends BaseService {
             }
 
             $user = $this->userService->findById($score->getUserId());
+            if ($user) {
+                $dto = new UserScoreDto();
+                $dto->setUsername($user->getUsername());
+                $dto->setScore($score->getVerdicts());
 
-            $dto = new UserScoreDto();
-            $dto->setUsername($user->getUsername());
-            $dto->setScore($score->getVerdicts());
-
-            $retVal[] = $dto;
-            $count++;
+                $retVal[] = $dto;
+                $count++;
+            }
         }
         return $retVal;
     }

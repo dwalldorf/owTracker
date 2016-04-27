@@ -5,6 +5,7 @@ namespace OverwatchBundle\Command;
 use AppBundle\Command\BaseContainerAwareCommand;
 use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Document\UserScore;
+use OverwatchBundle\Repository\OverwatchRepository;
 use OverwatchBundle\Service\OverwatchService;
 use OverwatchBundle\Service\UserScoreService;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,11 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     private $overwatchService;
 
     /**
+     * @var  OverwatchRepository
+     */
+    private $overwatchRepository;
+
+    /**
      * @var UserScoreService
      */
     private $userScoreService;
@@ -42,7 +48,24 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $start = microtime(true);
 
-        $this->calculateUserScores();
+        $periods = $this->userScoreService->getAvailablePeriods();
+
+        foreach ($periods as $period) {
+            $aggregatedUserScores = $this->overwatchRepository->getUserscores($period);
+
+            foreach ($aggregatedUserScores as $aggregatedUserScore) {
+                $userScore = new UserScore();
+
+                $userScore->setUserId($aggregatedUserScore['_id']);
+                $userScore->setVerdicts($aggregatedUserScore['value']);
+                $userScore->setPeriod($period);
+
+                $this->userScoreService->save($userScore);
+                unset($userScore);
+
+                $this->processed++;
+            }
+        }
 
         $output->writeln(sprintf('Calculated %d user scores in %f seconds', $this->processed, microtime(true) - $start));
     }
@@ -51,54 +74,10 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
         $this->userService = $this->container->get(UserService::ID);
         $this->overwatchService = $this->container->get(OverwatchService::ID);
         $this->userScoreService = $this->container->get(UserScoreService::ID);
-    }
 
-    private function calculateUserScores() {
-        $periods = $this->userScoreService->getAvailablePeriods();
-        $users = $this->userService->getAllActiveUsers();
-
-        foreach ($users as $user) {
-            $verdicts = $this->overwatchService->getByUserId($user->getId());
-
-            if ($verdicts) {
-                foreach ($periods as $period) {
-                    $userScore = $this->getUserScore($period, $user, $verdicts);
-                    $this->userScoreService->save($userScore);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param int $period
-     * @param User $user
-     * @param Verdict[] $verdicts
-     * @return UserScore
-     */
-    private function getUserScore($period, User $user, array $verdicts) {
-        $start = microtime(true);
-
-        $userScore = new UserScore();
-        $userScore->setPeriod($period);
-        $userScore->setUserId($user->getId());
-
-        if ($period === 0) {
-            $userScore->setVerdicts(count($verdicts));
-        } else {
-            foreach ($verdicts as $verdict) {
-                $until = strtotime(sprintf('-%d days', $period));
-                $verdictTimestamp = $verdict->getOverwatchDate()->getTimestamp();
-
-                if ($verdictTimestamp > $until) {
-                    $userScore->addOverwatch();
-                }
-            }
-        }
-
-        $userScore->setCalculated(new \DateTime());
-        $userScore->setCalculatedInMs(microtime(true) - $start);
-
-        $this->processed++;
-        return $userScore;
+        $this->overwatchRepository = $this->container
+            ->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository(OverwatchRepository::ID);
     }
 }

@@ -26,13 +26,13 @@ class Verdict {
     private $userId;
 
     /**
-     * @ODM\Date(nullable=false)
+     * @ODM\Date(name="created", nullable=false)
      * @var \DateTime
      */
     private $creationDate;
 
     /**
-     * @ODM\Date(nullable=false)
+     * @ODM\Date(name="verdict_date" ,nullable=false)
      * @var \DateTime
      */
     private $overwatchDate;
@@ -44,19 +44,19 @@ class Verdict {
     private $map;
 
     /**
-     * @ODM\Bool(nullable=false)
+     * @ODM\Bool(name="aim", nullable=false)
      * @var bool
      */
     private $aimAssist = false;
 
     /**
-     * @ODM\Bool(nullable=false)
+     * @ODM\Bool(name="vision", nullable=false)
      * @var bool
      */
     private $visionAssist = false;
 
     /**
-     * @ODM\Bool(nullable=false)
+     * @ODM\Bool(name="other", nullable=false)
      * @var bool
      */
     private $otherAssist = false;

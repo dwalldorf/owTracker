@@ -95,14 +95,14 @@ class OverwatchService extends BaseService {
     }
 
     /**
-     * @param Verdict $verdicts
+     * @param Verdict $verdict
      * @return Verdict
      */
-    private function prepareDto(Verdict $verdicts) {
+    private function prepareDto(Verdict $verdict) {
         $dateFormat = 'Y-m-d H:i';
 
-        $verdicts->setDisplayDate($verdicts->getCreationDate()->format($dateFormat));
-        return $verdicts;
+        $verdict->setDisplayDate($verdict->getCreationDate()->format($dateFormat));
+        return $verdict;
     }
 
     /**

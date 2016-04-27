@@ -51,22 +51,18 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param int $higherThan
+     * @param UserScore $higherThan
      * @param int $period
      * @param int $limit
      * @param int $offset
      *
      * @return UserScore[]
      */
-    public function getHigherThan($higherThan, $period, $limit = 10, $offset = 0) {
-        $qb = $this->getQueryBuilder()
-            ->field('period')->equals($period);
-
-        if ($higherThan > 0) {
-            $qb->field('verdicts')->gt($higherThan);
-        }
-
-        $scores = $qb
+    public function getHigherThan(UserScore $higherThan, $period, $limit = 10, $offset = 0) {
+        $res = $this->getQueryBuilder()
+            ->field('user_id')->notEqual($higherThan->getUserId())
+            ->field('period')->equals($period)
+            ->field('verdicts')->gte($higherThan->getVerdicts())
             ->skip($offset)
             ->limit($limit)
             ->sort('verdicts', 'desc')
@@ -74,32 +70,29 @@ class UserScoreRepository extends BaseRepository {
             ->execute()
             ->toArray();
 
-        return array_values($scores);
+        return array_values($res);
     }
 
     /**
-     * @param int $lowerThan
+     * @param UserScore $lowerThan
      * @param int $period
      * @param int $limit
      * @param int $offset
      * @return UserScore[]
      */
-    public function getLowerThan($lowerThan, $period, $limit = 10, $offset = 0) {
-        $qb = $this->getQueryBuilder()
-            ->field('period')->equals($period);
-
-        if ($lowerThan > 0) {
-            $qb->field('verdicts')->lt($lowerThan);
-        }
-
-        $scores = $qb->sort('verdicts', 'desc')
+    public function getLowerThan(UserScore $lowerThan, $period, $limit = 10, $offset = 0) {
+        $res = $this->getQueryBuilder()
+            ->field('user_id')->notEqual($lowerThan->getUserId())
+            ->field('period')->equals($period)
+            ->field('verdicts')->lte($lowerThan->getVerdicts())
+            ->sort('verdicts', 'desc')
             ->skip($offset)
             ->limit($limit)
             ->getQuery()
             ->execute()
             ->toArray();
 
-        return array_values($scores);
+        return array_values($res);
     }
 
     /**
