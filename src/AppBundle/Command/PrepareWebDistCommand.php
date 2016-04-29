@@ -94,7 +94,6 @@ class PrepareWebDistCommand extends ContainerAwareCommand {
      * @return string
      */
     private function getFilenameWithoutPath($filename) {
-        $filenameArray = array_reverse(explode('/', $filename));
-        return $filenameArray[0];
+        return end(explode('/', $filename));
     }
 }
