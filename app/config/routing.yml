@@ -7,3 +7,6 @@ user:
 overwatch:
     resource: "@OverwatchBundle/Controller/"
     type:     annotation
+admin_stats:
+    resource: "@AdminStatsBundle/Controller/"
+    type:     annotation
