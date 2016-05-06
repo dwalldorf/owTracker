@@ -1,6 +1,21 @@
 <div class="scoreboard-container">
 
-    <h1>Scores</h1>
+    <div class="row">
+        <div class="col-xs-6">
+            <h1>Scores</h1>
+        </div>
+        <div class="col-xs-6"
+             style="margin-top:25px">
+            filter:
+            <select data-ng-model="period"
+                    data-ng-change="updatePeriod()">
+                <option data-ng-repeat="p in periods"
+                        value="{{p.p}}">
+                    {{p.name}}
+                </option>
+            </select>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-sm-8 scores_list_container"
@@ -15,15 +30,15 @@
                 </thead>
 
                 <tbody>
-                <tr data-ng-repeat="(key, score) in scoresHigh.scores | orderBy:score.verdict">
+                <tr data-ng-repeat="(key, score) in scoreboard.higher.scores | orderBy:score.verdict">
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
                 </tr>
                 <tr class="score-list-user-score">
                     <td>{{user.username}}</td>
-                    <td>{{myScore.score}}</td>
+                    <td>{{scoreboard.self.score}}</td>
                 </tr>
-                <tr data-ng-repeat="(key, score) in scoresLow.scores | orderBy:score.verdict">
+                <tr data-ng-repeat="(key, score) in scoreboard.lower.scores | orderBy:score.verdict">
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
                 </tr>

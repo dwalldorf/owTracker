@@ -4,33 +4,78 @@ angular.module('owTracker')
     .controller('OverwatchUserScoreController', ['$rootScope', '$scope', 'OverwatchService',
         function ($rootScope, $scope, overwatchService) {
 
-            function init() {
-                $scope.dataLoaded = false;
+            var initialScoreboard = {
+                higher: [],
+                lower: [],
+                self: []
+            };
 
-                var userId = $rootScope.user.id,
-                    period = 30;
+            function init() {
+                $scope.period = '30';
+                $scope.periods = [
+                    {
+                        p: '30',
+                        name: 'monthly'
+                    },
+                    {
+                        p: '7',
+                        name: 'weekly'
+                    },
+                    {
+                        p: '1',
+                        name: 'daily'
+
+                    },
+                    {
+                        p: '0',
+                        name: 'all time'
+                    }
+                ];
+
+                getScoreboard($scope.period);
+            }
+
+            function getScoreboard(period) {
+                resetScoreboard();
+                var userId = $rootScope.user.id;
 
                 overwatchService.getHigherScores(userId, period).then(function (res) {
                     if (res.status == 200) {
-                        $scope.scoresHigh = res.data;
+                        $scope.scoreboard.higher = res.data;
                     }
                 });
                 overwatchService.getLowerScores(userId, period).then(function (res) {
                     if (res.status == 200) {
-                        $scope.scoresLow = res.data;
+                        $scope.scoreboard.lower = res.data;
                     }
                 });
                 overwatchService.getMyScore(userId, period).then(function (res) {
                     if (res.status == 200) {
-                        $scope.myScore = res.data;
+                        $scope.scoreboard.self = res.data;
                     }
                 });
             }
 
+            function resetScoreboard() {
+                $scope.scoreboard = angular.copy(initialScoreboard);
+            }
+
+
+            // scope functions
             $scope.restFinished = function () {
-                return ($scope.scoresHigh !== undefined && $scope.scoresLow !== undefined && $scope.myScore !== undefined);
+                return (
+                    $scope.scoreboard.higher.scores !== [] &&
+                    $scope.scoreboard.lower.scores !== [] &&
+                    $scope.scoreboard.self.score !== undefined
+                );
             };
 
+            $scope.updatePeriod = function () {
+                getScoreboard($scope.period);
+            };
+
+
+            // execution
             init();
         }]
     );
