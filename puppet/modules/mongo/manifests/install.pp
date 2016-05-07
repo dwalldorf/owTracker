@@ -11,15 +11,4 @@ class mongo::install inherits mongo {
         require => Exec['add_mongo_org_ppa'],
     }
 
-    package { 'php5-mongo':
-        ensure  => latest,
-        require => Package['php5'],
-    }
-
-    exec { 'install_phpmongo':
-        command => '/bin/mkdir -p /var/www/phpmongo; /usr/bin/git clone https://github.com/phpmongodb/phpmongodb.git /var/www/phpmongo',
-        require => Package['git'],
-        creates =>'/var/www/phpmongo',
-    }
-
 }
