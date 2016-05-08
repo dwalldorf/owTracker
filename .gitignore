@@ -3,6 +3,7 @@
 /.dbshell
 /.sass-cache
 /node_modules/
+/typings
 
 /app/config/parameters_prod.yml
 /build/

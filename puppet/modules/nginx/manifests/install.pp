@@ -11,8 +11,4 @@ class nginx::install inherits nginx {
         require => Package['php5', 'php5-cgi', 'php5-fpm', 'php5-intl'],
     }
 
-    package { 'memcached':
-        ensure => latest,
-    }
-
 }

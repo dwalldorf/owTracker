@@ -14,7 +14,7 @@ class mongo::config inherits mongo {
         owner   => 'root',
         group   => 'root',
         mode    => 0644,
-        require => [Package['mongodb-org'], Exec['create_mongo_admin', 'create_mongo_todo_user']],
+        require => [Package['mongodb-org'], Exec['create_mongo_admin']],
         notify  => Service['mongod'],
     }
 
