@@ -44,8 +44,8 @@
         "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
         "lite": "lite-server",
         "postinstall": "typings install",
-        "tsc": "tsc",
-        "tsc:w": "tsc -w",
+        "tsc": "tsc --outDir web/app/dist",
+        "tsc:w": "tsc --outDir web/app/dist --w",
         "typings": "typings",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

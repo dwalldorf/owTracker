@@ -20,6 +20,7 @@
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 /vendor/
+/web/app/dist/
 /web/bundles/
 /web/static/css
 /web/lib/

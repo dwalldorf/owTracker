@@ -1,9 +1,10 @@
 server {
     server_name owt.localhost;
     root /vagrant/web;
+    index app_dev.php;
 
-     location / {
-        try_files $uri $uri/ /app_dev.php?$args;
+    location / {
+        try_files $uri $uri/ /app_dev.php;
     }
 
     location ~ [^/]\.php(/|$) {

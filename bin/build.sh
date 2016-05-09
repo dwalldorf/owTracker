@@ -13,10 +13,3 @@ echo
 echo "composer install..."
 echo
 composer install
-
-#echo
-#echo
-#echo
-#echo "preparing static vendor files..."
-#echo
-#./bin/console app:prepareWebDist

@@ -1,19 +1,47 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import {
+    RouteConfig,
+    ROUTER_DIRECTIVES
+} from '@angular/router-deprecated'
+
+import { LoginComponent } from './user/login.component';
+import { RegisterComponent } from './user/register.component';
+import { UserService } from './user/user.service';
+import { DashboardComponent } from "./dashboard.component";
 
 @Component({
-    selector: 'owt',
-    templateUrl: 'app/views/base_logged_out.html'
+    selector: 'owt-app',
+    templateUrl: 'app/views/base.html',
+    directives: [ ROUTER_DIRECTIVES ],
+    providers: [ UserService ]
 })
-export class AppComponent {
-}
 
-export class Verdict {
-    id: string;
-    userId: string;
-    overwatchDate: string;
-    map: string;
-    aimAssist: boolean;
-    visionAssist: boolean;
-    otherAssist: boolean;
-    griefing: boolean;
+@RouteConfig([
+    {
+        path: 'login',
+        name: 'Login',
+        component: LoginComponent,
+    },
+    {
+        path: 'register',
+        name: 'Register',
+        component: RegisterComponent,
+    },
+    {
+        path: '/',
+        name: 'Dashboard',
+        component: DashboardComponent
+    }
+])
+
+
+export class AppComponent {
+
+    constructor(private userService: UserService) {
+    }
+
+    ngOnInit() {
+        // console.log(this.userService.login());
+    }
+
 }
