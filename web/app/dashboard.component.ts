@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router-deprecated';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 
 @Component({
     template: '<h1>Dashboard</h1>'

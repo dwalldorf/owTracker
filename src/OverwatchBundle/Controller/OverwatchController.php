@@ -69,6 +69,6 @@ class OverwatchController extends BaseController {
         if ($dbVerdict->getId()) {
             return $this->jsonResponse($dbVerdict, Response::HTTP_CREATED);
         }
-        return $this->jsonResponse('handle this', 400);
+        return $this->jsonResponse('handle this', Response::HTTP_BAD_REQUEST);
     }
 }

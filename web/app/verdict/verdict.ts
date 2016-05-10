@@ -1,10 +1,12 @@
 export class Verdict {
-    id: string;
-    userId: string;
-    overwatchDate: string;
-    map: string;
-    aimAssist: boolean;
-    visionAssist: boolean;
-    otherAssist: boolean;
-    griefing: boolean;
+
+    public id: string;
+    public userId: string;
+    public overwatchDate: string;
+    public map: string;
+    public aimAssist: boolean;
+    public visionAssist: boolean;
+    public otherAssist: boolean;
+    public griefing: boolean;
+
 }

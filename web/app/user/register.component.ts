@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router-deprecated';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 
-
-import { UserService } from "./user.service";
-import { User } from "./user";
+import {AppConfig} from "../app.config";
+import {UserService} from "./user.service";
+import {User} from "./user";
 
 @Component({
     templateUrl: 'app/user/views/register.html'
@@ -13,22 +13,27 @@ export class RegisterComponent {
 
     private user: User;
 
-    private res;
-
     constructor(private userService: UserService, private router: Router) {
         this.user = new User();
     }
 
     register() {
         this.userService.register(this.user).subscribe(
-            res => this.res = res,
-            err => console.error(err),
-            () => this.router.navigate([ 'Login' ])
+            null,
+            err => this.handleRegisterError(err),
+            () => this.goToLogin()
         );
     }
 
+    handleRegisterError(err) {
+        console.error(err);
+
+        // TODO: implement
+        console.log('implement me!');
+    }
+
     goToLogin() {
-        this.router.navigate([ 'Login' ])
+        this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ])
     }
 
 }

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router-deprecated';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 
-import { UserService } from "./user.service";
-import { User } from "./user";
+import {AppConfig} from "../app.config";
+import {UserService} from "./user.service";
+import {User} from "./user";
 
 @Component({
     templateUrl: 'app/user/views/login.html'
@@ -11,8 +12,6 @@ import { User } from "./user";
 export class LoginComponent {
 
     private user: User;
-
-    private res;
 
     constructor(private userService: UserService, private router: Router) {
         this.resetUser();
@@ -24,15 +23,22 @@ export class LoginComponent {
 
     login() {
         this.userService.login(this.user).subscribe(
-            res => this.res = res,
-            err => console.error(err),
-            () => this.router.navigate([ 'Dashboard' ])
+            null,
+            err => this.handleLoginError(err),
+            () => this.router.navigate([ AppConfig.ROUTE_NAME_DASHBOARD ])
         );
+    }
+
+    handleLoginError(err) {
+        console.error(err);
+
+        // TODO: implement
+        console.log('implement me!');
     }
 
     goToRegistration() {
         this.resetUser();
-        this.router.navigate([ 'Register' ])
+        this.router.navigate([ AppConfig.ROUTE_NAME_REGISTER ])
     }
 
 }
