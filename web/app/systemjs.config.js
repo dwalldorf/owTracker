@@ -12,7 +12,7 @@
     var packages = {
         'app':                        { main: 'dist/main.js',  defaultExtension: 'js' },
         'rxjs':                       { defaultExtension: 'js' },
-        'angular2-in-memory-web-api': { defaultExtension: 'js' },
+        'angular2-in-memory-web-api': { defaultExtension: 'js' }
     };
 
     var packageNames = [
@@ -25,7 +25,7 @@
         '@angular/router',
         '@angular/router-deprecated',
         '@angular/testing',
-        '@angular/upgrade',
+        '@angular/upgrade'
     ];
 
     // add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
@@ -36,7 +36,7 @@
     var config = {
         map: map,
         packages: packages
-    }
+    };
 
     // filterSystemConfig - index.html's chance to modify config before we register it.
     if (global.filterSystemConfig) { global.filterSystemConfig(config); }

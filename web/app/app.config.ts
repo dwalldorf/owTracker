@@ -6,4 +6,6 @@ export class AppConfig {
 
     static ROUTE_NAME_DASHBOARD = 'Dashboard';
 
+    static ROUTE_NAME_SCOREBOARD = 'Scoreboard';
+
 }

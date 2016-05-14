@@ -6,30 +6,27 @@ import {
 } from '@angular/router-deprecated'
 
 import {AppConfig} from "./app.config";
+import {HttpService} from "./core/service/http.service";
 import {LoginComponent} from './user/login.component';
 import {RegisterComponent} from './user/register.component';
-import {UserService} from './user/user.service';
-import {DashboardComponent} from "./dashboard.component";
-import {HttpService} from "./http.service";
-import {User} from "./user/user";
+import {DashboardComponent} from "./core/dashboard.component";
+import {ScoreboardComponent} from "./overwatch/scoreboard.component";
+import {VerdictBarComponent} from "./overwatch/verdict-bar.component";
+import {UserService} from './user/service/user.service';
+import {User} from "./user/model/user";
+import {VerdictService} from "./overwatch/service/verdict.service";
+import {CacheService} from "./core/service/cache.service";
 
 enableProdMode();
 
-@Component({
-    selector: 'owt-app',
-    templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES ],
-    providers: [ UserService, HttpService ]
-})
-
 @RouteConfig([
     {
-        path: 'login',
+        path: '/login',
         name: AppConfig.ROUTE_NAME_LOGIN,
         component: LoginComponent,
     },
     {
-        path: 'register',
+        path: '/register',
         name: AppConfig.ROUTE_NAME_REGISTER,
         component: RegisterComponent,
     },
@@ -37,9 +34,20 @@ enableProdMode();
         path: '/',
         name: AppConfig.ROUTE_NAME_DASHBOARD,
         component: DashboardComponent
+    },
+    {
+        path: 'scores',
+        name: AppConfig.ROUTE_NAME_SCOREBOARD,
+        component: ScoreboardComponent
     }
 ])
 
+@Component({
+    selector: 'owt-app',
+    templateUrl: 'app/views/base.html',
+    directives: [ ROUTER_DIRECTIVES, VerdictBarComponent ],
+    providers: [ UserService, VerdictService, HttpService, CacheService ]
+})
 export class AppComponent {
 
     private userService: UserService;
@@ -53,15 +61,12 @@ export class AppComponent {
         this.userService = userService;
     }
 
+    //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.userService.getMe().subscribe(
-            res => this.setCurrentUser(<User> res.json()),
-            err => this.handleNotLoggedIn()
+        this.userService.getCurrentUser().subscribe(
+            user => this.currentUser = user,
+            () => this.handleNotLoggedIn()
         );
-    }
-
-    setCurrentUser(user: User) {
-        this.currentUser = <User> user;
     }
 
     handleNotLoggedIn() {

@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router-deprecated';
 
 import {AppConfig} from "../app.config";
-import {UserService} from "./user.service";
-import {User} from "./user";
+import {UserService} from "./service/user.service";
+import {User} from "./model/user";
 
 @Component({
     templateUrl: 'app/user/views/register.html'
