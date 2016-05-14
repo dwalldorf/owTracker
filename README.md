@@ -23,5 +23,5 @@ Now you can point your browser to [localhost:8080/app.php](http://localhost:8080
 If you fiddle around with styling or the frontend app, use the watch script to watch for changes and compile your scss to css / typescript to JS: 
 
     vagrant ssh
-    ./bin/watch
+    ./bin/watch.sh
 
