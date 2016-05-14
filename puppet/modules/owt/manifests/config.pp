@@ -3,7 +3,6 @@ class owt::config inherits owt {
     file { 'node_modules_dir':
         path   => '/vagrant/node_modules',
         ensure => directory,
-
     }
 
     file { 'node_modules_symlink':
