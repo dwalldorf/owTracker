@@ -4,9 +4,9 @@ export class Verdict {
     public userId: string;
     public overwatchDate = new Date();
     public map = 'de_dust2';
-    public aimAssist: boolean;
-    public visionAssist: boolean;
-    public otherAssist: boolean;
-    public griefing: boolean;
+    public aimAssist = false;
+    public visionAssist = false;
+    public otherAssist = false;
+    public griefing = false;
 
 }

@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 
-import {VerdictService} from "./../overwatch/service/verdict.service";
+import {VerdictService} from "../overwatch/service/verdict.service";
 
 @Component({
-    templateUrl: 'app/views/dashboard.html'
+    templateUrl: 'app/dashboard/views/dashboard.html'
 })
 export class DashboardComponent {
 

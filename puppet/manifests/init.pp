@@ -3,6 +3,7 @@ exec { 'apt-update':
 }
 Exec['apt-update'] -> Package <| |>
 
+include apt
 include base
 include nginx
 include mongo

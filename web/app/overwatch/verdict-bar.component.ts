@@ -21,20 +21,20 @@ export class VerdictBarComponent {
     constructor(verdictService: VerdictService, httpService: HttpService) {
         this.verdictService = verdictService;
         this.httpService = httpService;
+
         this.verdict = new Verdict();
     }
 
     //noinspection JSUnusedGlobalSymbols
-
     ngOnInit() {
         this.verdictService
             .getMapPool()
             .subscribe(maps => this.setMapPool(maps));
-        console.log(this.verdict.overwatchDate);
     }
 
     submitVerdict() {
         console.log(this.verdict);
+        this.verdict = new Verdict();
     }
 
     private setMapPool(maps) {

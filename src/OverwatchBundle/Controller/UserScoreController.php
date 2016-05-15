@@ -32,13 +32,22 @@ class UserScoreController extends BaseController {
      */
     public function getByUserAction($userId) {
         $this->requireLogin();
+        $currentUser = $this->getCurrentUser();
 
         $period = intval($this->getQueryParam('period'));
         $userScores = $this->userScoreService->getByUserId($userId, $period);
 
+        $userScore = null;
+        foreach ($userScores as $key => $currentScore) {
+            if ($currentScore->getPeriod() === $period) {
+                $userScore = $userScores[$key];
+                break;
+            }
+        }
+
         $dto = new UserScoreDto();
-        $dto->setUsername('set me');
-        $dto->setScore($userScores->getVerdicts());
+        $dto->setUsername($currentUser->getUsername());
+        $dto->setScore($userScore->getVerdicts());
 
         return $this->jsonResponse($dto);
     }

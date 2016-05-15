@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {CachedObject} from "../model/cached.object";
 
 @Injectable()
@@ -38,10 +38,19 @@ export class CacheService {
             return cache.object;
         }
 
-        delete this.storage[ identifier ];
-
+        this.invalidate(identifier);
         return null;
     }
+
+    invalidate(identifier: string) {
+        delete this.storage[ identifier ];
+    }
+
+    emitCachedEvent(data, eventEmitter: EventEmitter<Object>) {
+        setTimeout(function () {
+            eventEmitter.emit(data);
+        }, 20);
+    };
 
     /**
      * timestamp in seconds

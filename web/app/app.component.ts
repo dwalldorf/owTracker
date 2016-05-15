@@ -9,7 +9,7 @@ import {AppConfig} from "./app.config";
 import {HttpService} from "./core/service/http.service";
 import {LoginComponent} from './user/login.component';
 import {RegisterComponent} from './user/register.component';
-import {DashboardComponent} from "./core/dashboard.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 import {ScoreboardComponent} from "./overwatch/scoreboard.component";
 import {VerdictBarComponent} from "./overwatch/verdict-bar.component";
 import {UserService} from './user/service/user.service';
@@ -46,7 +46,7 @@ enableProdMode();
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
     directives: [ ROUTER_DIRECTIVES, VerdictBarComponent ],
-    providers: [ UserService, VerdictService, HttpService, CacheService ]
+    providers: [ HttpService, CacheService, UserService, VerdictService ]
 })
 export class AppComponent {
 

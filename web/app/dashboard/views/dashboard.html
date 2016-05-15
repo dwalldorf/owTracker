@@ -1,6 +1,7 @@
 <h1>Dashboard</h1>
 
-<div *ngIf="!restFinished" class="app-loading">
+<div *ngIf="!restFinished"
+     class="app-loading">
 </div>
 
 <div class="col-sm-8 verdict_list_container"
@@ -23,12 +24,6 @@
 
             <tbody>
             <tr *ngFor="let verdict of displayVerdicts">
-
-                <!--<tr data-ng-repeat="-->
-                <!--(key, verdict) in verdicts-->
-                <!--| startFrom:currentPage*itemsPerPage-->
-                <!--| limitTo:itemsPerPage">-->
-
                 <td>{{verdict.displayDate}}</td>
                 <td>{{verdict.map}}</td>
                 <td class="text-center">
@@ -59,14 +54,16 @@
             </tbody>
         </table>
 
-        <button [disabled]="currentPage == 0"
+        <button class="btn btn-default btn-pager"
+                [disabled]="currentPage == 0"
                 (click)="paginate(currentPage - 1)">
-            Previous
+            <span>Previous</span>
         </button>
-        {{currentPage+1}}/{{numberOfPages}}
-        <button [disabled]="currentPage >= userVerdicts.length/MAX_ITEMS_PER_PAGE - 1"
+        {{currentPage + 1}}/{{numberOfPages}}
+        <button class="btn btn-default btn-pager"
+                [disabled]="currentPage >= numberOfPages - 1"
                 (click)="paginate(currentPage + 1)">
-            Next
+            <span>Next</span>
         </button>
     </div>
 

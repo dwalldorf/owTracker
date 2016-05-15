@@ -30,9 +30,7 @@ export class UserService {
             cachedUser   = this.cacheService.get(CacheIdentifiers.CACHE_ID_CURRENT_USER);
 
         if (cachedUser !== null) {
-            setTimeout(function () {
-                eventEmitter.emit(cachedUser);
-            }, 10);
+            this.cacheService.emitCachedEvent(cachedUser, eventEmitter);
             return eventEmitter;
         } else {
             eventEmitter = this.httpService.makeRequest(HttpService.METHOD_GET, this.CURRENT_USER_URI);

@@ -19,9 +19,8 @@ export class RegisterComponent {
 
     register() {
         this.userService.register(this.user).subscribe(
-            null,
-            err => this.handleRegisterError(err),
-            () => this.goToLogin()
+            () => this.goToLogin(),
+            err => this.handleRegisterError(err)
         );
     }
 

@@ -8,7 +8,6 @@ use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Exception\NotLoggedInException;
 
