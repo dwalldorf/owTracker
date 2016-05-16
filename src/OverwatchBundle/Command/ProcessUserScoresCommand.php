@@ -59,11 +59,19 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
                 $userScore->setUserId($aggregatedUserScore['_id']);
                 $userScore->setVerdicts($aggregatedUserScore['value']);
                 $userScore->setPeriod($period);
+                $userScore->setPosition(8);
 
                 $this->userScoreService->save($userScore);
-                unset($userScore);
-
                 $this->processed++;
+            }
+
+            $i = 1;
+            $scoresByPeriod = $this->userScoreService->findByPeriod($period);
+            foreach ($scoresByPeriod as $currentScore) {
+                $currentScore->setPosition($i);
+                $this->userScoreService->save($currentScore);
+
+                $i++;
             }
         }
 

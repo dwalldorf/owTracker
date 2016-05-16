@@ -78,7 +78,7 @@ class UserScoreService extends BaseService {
     /**
      * @param string $userId
      * @param int $period
-     * @return array|UserScore
+     * @return UserScore[]
      */
     public function getByUserId($userId, $period = null) {
         $retVal = $this->repository->findByUserId($userId, $period);
@@ -89,7 +89,7 @@ class UserScoreService extends BaseService {
 
         return $retVal;
     }
-
+    
     /**
      * @param string $userId
      * @param int $period
@@ -131,11 +131,23 @@ class UserScoreService extends BaseService {
     }
 
     /**
-     * @param UserScore[] $scores
+     * @param int $period
+     * @return UserScore[]
+     */
+    public function findByPeriod($period) {
+        return $this->repository->findByPeriod($period);
+    }
+
+    /**
+     * @param UserScore|UserScore[] $scores
      * @param int $limit
      * @return UserScoreDto[]
      */
-    private function toDto(array $scores, $limit = null) {
+    public function toDto($scores, $limit = null) {
+        if ($scores && !is_array($scores)) {
+            $scores = [$scores];
+        }
+
         $retVal = [];
         $count = 0;
 
@@ -148,7 +160,9 @@ class UserScoreService extends BaseService {
             if ($user) {
                 $dto = new UserScoreDto();
                 $dto->setUsername($user->getUsername());
+                $dto->setPosition($score->getPosition());
                 $dto->setScore($score->getVerdicts());
+                $dto->setPeriod($score->getPeriod());
 
                 $retVal[] = $dto;
                 $count++;

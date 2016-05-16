@@ -30,6 +30,7 @@ class UserScoreRepository extends BaseRepository {
         $oldUserScore = $this->findByUserIdAndPeriod($userScore->getUserId(), $userScore->getPeriod());
         if ($oldUserScore) {
             $this->remove($oldUserScore);
+            $this->dm->flush();
         }
 
         $this->dm->persist($userScore);
@@ -51,6 +52,19 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
+     * @param int $period
+     * @return UserScore[]
+     */
+    public function findByPeriod($period) {
+        return $this->getQueryBuilder()
+            ->field('period')->equals($period)
+            ->sort('verdicts', -1)
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
+
+    /**
      * @param UserScore $higherThan
      * @param int $period
      * @param int $limit
@@ -62,10 +76,10 @@ class UserScoreRepository extends BaseRepository {
         $res = $this->getQueryBuilder()
             ->field('user_id')->notEqual($higherThan->getUserId())
             ->field('period')->equals($period)
-            ->field('verdicts')->gte($higherThan->getVerdicts())
+            ->field('position')->lt($higherThan->getPosition())
             ->skip($offset)
             ->limit($limit)
-            ->sort('verdicts', 'desc')
+            ->sort('position', 'asc')
             ->getQuery()
             ->execute()
             ->toArray();
@@ -84,8 +98,8 @@ class UserScoreRepository extends BaseRepository {
         $res = $this->getQueryBuilder()
             ->field('user_id')->notEqual($lowerThan->getUserId())
             ->field('period')->equals($period)
-            ->field('verdicts')->lte($lowerThan->getVerdicts())
-            ->sort('verdicts', 'desc')
+            ->field('position')->gt($lowerThan->getPosition())
+            ->sort('position', 'asc')
             ->skip($offset)
             ->limit($limit)
             ->getQuery()

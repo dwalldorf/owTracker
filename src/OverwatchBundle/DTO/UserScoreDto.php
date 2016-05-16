@@ -12,7 +12,17 @@ class UserScoreDto {
     /**
      * @var int
      */
+    private $position;
+
+    /**
+     * @var int
+     */
     private $score;
+
+    /**
+     * @var int
+     */
+    private $period;
 
     /**
      * @return string
@@ -31,6 +41,20 @@ class UserScoreDto {
     /**
      * @return int
      */
+    public function getPosition() {
+        return $this->position;
+    }
+
+    /**
+     * @param int $position
+     */
+    public function setPosition($position) {
+        $this->position = $position;
+    }
+
+    /**
+     * @return int
+     */
     public function getScore() {
         return $this->score;
     }
@@ -40,5 +64,19 @@ class UserScoreDto {
      */
     public function setScore($score) {
         $this->score = $score;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPeriod() {
+        return $this->period;
+    }
+
+    /**
+     * @param int $period
+     */
+    public function setPeriod($period) {
+        $this->period = $period;
     }
 }
