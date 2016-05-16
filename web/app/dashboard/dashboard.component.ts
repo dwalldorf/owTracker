@@ -27,9 +27,18 @@ export class DashboardComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
+        this.fetchVerdicts();
+
+        this.verdictService.verdictAddedEventEmitter.subscribe(verdict => {
+            this.userVerdicts.unshift(verdict);
+            this.setUserVerdicts(this.userVerdicts);
+        })
+    }
+
+    fetchVerdicts(invalidateCache = false) {
         this.verdictService
             .getUserVerdicts()
-            .subscribe(verdicts =>this.setUserVerdicts(verdicts));
+            .subscribe(verdicts => this.setUserVerdicts(verdicts));
     }
 
     private setUserVerdicts(verdicts) {
@@ -39,7 +48,7 @@ export class DashboardComponent {
         var numberOfEntries = this.userVerdicts.length;
         if (numberOfEntries > 0) {
             this.numberOfPages = Math.ceil(numberOfEntries / this.MAX_ITEMS_PER_PAGE);
-            this.paginate(this.currentPage);
+            this.paginate(0);
         }
     }
 

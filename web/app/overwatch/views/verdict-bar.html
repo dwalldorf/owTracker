@@ -1,7 +1,6 @@
 <div class="col-md-12 new-overwatch-container">
 
     <form role="form"
-          *ngIf="restFinished"
           (ngSubmit)="submitVerdict()">
 
         <div class="header-form-group">
@@ -13,7 +12,9 @@
                    class="control-label">Map:</label>
             <select id="ov_map"
                     [(ngModel)]="verdict.map">
-                <option *ngFor="let map of mapPool" value="{{map}}">{{map}}</option>
+                <option *ngFor="let map of mapPool"
+                        value="{{map}}">{{map}}
+                </option>
             </select>
         </div>
 
@@ -54,6 +55,7 @@
 
         <div class="header-form-btn-group">
             <button type="submit"
+                    [disabled]="disableSubmit"
                     class="btn btn-success btn-sm">Submit
             </button>
         </div>

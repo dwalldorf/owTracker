@@ -35,11 +35,8 @@ export class ScoreboardComponent {
             name: 'all time'
         }
     ];
-
     period = this.periods[ 0 ];
-
     currentUser = new User();
-
     scoreboard = {
         higher: [],
         self: [],

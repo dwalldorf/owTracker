@@ -18,6 +18,8 @@ export class VerdictService {
 
     private userService: UserService;
 
+    public verdictAddedEventEmitter = new EventEmitter();
+
     constructor(httpService: HttpService, cacheService: CacheService, userService: UserService) {
         this.httpService = httpService;
         this.cacheService = cacheService;
@@ -116,6 +118,7 @@ export class VerdictService {
         } else {
             this.httpService.makeRequest(HttpService.METHOD_GET, '/api/overwatch/scores/' + userId + '?period=' + period)
                 .subscribe(res => {
+                    res = res[ 0 ];
                     this.cacheService.cache(cacheId, res, 60);
                     eventEmitter.emit(res);
                 });
@@ -123,8 +126,12 @@ export class VerdictService {
         return eventEmitter;
     }
 
-    submitVerdict() {
-
+    submitVerdict(verdict: Verdict) {
+        var requestObservable = this.httpService.makeRequest(HttpService.METHOD_POST, '/api/overwatch/verdicts', verdict);
+        requestObservable.subscribe(verdict => {
+            this.verdictAddedEventEmitter.emit(verdict);
+        });
+        return requestObservable;
     }
 
     private getCacheId(prefix: string, userId: string, period: number) {

@@ -27,6 +27,7 @@
             <table class="table table-condensed table-bordered table-hover">
                 <thead>
                 <tr>
+                    <th>Position</th>
                     <th>User</th>
                     <th>Verdicts</th>
                 </tr>
@@ -34,14 +35,17 @@
 
                 <tbody>
                 <tr *ngFor="let score of scoreboard.higher.scores">
+                    <td>{{score.position}}</td>
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
                 </tr>
                 <tr class="score-list-user-score">
+                    <td>{{scoreboard.self.position}}</td>
                     <td>{{currentUser.username}}</td>
                     <td>{{scoreboard.self.score}}</td>
                 </tr>
                 <tr *ngFor="let score of scoreboard.lower.scores">
+                    <td>{{score.position}}</td>
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
                 </tr>
