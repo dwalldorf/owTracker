@@ -12,10 +12,10 @@ Vagrant.configure(2) do |config|
 
     config.vm.provision :shell do |shell|
       shell.inline = "if ! [ -d /etc/puppet/modules/apt ];
-                      then
-                          mkdir -p /etc/puppet/modules;
-                          puppet module install puppetlabs-apt
-                      fi"
+          then
+              mkdir -p /etc/puppet/modules;
+              puppet module install puppetlabs-apt
+          fi"
     end
 
     config.vm.provision "puppet" do |puppet|
