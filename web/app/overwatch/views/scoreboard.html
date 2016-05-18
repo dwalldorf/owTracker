@@ -58,6 +58,16 @@
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
                 </tr>
+                <tr *ngIf="scoreboard.lower.hasMore"
+                    class="table-has-more text-center">
+                    <td></td>
+                    <td>
+                        <div class="has-more-link">
+                            <a (click)="loadMoreLower()">...</a>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
                 </tbody>
             </table>
         </div>

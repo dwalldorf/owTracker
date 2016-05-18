@@ -73,33 +73,21 @@ export class VerdictService {
 
     getHigherScores(userId: string, period: number, offset = 0) {
         var eventEmitter = new EventEmitter(),
-            uri          = '/api/overwatch/scores/higher/' + userId + '/' + period;
-
-        if (offset > 0) {
-            uri += '?offset=' + offset;
-        }
+            uri          = this.buildQueryUri('higher', userId, period, offset);
 
         this.httpService
             .makeRequest(HttpService.METHOD_GET, uri)
             .subscribe(res => eventEmitter.emit(res));
-
         return eventEmitter;
     }
 
-    getLowerScores(userId: string, period) {
+    getLowerScores(userId: string, period, offset = 0) {
         var eventEmitter = new EventEmitter(),
-            cacheId      = 'lowerScores:' + userId + ':' + period,
-            cachedScores = this.cacheService.get(cacheId);
+            uri          = this.buildQueryUri('lower', userId, period, offset);
 
-        if (cachedScores !== null) {
-            this.cacheService.emitCachedEvent(cachedScores, eventEmitter);
-        } else {
-            this.httpService.makeRequest(HttpService.METHOD_GET, '/api/overwatch/scores/lower/' + userId + '/' + period)
-                .subscribe(res => {
-                    this.cacheService.cache(cacheId, res, 60);
-                    eventEmitter.emit(res);
-                });
-        }
+        this.httpService
+            .makeRequest(HttpService.METHOD_GET, uri)
+            .subscribe(res => eventEmitter.emit(res));
         return eventEmitter;
     }
 
@@ -131,6 +119,24 @@ export class VerdictService {
 
     private getCacheId(prefix: string, userId: string, period: number) {
         return prefix + ':' + userId + ':' + period;
+    }
+
+    /**
+     *
+     * @param lowerHigher "lower" or "higher"
+     * @param userId
+     * @param period
+     * @param offset
+     * @returns {string}
+     */
+    private buildQueryUri(lowerHigher: string, userId: string, period: number, offset: number = 0) {
+        var uri = '/api/overwatch/scores/' + lowerHigher + '/' + userId + '/' + period;
+
+        if (offset > 0) {
+            uri += '?offset=' + offset;
+        }
+
+        return uri;
     }
 
 }

@@ -2,7 +2,6 @@ import{Component} from '@angular/core';
 
 import {VerdictService} from "./service/verdict.service";
 import {UserService} from "../user/service/user.service";
-import {User} from "../user/model/user";
 
 @Component({
     templateUrl: 'app/overwatch/views/scoreboard.html'
@@ -54,9 +53,28 @@ export class ScoreboardComponent {
         this.getLowerScores(this.period.p);
     }
 
-    private getUserScore(period: number, offset = 0) {
+    restFinished() {
+        return (this.higherScoresFetched && this.lowerScoresFetched && this.userScoreFetched);
+    }
+
+    updatePeriod() {
+        this.resetRestStatusFlags();
+        this.getUserScore(this.period.p);
+    }
+
+    loadMoreHigher() {
+        var offset = this.scoreboard.higher[ 'totalScores' ];
+        this.getHigherScores(this.period.p, offset);
+    }
+
+    loadMoreLower() {
+        var offset = this.scoreboard.lower[ 'totalScores' ];
+        this.getLowerScores(this.period.p, offset);
+    }
+
+    private getUserScore(period: number) {
         this.userService.getCurrentUser()
-            .subscribe(user=> {
+            .subscribe(user => {
                 this.verdictService.getUserScores(user.id, period)
                     .subscribe(
                         score => {
@@ -69,7 +87,7 @@ export class ScoreboardComponent {
 
     private getHigherScores(period: number, offset = 0) {
         this.userService.getCurrentUser()
-            .subscribe(user=> {
+            .subscribe(user => {
                 this.verdictService.getHigherScores(user.id, period, offset)
                     .subscribe(scores => {
                         if (!this.scoreboard.higher.hasOwnProperty('scores')) {
@@ -87,27 +105,20 @@ export class ScoreboardComponent {
 
     private getLowerScores(period: number, offset = 0) {
         this.userService.getCurrentUser()
-            .subscribe(user=> {
-                this.verdictService.getLowerScores(user.id, period)
+            .subscribe(user => {
+                this.verdictService.getLowerScores(user.id, period, offset)
                     .subscribe(scores => {
-                        this.scoreboard.lower = scores;
+                        if (!this.scoreboard.lower.hasOwnProperty('scores')) {
+                            this.scoreboard.lower = scores;
+                        } else {
+                            this.scoreboard.lower[ 'scores' ] = this.scoreboard.lower[ 'scores' ].concat(scores.scores);
+                            this.scoreboard.lower[ 'totalScores' ] = this.scoreboard.lower[ 'scores' ].length;
+                            this.scoreboard.lower[ 'hasMore' ] = scores.hasMore;
+                        }
+
                         this.lowerScoresFetched = true;
                     });
             });
-    }
-
-    restFinished() {
-        return (this.higherScoresFetched && this.lowerScoresFetched && this.userScoreFetched);
-    }
-
-    updatePeriod() {
-        this.resetRestStatusFlags();
-        this.getUserScore(this.period.p);
-    }
-
-    loadMoreHigher() {
-        var offset = this.scoreboard.higher[ 'totalScores' ];
-        this.getHigherScores(this.period.p, offset);
     }
 
     private resetRestStatusFlags() {
