@@ -57,7 +57,7 @@ export class AppComponent {
     currentUser: User;
 
     restFinished = false;
-    isLoggedin = false;
+    isLoggedIn = false;
 
     constructor(router: Router, userService: UserService) {
         this.router = router;
@@ -70,17 +70,18 @@ export class AppComponent {
             user => this.handleLoggedIn(user),
             () => this.handleNotLoggedIn()
         );
+        this.userService.userKnownEventEmitter.subscribe(user => this.handleLoggedIn(user));
     }
 
     handleLoggedIn(user: User) {
         this.currentUser = user;
 
         this.restFinished = true;
-        this.isLoggedin = true;
+        this.isLoggedIn = true;
     }
 
     handleNotLoggedIn() {
-        this.isLoggedin = false;
+        this.isLoggedIn = false;
         this.restFinished = true;
 
         this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
