@@ -8,7 +8,6 @@ use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Exception\NotLoggedInException;
 
@@ -69,6 +68,6 @@ class OverwatchController extends BaseController {
         if ($dbVerdict->getId()) {
             return $this->jsonResponse($dbVerdict, Response::HTTP_CREATED);
         }
-        return $this->jsonResponse('handle this', 400);
+        return $this->jsonResponse('handle this', Response::HTTP_BAD_REQUEST);
     }
 }

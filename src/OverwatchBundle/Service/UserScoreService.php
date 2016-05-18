@@ -78,7 +78,7 @@ class UserScoreService extends BaseService {
     /**
      * @param string $userId
      * @param int $period
-     * @return array|UserScore
+     * @return UserScore|UserScore[]
      */
     public function getByUserId($userId, $period = null) {
         $retVal = $this->repository->findByUserId($userId, $period);
@@ -98,18 +98,10 @@ class UserScoreService extends BaseService {
      * @return UserScoreCollection
      */
     public function getHigherThan($userId, $period, $limit, $offset) {
-        $scoreCollection = new UserScoreCollection();
-
         $userScore = $this->getByUserId($userId, $period);
         $scores = $this->repository->getHigherThan($userScore, $period, $limit + 1, $offset);
 
-        /*
-         * TODO: fix hasMore
-         * by dwalldorf at 19:55 25.04.16
-         */
-        $scoreCollection->setScores($this->toDto($scores, $limit));
-
-        return $scoreCollection;
+        return $this->createScoreCollection($scores, $limit);
     }
 
     /**
@@ -120,40 +112,66 @@ class UserScoreService extends BaseService {
      * @return UserScore[]
      */
     public function getLowerThan($userId, $period, $limit = 10, $offset = 0) {
-        $scoreCollection = new UserScoreCollection();
-
         $userScore = $this->getByUserId($userId, $period);
         $scores = $this->repository->getLowerThan($userScore, $period, $limit + 1, $offset);
 
-        $scoreCollection->setScores($this->toDto($scores, $limit));
+        return $this->createScoreCollection($scores, $limit);
+    }
 
-        return $scoreCollection;
+    /**
+     * @param int $period
+     * @return UserScore[]
+     */
+    public function findByPeriod($period) {
+        return $this->repository->findByPeriod($period);
+    }
+
+    /**
+     * @param UserScore|UserScore[] $scores
+     * @return UserScoreDto[]
+     */
+    public function toDto($scores) {
+        if ($scores && !is_array($scores)) {
+            $scores = [$scores];
+        }
+
+        $retVal = [];
+        foreach ($scores as $score) {
+            $user = $this->userService->findById($score->getUserId());
+            if ($user) {
+                $dto = new UserScoreDto();
+                $dto->setUsername($user->getUsername());
+                $dto->setPosition($score->getPosition());
+                $dto->setScore($score->getVerdicts());
+                $dto->setPeriod($score->getPeriod());
+
+                $retVal[] = $dto;
+            }
+        }
+        return $retVal;
     }
 
     /**
      * @param UserScore[] $scores
      * @param int $limit
-     * @return UserScoreDto[]
+     * @return UserScoreCollection
+     * @throws \Exception
      */
-    private function toDto(array $scores, $limit = null) {
-        $retVal = [];
-        $count = 0;
+    private function createScoreCollection(array $scores, $limit) {
+        $scoreCollection = new UserScoreCollection();
+        $dtos = $this->toDto($scores);
 
-        foreach ($scores as $score) {
-            if ($limit && $count >= $limit) {
-                break;
-            }
+        if (count($dtos) > $limit) {
+            $scoreCollection->setHasMore(true);
+            array_pop($dtos);
 
-            $user = $this->userService->findById($score->getUserId());
-            if ($user) {
-                $dto = new UserScoreDto();
-                $dto->setUsername($user->getUsername());
-                $dto->setScore($score->getVerdicts());
-
-                $retVal[] = $dto;
-                $count++;
+            // should never happen (tm)
+            if (count($dtos) > $limit) {
+                throw new \Exception('0x0ff1a3');
             }
         }
-        return $retVal;
+        $scoreCollection->setScores($dtos);
+
+        return $scoreCollection;
     }
 }

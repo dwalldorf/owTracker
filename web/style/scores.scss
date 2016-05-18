@@ -1,7 +1,16 @@
 @import "colors";
 
 .scoreboard-container {
-    .score-list-user-score {
-        background: darken($background-color, 5%);
+    .table-has-more {
+        height: 5px;
+
+        td {
+            padding: 0;
+            margin: 0;
+        }
+        .has-more-link {
+            display: inline-block;
+            width: 100%;
+        }
     }
 }

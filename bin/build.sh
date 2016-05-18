@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /vagrant
+cd /usr/share/nginx/owt
 
 echo
 echo "npm install..."
@@ -17,6 +17,6 @@ composer install
 echo
 echo
 echo
-echo "preparing static vendor files..."
+echo "building frontend..."
 echo
-./bin/console app:prepareWebDist
+./node_modules/ntypescript/bin/tsc --outDir web/app/dist

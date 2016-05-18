@@ -6,6 +6,7 @@ use AppBundle\Controller\BaseController;
 use AppBundle\Exception\BadRequestException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Document\User;
 use UserBundle\Exception\RegisterUserException;
 use UserBundle\Service\UserService;
@@ -57,6 +58,20 @@ class UserController extends BaseController {
     }
 
     /**
+     * @Route("/api/user/logout")
+     * @Method("POST")
+     * 
+     * @return Response
+     * @throws \UserBundle\Exception\NotLoggedInException
+     */
+    public function logoutAction() {
+        $this->requireLogin();
+        $this->userService->logout();
+
+        return $this->jsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
      * @Route("/api/users")
      * @Method({"POST"})
      *
@@ -71,9 +86,9 @@ class UserController extends BaseController {
         $userId = $this->userService->register($user);
 
         if ($userId) {
-            return $this->jsonResponse($userId, 201);
+            return $this->jsonResponse($userId, Response::HTTP_CREATED);
         }
 
-        return $this->jsonResponse(null, 400);
+        return $this->jsonResponse(null, Response::HTTP_BAD_REQUEST);
     }
 }

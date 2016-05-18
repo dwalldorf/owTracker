@@ -1,0 +1,75 @@
+<div class="scoreboard-container">
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h1>Scoreboard</h1>
+        </div>
+        <div class="col-xs-6"
+             style="margin-top:25px">
+            filter:
+            <select data-ng-model="period"
+                    (change)="updatePeriod()">
+                <option *ngFor="let period of periods">
+                    {{period.name}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div *ngIf="!restFinished()"
+         class="app-loading">
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8 scores_list_container">
+
+            <table class="table table-condensed table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>User</th>
+                    <th>Verdicts</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let score of scoreboard.higher.scores">
+                    <td>{{score.position}}</td>
+                    <td>{{score.username}}</td>
+                    <td>{{score.score}}</td>
+                </tr>
+                <tr *ngIf="scoreboard.higher.hasMore"
+                    class="table-has-more text-center">
+                    <td></td>
+                    <td>
+                        <div class="has-more-link">
+                            <a (click)="loadMoreHigher()">...</a>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="info">
+                    <td>{{scoreboard.self.position}}</td>
+                    <td>{{scoreboard.self.username}}</td>
+                    <td>{{scoreboard.self.score}}</td>
+                </tr>
+                <tr *ngFor="let score of scoreboard.lower.scores">
+                    <td>{{score.position}}</td>
+                    <td>{{score.username}}</td>
+                    <td>{{score.score}}</td>
+                </tr>
+                <tr *ngIf="scoreboard.lower.hasMore"
+                    class="table-has-more text-center">
+                    <td></td>
+                    <td>
+                        <div class="has-more-link">
+                            <a (click)="loadMoreLower()">...</a>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

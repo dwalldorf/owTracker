@@ -3,6 +3,7 @@
 namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
+use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\DTO\UserScoreDto;
 use OverwatchBundle\Service\UserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -34,13 +35,9 @@ class UserScoreController extends BaseController {
         $this->requireLogin();
 
         $period = intval($this->getQueryParam('period'));
-        $userScores = $this->userScoreService->getByUserId($userId, $period);
+        $userScore = $this->userScoreService->getByUserId($userId, $period);
 
-        $dto = new UserScoreDto();
-        $dto->setUsername('set me');
-        $dto->setScore($userScores->getVerdicts());
-
-        return $this->jsonResponse($dto);
+        return $this->jsonResponse($this->userScoreService->toDto($userScore));
     }
 
     /**

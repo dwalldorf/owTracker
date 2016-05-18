@@ -44,17 +44,21 @@ class UserService extends BaseService {
     private function validateUser(User $user) {
         $errors = [];
 
+        $username = $user->getUsername();
         $email = $user->getEmail();
         $password = $user->getPassword();
 
+        if (!$username) {
+            $errors['username'][] = 'username is mandatory';
+        }
         if (!$email) {
             $errors['email'][] = 'email is mandatory';
         }
         if (!$password) {
-            $errors[] = 'password is mandatory';
+            $errors['password'] = 'password is mandatory';
         }
-        if ($this->repository->findByUsernameOrEmail($email)) {
-            $errors['email'][] = 'email already exists';
+        if ($this->repository->findByUsernameOrEmail($email) || $this->repository->findByUsernameOrEmail($username)) {
+            $errors['identity'][] = 'email or username already exists';
         }
 
         if (count($errors) > 0) {
@@ -83,6 +87,11 @@ class UserService extends BaseService {
         }
 
         return null;
+    }
+
+    public function logout() {
+        $this->session->clear();
+        $this->session->invalidate();
     }
 
     /**

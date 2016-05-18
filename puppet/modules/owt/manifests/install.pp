@@ -1,10 +1,15 @@
 class owt::install inherits owt {
 
-    package { 'nodejs-legacy':
-        ensure => latest,
+    exec { 'add_node5x':
+        command => 'curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -',
+        user    => root,
+        path    => '/usr/bin',
+        require => File['create_node_modules_dir']
     }
-    package { 'npm':
-        ensure => latest,
+
+    package { 'nodejs':
+        ensure  => latest,
+        require => Exec['add_node5x'],
     }
 
     package{ 'ruby':
@@ -18,6 +23,10 @@ class owt::install inherits owt {
         creates => '/usr/local/bin/sass',
     }
 
+    package { 'memcached':
+        ensure => latest,
+    }
+
     exec { 'install_composer':
         command    => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
         require    => Package['curl', 'php5', 'git'],
@@ -28,19 +37,11 @@ class owt::install inherits owt {
         cwd        => '/tmp'
     }
 
-    file { 'nodejs_symlink':
-        path    => '/usr/local/bin/nodejs',
-        target  => '/usr/bin/node',
-        ensure  => link,
-        owner   => vagrant,
-        group   => vagrant,
-        mode    => 646,
-        require => Package['nodejs-legacy'],
-    }
-    file { '/usr/local/lib/node_modules':
+    file { 'create_node_modules_dir':
+        path    => '/usr/local/lib/node_modules',
         ensure  => directory,
         owner   => vagrant,
         group   => vagrant,
-        require => File['nodejs_symlink'],
     }
+
 }

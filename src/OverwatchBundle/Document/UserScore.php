@@ -52,6 +52,12 @@ class UserScore {
      * @Int(nullable=false)
      * @var int
      */
+    private $position;
+
+    /**
+     * @Int(nullable=false)
+     * @var int
+     */
     private $verdicts = 0;
 
     /**
@@ -122,6 +128,20 @@ class UserScore {
      */
     public function setCalculatedInMs($calculatedInMs) {
         $this->calculatedInMs = $calculatedInMs;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition() {
+        return $this->position;
+    }
+
+    /**
+     * @param int $position
+     */
+    public function setPosition($position) {
+        $this->position = $position;
     }
 
     /**

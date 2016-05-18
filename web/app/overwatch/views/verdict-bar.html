@@ -1,0 +1,64 @@
+<div class="col-md-12 new-overwatch-container">
+
+    <form role="form"
+          (ngSubmit)="submitVerdict()">
+
+        <div class="header-form-group">
+            <strong>New Overwatch Case</strong>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_map"
+                   class="control-label">Map:</label>
+            <select id="ov_map"
+                    [(ngModel)]="verdict.map">
+                <option *ngFor="let map of mapPool"
+                        value="{{map}}">{{map}}
+                </option>
+            </select>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_date">Date:</label>
+            <input type="date"
+                   id="ov_date"
+                   [(ngModel)]="verdict.overwatchDate">
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_aim">Aim assist:</label>
+            <input type="checkbox"
+                   id="ov_aim"
+                   [(ngModel)]="verdict.aimAssist"/>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_visual">Visual assist:</label>
+            <input type="checkbox"
+                   id="ov_visual"
+                   [(ngModel)]="verdict.visionAssist"/>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_other">Other assist:</label>
+            <input type="checkbox"
+                   id="ov_other"
+                   [(ngModel)]="verdict.otherAssist"/>
+        </div>
+
+        <div class="header-form-group">
+            <label for="ov_griefing">Griefing:</label>
+            <input type="checkbox"
+                   id="ov_griefing"
+                   [(ngModel)]="verdict.griefing"/>
+        </div>
+
+        <div class="header-form-btn-group">
+            <button type="submit"
+                    [disabled]="disableSubmit"
+                    class="btn btn-success btn-sm">Submit
+            </button>
+        </div>
+
+    </form>
+</div>

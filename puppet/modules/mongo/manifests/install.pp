@@ -10,5 +10,4 @@ class mongo::install inherits mongo {
         ensure  => latest,
         require => Exec['add_mongo_org_ppa'],
     }
-
 }
