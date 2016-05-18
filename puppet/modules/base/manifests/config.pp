@@ -2,7 +2,7 @@ class base::config inherits base {
 
     file { 'bash_profile_vagrant':
         path    => '/home/vagrant/.profile',
-        source  => 'puppet:///modules/base/.profile',
+        content  => template('base/profile.erb'),
         ensure  => file,
         owner   => vagrant,
         group   => vagrant,
@@ -18,7 +18,7 @@ class base::config inherits base {
     }
     file { 'my-zsh_custom_vagrant':
         path    => '/home/vagrant/.my-zsh/custom',
-        source  => 'puppet:///modules/base/my-zsh/custom',
+        content  => template('base/zsh-custom.erb'),
         ensure  => file,
         owner   => vagrant,
         group   => vagrant,
@@ -35,7 +35,7 @@ class base::config inherits base {
 
     file { 'bash_profile_root':
         path    => '/root/.profile',
-        source  => 'puppet:///modules/base/.profile',
+        content  => template('base/profile.erb'),
         ensure  => file,
         owner   => root,
         group   => root,
@@ -51,7 +51,7 @@ class base::config inherits base {
     }
     file { 'my-zsh_custom_root':
         path    => '/root/.my-zsh/custom',
-        source  => 'puppet:///modules/base/my-zsh/custom',
+        content  => template('base/zsh-custom.erb'),
         ensure  => file,
         owner   => root,
         group   => root,

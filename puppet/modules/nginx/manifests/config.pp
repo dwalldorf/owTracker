@@ -25,7 +25,7 @@ class nginx::config inherits nginx {
 
     file { 'nginx_owt':
         path    => '/etc/nginx/sites-available/owt.localhost',
-        source  => 'puppet:///modules/nginx/owt.localhost',
+        content  => template('nginx/owt.localhost.erb'),
         ensure  => file,
         owner   => 'root',
         group   => 'root',

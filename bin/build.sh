@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /vagrant
+cd /usr/share/nginx/owt
 
 echo
 echo "npm install..."
@@ -19,4 +19,4 @@ echo
 echo
 echo "building frontend..."
 echo
-/vagrant/node_modules/ntypescript/bin/tsc --outDir web/app/dist
+./node_modules/ntypescript/bin/tsc --outDir web/app/dist

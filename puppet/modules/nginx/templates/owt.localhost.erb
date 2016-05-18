@@ -1,6 +1,6 @@
 server {
     server_name owt.localhost;
-    root /vagrant/web;
+    root <%= @owtDir %>/web;
     index app_dev.php;
 
     location / {
