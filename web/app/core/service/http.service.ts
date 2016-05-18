@@ -70,7 +70,14 @@ export class HttpService {
 
         observable.subscribe(
             res => {
-                requestEventEmitter.emit(res.json());
+                var emitVal = true;
+                try {
+                    emitVal = res.json();
+                } catch (error) {
+
+                }
+
+                requestEventEmitter.emit(emitVal);
                 this.finishRequest(requestHash);
             },
             err => {

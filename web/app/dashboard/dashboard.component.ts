@@ -1,6 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {VerdictService} from "../overwatch/service/verdict.service";
+import {UserService} from "../user/service/user.service";
+import {User} from "../user/model/user";
 
 @Component({
     templateUrl: 'app/dashboard/views/dashboard.html'
@@ -10,6 +12,8 @@ export class DashboardComponent {
     private MAX_ITEMS_PER_PAGE = 10;
 
     private verdictService: VerdictService;
+
+    private userService: UserService;
 
     userVerdicts = [];
 
@@ -21,8 +25,9 @@ export class DashboardComponent {
 
     currentPage = 0;
 
-    constructor(verdictService: VerdictService) {
+    constructor(verdictService: VerdictService, userService: UserService) {
         this.verdictService = verdictService;
+        this.userService = userService;
     }
 
     //noinspection JSUnusedGlobalSymbols
@@ -35,10 +40,12 @@ export class DashboardComponent {
         })
     }
 
-    fetchVerdicts(invalidateCache = false) {
-        this.verdictService
-            .getUserVerdicts()
-            .subscribe(verdicts => this.setUserVerdicts(verdicts));
+    fetchVerdicts() {
+        this.userService.getCurrentUser().subscribe(user => {
+            this.verdictService
+                .getUserVerdicts(user.id)
+                .subscribe(verdicts => this.setUserVerdicts(verdicts));
+        });
     }
 
     private setUserVerdicts(verdicts) {

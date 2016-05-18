@@ -13,6 +13,8 @@ export class CacheService {
      * @param ttl in seconds
      */
     cache(identifier: string, data, ttl: number = 10) {
+        this.invalidate(identifier);
+
         var cache = new CachedObject();
         cache.identifier = identifier;
         cache.ttl = ttl;

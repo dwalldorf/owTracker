@@ -17,6 +17,9 @@ export class UserService {
 
     private cacheService: CacheService;
 
+    public userKnownEventEmitter = new EventEmitter();
+    public currentUser: User;
+
     constructor(httpService: HttpService, cacheService: CacheService) {
         this.httpService = httpService;
         this.cacheService = cacheService;
@@ -34,7 +37,12 @@ export class UserService {
             return eventEmitter;
         } else {
             eventEmitter = this.httpService.makeRequest(HttpService.METHOD_GET, this.CURRENT_USER_URI);
-            eventEmitter.subscribe(user => this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, user, 600));
+            eventEmitter.subscribe(user => {
+                this.currentUser = user;
+
+                this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
+                this.userKnownEventEmitter.emit(this.currentUser);
+            });
         }
 
         return eventEmitter;
@@ -44,7 +52,16 @@ export class UserService {
      * @returns {EventEmitter}
      */
     login(user) {
-        return this.httpService.makeRequest(HttpService.METHOD_POST, this.LOGIN_URI, user);
+        var requestEventEmitter = this.httpService.makeRequest(HttpService.METHOD_POST, this.LOGIN_URI, user);
+
+        requestEventEmitter.subscribe(user => {
+            this.currentUser = user;
+
+            this.userKnownEventEmitter.emit(this.currentUser);
+            this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
+        });
+
+        return requestEventEmitter;
     }
 
     /**
@@ -54,10 +71,17 @@ export class UserService {
         return this.httpService.makeRequest(HttpService.METHOD_POST, this.USERS_URI, user);
     }
 
+    hasCurrentUser() {
+        return this.currentUser instanceof User;
+    }
+
     /**
      * @returns {EventEmitter}
      */
     logout() {
+        this.currentUser = null;
+        this.cacheService.invalidate(CacheIdentifiers.CACHE_ID_CURRENT_USER);
+
         return this.httpService.makeRequest(HttpService.METHOD_POST, this.LOGOUT_URI, null);
     }
 

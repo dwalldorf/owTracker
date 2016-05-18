@@ -20,8 +20,7 @@
          class="app-loading">
     </div>
 
-    <div *ngIf="restFinished()"
-         class="row">
+    <div class="row">
         <div class="col-sm-8 scores_list_container">
 
             <table class="table table-condensed table-bordered table-hover">
@@ -39,9 +38,19 @@
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
                 </tr>
-                <tr class="score-list-user-score">
+                <tr *ngIf="scoreboard.higher.hasMore"
+                    class="table-has-more text-center">
+                    <td></td>
+                    <td>
+                        <div class="has-more-link">
+                            <a (click)="loadMoreHigher()">...</a>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="info">
                     <td>{{scoreboard.self.position}}</td>
-                    <td>{{currentUser.username}}</td>
+                    <td>{{scoreboard.self.username}}</td>
                     <td>{{scoreboard.self.score}}</td>
                 </tr>
                 <tr *ngFor="let score of scoreboard.lower.scores">

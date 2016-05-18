@@ -1,35 +1,41 @@
+<div *ngIf="!restFinished"
+     class="app-loading">
+</div>
+
 <div id="main-wrapper"
      class="container-fluid full-height">
 
-
-    <div class="row">
-        <div class="col-xs-8">
-            <button class="btn btn-default"
-                    [routerLink]="['Dashboard']">
-                Dashboard
-            </button>
-            <button class="btn btn-default"
-                    [routerLink]="['Scoreboard']">
-                Scoreboard
-            </button>
-        </div>
-        <div class="col-xs-4 pull-right">
-            <button class="btn btn-sm btn-danger"
-                    (click)="logout()">
-                Logout
-            </button>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="hidden-sm hidden-xs col-md-12 col-lg-10">
-            <div class="row">
-                <verdict-bar></verdict-bar>
+    <div *ngIf="isLoggedin">
+        <div class="row">
+            <div class="col-xs-8">
+                <button class="btn btn-default"
+                        [class.active]="router.isRouteActive(router.generate(['Dashboard']))"
+                        [routerLink]="['Dashboard']">
+                    Dashboard
+                </button>
+                <button class="btn btn-default"
+                        [class.active]="router.isRouteActive(router.generate(['Scoreboard']))"
+                        [routerLink]="['Scoreboard']">
+                    Scoreboard
+                </button>
+            </div>
+            <div class="col-xs-4 pull-right">
+                <button class="btn btn-sm btn-danger"
+                        (click)="logout()">
+                    Logout
+                </button>
             </div>
         </div>
+
+        <div class="row">
+            <verdict-bar></verdict-bar>
+        </div>
     </div>
 
-    <div class="row">
-        <router-outlet></router-outlet>
+    <div *ngIf="restFinished"
+         class="row">
+        <div class="col-xs-12">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>

@@ -36,7 +36,6 @@ export class ScoreboardComponent {
         }
     ];
     period = this.periods[ 0 ];
-    currentUser = new User();
     scoreboard = {
         higher: [],
         self: [],
@@ -50,32 +49,51 @@ export class ScoreboardComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.getScoreboard(this.period.p);
+        this.getUserScore(this.period.p);
+        this.getHigherScores(this.period.p);
+        this.getLowerScores(this.period.p);
     }
 
-    private getScoreboard(period: number) {
+    private getUserScore(period: number, offset = 0) {
         this.userService.getCurrentUser()
             .subscribe(user=> {
-                    this.currentUser = user;
-                    this.verdictService.getHigherScores(user.id, period)
-                        .subscribe(scores => {
+                this.verdictService.getUserScores(user.id, period)
+                    .subscribe(
+                        score => {
+                            this.scoreboard.self = score;
+                            this.userScoreFetched = true;
+                        }
+                    );
+            });
+    }
+
+    private getHigherScores(period: number, offset = 0) {
+        this.userService.getCurrentUser()
+            .subscribe(user=> {
+                this.verdictService.getHigherScores(user.id, period, offset)
+                    .subscribe(scores => {
+                        if (!this.scoreboard.higher.hasOwnProperty('scores')) {
                             this.scoreboard.higher = scores;
-                            this.higherScoresFetched = true;
-                        });
-                    this.verdictService.getLowerScores(user.id, period)
-                        .subscribe(scores => {
-                            this.scoreboard.lower = scores;
-                            this.lowerScoresFetched = true;
-                        });
-                    this.verdictService.getUserScores(user.id, period)
-                        .subscribe(
-                            score => {
-                                this.scoreboard.self = score;
-                                this.userScoreFetched = true;
-                            }
-                        );
-                }
-            );
+                        } else {
+                            this.scoreboard.higher[ 'scores' ] = this.scoreboard.higher[ 'scores' ].concat(scores.scores);
+                            this.scoreboard.higher[ 'totalScores' ] = this.scoreboard.higher[ 'scores' ].length;
+                            this.scoreboard.higher[ 'hasMore' ] = scores.hasMore;
+                        }
+
+                        this.higherScoresFetched = true;
+                    });
+            });
+    }
+
+    private getLowerScores(period: number, offset = 0) {
+        this.userService.getCurrentUser()
+            .subscribe(user=> {
+                this.verdictService.getLowerScores(user.id, period)
+                    .subscribe(scores => {
+                        this.scoreboard.lower = scores;
+                        this.lowerScoresFetched = true;
+                    });
+            });
     }
 
     restFinished() {
@@ -84,7 +102,12 @@ export class ScoreboardComponent {
 
     updatePeriod() {
         this.resetRestStatusFlags();
-        this.getScoreboard(this.period.p);
+        this.getUserScore(this.period.p);
+    }
+
+    loadMoreHigher() {
+        var offset = this.scoreboard.higher[ 'totalScores' ];
+        this.getHigherScores(this.period.p, offset);
     }
 
     private resetRestStatusFlags() {

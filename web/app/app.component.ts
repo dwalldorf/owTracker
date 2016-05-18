@@ -54,7 +54,10 @@ export class AppComponent {
 
     private router: Router;
 
-    private currentUser: User;
+    currentUser: User;
+
+    restFinished = false;
+    isLoggedin = false;
 
     constructor(router: Router, userService: UserService) {
         this.router = router;
@@ -64,18 +67,27 @@ export class AppComponent {
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
         this.userService.getCurrentUser().subscribe(
-            user => this.currentUser = user,
+            user => this.handleLoggedIn(user),
             () => this.handleNotLoggedIn()
         );
     }
 
+    handleLoggedIn(user: User) {
+        this.currentUser = user;
+
+        this.restFinished = true;
+        this.isLoggedin = true;
+    }
+
     handleNotLoggedIn() {
+        this.isLoggedin = false;
+        this.restFinished = true;
+
         this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
     }
 
     logout() {
-        this.userService.logout().subscribe();
-        this.handleNotLoggedIn();
+        this.userService.logout().subscribe(() => this.handleNotLoggedIn());
     }
 
 }
