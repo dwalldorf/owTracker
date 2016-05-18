@@ -4,14 +4,16 @@ import {User} from "../model/user";
 import {HttpService} from "../../core/service/http.service";
 import {CacheService} from "../../core/service/cache.service";
 import {CacheIdentifiers} from "../../core/config/cache.identifiers";
+import {AppComponent} from "../../app.component";
+import {AppConfig} from "../../app.config";
 
 @Injectable()
 export class UserService {
 
-    private CURRENT_USER_URI = '/api/users/me';
-    private LOGIN_URI = '/api/user/login';
-    private LOGOUT_URI = '/api/user/logout';
-    private USERS_URI = '/api/users';
+    private CURRENT_USER_URI = AppConfig.API_PREFIX + '/users/me';
+    private LOGIN_URI = AppConfig.API_PREFIX + '/user/login';
+    private LOGOUT_URI = AppConfig.API_PREFIX + '/user/logout';
+    private USERS_URI = AppConfig.API_PREFIX + '/users';
 
     private httpService: HttpService;
 

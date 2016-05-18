@@ -1,5 +1,7 @@
 export class AppConfig {
 
+    static API_PREFIX = '/app.php/api';
+
     static ROUTE_NAME_REGISTER = 'Register';
 
     static ROUTE_NAME_LOGIN = 'Login';
