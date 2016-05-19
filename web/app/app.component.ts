@@ -33,26 +33,35 @@ enableProdMode();
     {
         path: '/',
         name: AppConfig.ROUTE_NAME_DASHBOARD,
-        component: DashboardComponent
+        component: DashboardComponent,
     },
     {
         path: 'scores',
         name: AppConfig.ROUTE_NAME_SCOREBOARD,
-        component: ScoreboardComponent
-    }
+        component: ScoreboardComponent,
+    },
+    {
+        path: '/**',
+        redirectTo: [ AppConfig.ROUTE_NAME_DASHBOARD ],
+    },
 ])
 
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
     directives: [ ROUTER_DIRECTIVES, VerdictBarComponent ],
-    providers: [ HttpService, CacheService, UserService, VerdictService ]
+    providers: [ HttpService, CacheService, UserService, VerdictService ],
 })
 export class AppComponent {
 
     private userService: UserService;
 
     private router: Router;
+
+    private allowedRoutesWithoutLogin = [
+        AppConfig.ROUTE_NAME_LOGIN,
+        AppConfig.ROUTE_NAME_REGISTER,
+    ];
 
     currentUser: User;
 
@@ -84,7 +93,19 @@ export class AppComponent {
         this.isLoggedIn = false;
         this.restFinished = true;
 
-        this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
+        var currentRouteAllowedWithoutLogin = false;
+        for (var routeName of this.allowedRoutesWithoutLogin) {
+            var route = this.router.generate([ routeName ]);
+
+            if (this.router.isRouteActive(route)) {
+                currentRouteAllowedWithoutLogin = true;
+                break;
+            }
+        }
+
+        if (!currentRouteAllowedWithoutLogin) {
+            this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
+        }
     }
 
     logout() {
