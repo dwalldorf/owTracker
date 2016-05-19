@@ -16,6 +16,8 @@ export class LoginComponent {
 
     private user: User;
 
+    loginError = null;
+
     constructor(userService: UserService, router: Router) {
         this.userService = userService;
         this.router = router;
@@ -25,7 +27,7 @@ export class LoginComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.userService.getCurrentUser().subscribe(() => this.goToDashBoard());
+        this.userService.getCurrentUser().subscribe(user => this.goToDashBoard());
     }
 
     private resetUser() {
@@ -33,14 +35,20 @@ export class LoginComponent {
     }
 
     login() {
-        this.userService.login(this.user).subscribe(() => this.goToDashBoard());
+        this.userService.login(this.user)
+            .subscribe(
+                () => this.handleLogin(),
+                () => this.handleLoginError()
+            );
     }
 
-    handleLoginError(err) {
-        console.error(err);
+    private handleLogin() {
+        this.loginError = null;
+        this.goToDashBoard()
+    }
 
-        // TODO: implement
-        console.log('implement me!');
+    private handleLoginError() {
+        this.loginError = 'Login failed.'
     }
 
     goToRegistration() {

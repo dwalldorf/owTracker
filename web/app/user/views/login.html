@@ -1,44 +1,58 @@
 <div class="loginController row">
 
-    <h1>Login</h1>
-    <form role="form"
-          (ngSubmit)="login()">
+    <div class="col-xs-2"></div>
 
-        <div class="form-group">
-            <label for="loginUsername"
-                   class="control-label">Username or e-mail:</label>
-            <input type="text"
-                   id="loginUsername"
-                   name="username"
-                   class="form-control"
-                   [(ngModel)]="user.username"
-                   required="true"/>
+    <div class="col-xs-8">
+
+        <div class="small-form">
+            <h1>Login</h1>
+            <form role="form"
+                  (ngSubmit)="login()">
+
+                <span *ngIf="loginError"
+                      class="error">{{loginError}}</span>
+
+                <div class="form-group">
+                    <label for="loginUsername"
+                           class="control-label">Username or e-mail:</label>
+                    <input type="text"
+                           id="loginUsername"
+                           name="username"
+                           placeholder="Username or email"
+                           class="form-control"
+                           [(ngModel)]="user.username"
+                           required="true"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword"
+                           class="control-label">
+                        Password:
+                    </label>
+                    <input type="password"
+                           id="loginPassword"
+                           name="password"
+                           placeholder="********"
+                           class="form-control"
+                           [(ngModel)]="user.password"
+                           required="true"/>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit"
+                            class="btn btn-success">
+                        Login
+                    </button>
+                    <button type="button"
+                            (click)="goToRegistration()"
+                            class="btn btn-default">
+                        Go to registration
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="row">
-            <label for="loginPassword"
-                   class="control-label">
-                Password:
-            </label>
-            <input type="password"
-                   id="loginPassword"
-                   name="password"
-                   class="form-control"
-                   [(ngModel)]="user.password"
-                   required="true"/>
-        </div>
-        <div class="form-group">
-            <button type="submit"
-                    class="btn btn-success">
-                Login
-            </button>
-        </div>
-        <div class="form-group">
-            <button type="button"
-                    (click)="goToRegistration()"
-                    class="btn btn-success">
-                Go to registration
-            </button>
-        </div>
-    </form>
+    </div>
+
+    <div class="col-xs-2"></div>
 
 </div>
