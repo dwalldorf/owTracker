@@ -49,16 +49,16 @@ class UserService extends BaseService {
         $password = $user->getPassword();
 
         if (!$username) {
-            $errors['username'][] = 'username is mandatory';
+            $errors['username'] = 'Username is mandatory.';
         }
         if (!$email) {
-            $errors['email'][] = 'email is mandatory';
+            $errors['email'] = 'Email is mandatory.';
         }
         if (!$password) {
-            $errors['password'] = 'password is mandatory';
+            $errors['password'] = 'Password is mandatory.';
         }
         if ($this->repository->findByUsernameOrEmail($email) || $this->repository->findByUsernameOrEmail($username)) {
-            $errors['identity'][] = 'email or username already exists';
+            $errors['identity'] = 'Email or username already exists.';
         }
 
         if (count($errors) > 0) {
