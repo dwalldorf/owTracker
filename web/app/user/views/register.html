@@ -1,49 +1,67 @@
 <div class="register-container row">
 
-    <h1>Register</h1>
-    <form role="form"
-          (ngSubmit)="register()">
+    <div class="col-xs-2"></div>
 
-        <div class="form-group">
-            <label for="registerUsername"
-                   class="control-label">Username:</label>
-            <input type="text"
-                   id="registerUsername"
-                   name="username"
-                   class="form-control"
-                   [(ngModel)]="user.username"/>
-        </div>
-        <div class="form-group">
-            <label for="registerEmail"
-                   class="control-label">Email:</label>
-            <input type="email"
-                   id="registerEmail"
-                   name="email"
-                   class="form-control"
-                   [(ngModel)]="user.email"/>
-        </div>
-        <div class="form-group">
-            <label for="registerPassword"
-                   class="control-label">Password:</label>
-            <input type="password"
-                   id="registerPassword"
-                   name="username"
-                   class="form-control"
-                   [(ngModel)]="user.password"/>
-        </div>
-        <div class="form-group">
-            <button type="submit"
-                    class="btn btn-success">
-                Register
-            </button>
-        </div>
-        <div class="form-group">
-            <button type="button"
-                    (click)="goToLogin()"
-                    class="btn btn-success">
-                Go to login
-            </button>
-        </div>
-    </form>
+    <div class="col-xs-8">
+        <h1>Register</h1>
+        <form role="form"
+              (ngSubmit)="register()">
 
+            <span *ngIf="formErrors.identity"
+                  class="help-block">{{formErrors.identity}}</span>
+
+            <div class="form-group">
+                <label for="registerUsername"
+                       class="control-label">Username:</label>
+                <input type="text"
+                       id="registerUsername"
+                       name="username"
+                       placeholder="Choose a username"
+                       class="form-control"
+                       [(ngModel)]="user.username"/>
+                <span class="error"
+                      *ngIf="formErrors.username">{{formErrors.username}}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="registerEmail"
+                       class="control-label">Email:</label>
+                <input type="email"
+                       id="registerEmail"
+                       name="email"
+                       placeholder="Your email"
+                       class="form-control"
+                       [(ngModel)]="user.email"/>
+            <span class="error"
+                  *ngIf="formErrors.email">{{formErrors.email}}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="registerPassword"
+                       class="control-label">Password:</label>
+                <input type="password"
+                       id="registerPassword"
+                       name="password"
+                       placeholder="********"
+                       class="form-control"
+                       [(ngModel)]="user.password"/>
+                <span class="error"
+                      *ngIf="formErrors.password">{{formErrors.password}}</span>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit"
+                        class="btn btn-success">
+                    Register
+                </button>
+                <button type="button"
+                        (click)="goToLogin()"
+                        class="btn btn-default">
+                    Go to login
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-xs-2"></div>
 </div>
