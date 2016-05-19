@@ -4,7 +4,8 @@
      class="app-loading">
 </div>
 
-<div class="col-sm-8 verdict_list_container"
+<div *ngIf="currentUser"
+     class="col-sm-8 verdict_list_container"
      data-ng-controller="OverwatchController">
 
     <h2>Your Overwatch verdicts</h2>
