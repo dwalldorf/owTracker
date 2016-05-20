@@ -2,15 +2,10 @@
 
 namespace OverwatchBundle\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Date;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Float;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Int;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @Document(
+ * @ODM\Document(
  *     db="owt",
  *     collection="user_scores",
  *     repositoryClass="OverwatchBundle\Repository\UserScoreRepository"
@@ -19,44 +14,44 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\String;
 class UserScore {
 
     /**
-     * @Id
      * @var string
+     * @ODM\Id
      */
     private $id;
 
     /**
-     * @Int(nullable=false)
      * @var int
+     * @ODM\Int(nullable=false)
      */
     private $period;
 
     /**
-     * @String(name="user_id", nullable=false)
      * @var string
+     * @ODM\String(name="user_id", nullable=false)
      */
     private $userId;
 
     /**
-     * @Date(nullable=false)
      * @var \DateTime
+     * @ODM\Date(nullable=false)
      */
     private $calculated;
 
     /**
-     * @Float(nullable=false)
      * @var float
+     * @ODM\Float(nullable=false)
      */
     private $calculatedInMs;
 
     /**
-     * @Int(nullable=false)
      * @var int
+     * @ODM\Int(nullable=false)
      */
     private $position;
 
     /**
-     * @Int(nullable=false)
      * @var int
+     * @ODM\Int(nullable=false)
      */
     private $verdicts = 0;
 
