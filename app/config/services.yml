@@ -24,3 +24,7 @@ services:
     overwatch.user_score_service:
         class: OverwatchBundle\Service\UserScoreService
         parent: app.base_service
+
+    feedback.feedback_service:
+        class: FeedbackBundle\Service\FeedbackService
+        parent: app.base_service
