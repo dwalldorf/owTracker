@@ -4,6 +4,7 @@ namespace FeedbackBundle\Controller;
 
 use AppBundle\Controller\BaseController;
 use AppBundle\DTO\BaseCollection;
+use FeedbackBundle\Document\Feedback;
 use FeedbackBundle\Service\FeedbackService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -62,6 +63,15 @@ class FeedbackController extends BaseController {
      */
     public function postAction() {
         $this->requireLogin();
-        return $this->jsonResponse('implement me');
+        $user = $this->getCurrentUser();
+
+        /* @var $feedback Feedback */
+        $feedback = $this->getEntityFromRequest(Feedback::class);
+        $feedback->setCreatedBy($user->getId());
+        $feedback->setCreatedTimestamp(new \DateTime());
+
+        $this->feedbackService->save($feedback);
+
+        return $this->jsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
