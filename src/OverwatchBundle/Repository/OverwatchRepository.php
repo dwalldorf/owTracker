@@ -50,7 +50,7 @@ class OverwatchRepository extends BaseRepository {
     /**
      * @param string $userId
      */
-    public function deleteByUser($userId) {
+    public function deleteByUserId($userId) {
         $this->getQueryBuilder()
             ->remove()
             ->field('userId')->equals($userId)

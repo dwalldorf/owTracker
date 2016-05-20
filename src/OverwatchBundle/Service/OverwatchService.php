@@ -73,7 +73,7 @@ class OverwatchService extends BaseService {
      * @param User $user
      */
     public function deleteByUser(User $user) {
-        $this->repository->deleteByUser($user->getId());
+        $this->repository->deleteByUserId($user->getId());
     }
 
     /**
