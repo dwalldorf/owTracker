@@ -90,13 +90,16 @@ export class ScoreboardComponent {
             .subscribe(user => {
                 this.verdictService.getHigherScores(user.id, period, offset)
                     .subscribe(scores => {
-                        if (!this.scoreboard.higher.hasOwnProperty('scores')) {
-                            this.scoreboard.higher = scores;
+                        var newScores = this.scoreboard.higher[ 'scores' ];
+                        if (newScores) {
+                            newScores = newScores.concat(scores.items);
                         } else {
-                            this.scoreboard.higher[ 'scores' ] = this.scoreboard.higher[ 'scores' ].concat(scores.scores);
-                            this.scoreboard.higher[ 'totalScores' ] = this.scoreboard.higher[ 'scores' ].length;
-                            this.scoreboard.higher[ 'hasMore' ] = scores.hasMore;
+                            newScores = scores.items;
                         }
+
+                        this.scoreboard.higher[ 'scores' ] = newScores;
+                        this.scoreboard.higher[ 'totalScores' ] = this.scoreboard.higher[ 'scores' ].length;
+                        this.scoreboard.higher[ 'hasMore' ] = scores.hasMore;
 
                         this.higherScoresFetched = true;
                     });
@@ -108,13 +111,16 @@ export class ScoreboardComponent {
             .subscribe(user => {
                 this.verdictService.getLowerScores(user.id, period, offset)
                     .subscribe(scores => {
-                        if (!this.scoreboard.lower.hasOwnProperty('scores')) {
-                            this.scoreboard.lower = scores;
+                        var newScores = this.scoreboard.lower[ 'scores' ];
+                        if (newScores) {
+                            newScores = newScores.concat(scores.items);
                         } else {
-                            this.scoreboard.lower[ 'scores' ] = this.scoreboard.lower[ 'scores' ].concat(scores.scores);
-                            this.scoreboard.lower[ 'totalScores' ] = this.scoreboard.lower[ 'scores' ].length;
-                            this.scoreboard.lower[ 'hasMore' ] = scores.hasMore;
+                            newScores = scores.items;
                         }
+
+                        this.scoreboard.lower[ 'scores' ] = newScores;
+                        this.scoreboard.lower[ 'totalScores' ] = this.scoreboard.lower[ 'scores' ].length;
+                        this.scoreboard.lower[ 'hasMore' ] = scores.hasMore;
 
                         this.lowerScoresFetched = true;
                     });

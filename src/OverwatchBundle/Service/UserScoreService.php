@@ -170,7 +170,7 @@ class UserScoreService extends BaseService {
                 throw new \Exception('0x0ff1a3');
             }
         }
-        $scoreCollection->setScores($dtos);
+        $scoreCollection->setItems($dtos);
 
         return $scoreCollection;
     }
