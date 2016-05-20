@@ -10,3 +10,6 @@ overwatch:
 admin_stats:
     resource: "@AdminStatsBundle/Controller/"
     type:     annotation
+feedback:
+    resource: "@FeedbackBundle/Controller/"
+    type:     annotation

@@ -19,6 +19,7 @@ class AppKernel extends Kernel {
             new UserBundle\UserBundle(),
             new OverwatchBundle\OverwatchBundle(),
             new AdminStatsBundle\AdminStatsBundle(),
+            new FeedbackBundle\FeedbackBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
