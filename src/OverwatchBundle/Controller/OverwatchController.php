@@ -3,6 +3,7 @@
 namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
+use AppBundle\DTO\BaseCollection;
 use AppBundle\Exception\InvalidArgumentException;
 use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
@@ -33,8 +34,11 @@ class OverwatchController extends BaseController {
     public function getByUserAction($userId) {
         $this->requireLogin();
 
+        $retVal = new BaseCollection();
         $verdicts = $this->overwatchService->getByUserId($userId);
-        return $this->jsonResponse($verdicts);
+        $retVal->setItems($verdicts);
+
+        return $this->jsonResponse($retVal);
     }
 
     /**

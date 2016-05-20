@@ -53,8 +53,8 @@ export class DashboardComponent {
         });
     }
 
-    private setUserVerdicts(verdicts) {
-        this.userVerdicts = verdicts;
+    private setUserVerdicts(verdictCollection) {
+        this.userVerdicts = verdictCollection.items;
         this.restFinished = true;
 
         var numberOfEntries = this.userVerdicts.length;
