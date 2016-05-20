@@ -72,14 +72,14 @@ class Feedback {
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getCreatedTimestamp() {
         return $this->createdTimestamp;
     }
 
     /**
-     * @param mixed $createdTimestamp
+     * @param \DateTime $createdTimestamp
      */
     public function setCreatedTimestamp($createdTimestamp) {
         $this->createdTimestamp = $createdTimestamp;
