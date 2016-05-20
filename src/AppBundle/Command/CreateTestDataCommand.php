@@ -1,6 +1,6 @@
 <?php
 
-namespace OverwatchBundle\Command;
+namespace AppBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
 use OverwatchBundle\Document\Verdict;
