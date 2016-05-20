@@ -2,7 +2,7 @@
 
 namespace AppBundle\DTO;
 
-abstract class BaseCollection {
+class BaseCollection {
 
     /**
      * @var array
@@ -35,6 +35,10 @@ abstract class BaseCollection {
      * @param array $items
      */
     public function setItems($items) {
+        if (!is_array($items) && !$items) {
+            $items = [];
+        }
+
         $this->items = $items;
         $this->setTotalItems();
     }
