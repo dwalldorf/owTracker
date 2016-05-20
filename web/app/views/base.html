@@ -20,6 +20,11 @@
                 </button>
             </div>
             <div class="col-xs-4 pull-right">
+                <button class="btn btn-info"
+                        data-toggle="modal"
+                        data-target="#feedback-dialog">
+                    Feedback
+                </button>
                 <button class="btn btn-sm btn-danger"
                         (click)="logout()">
                     Logout
@@ -37,4 +42,6 @@
             <router-outlet></router-outlet>
         </div>
     </div>
+
+    <feedback-modal></feedback-modal>
 </div>

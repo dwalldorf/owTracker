@@ -16,6 +16,8 @@ import {UserService} from './user/service/user.service';
 import {User} from "./user/model/user";
 import {VerdictService} from "./overwatch/service/verdict.service";
 import {CacheService} from "./core/service/cache.service";
+import {FeedbackDialogComponent} from "./feedback/feedback-dialog.component";
+import {FeedbackService} from "./feedback/service/feedback.service";
 
 enableProdMode();
 
@@ -49,8 +51,8 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, VerdictBarComponent ],
-    providers: [ HttpService, CacheService, UserService, VerdictService ],
+    directives: [ ROUTER_DIRECTIVES, VerdictBarComponent, FeedbackDialogComponent ],
+    providers: [ HttpService, CacheService, UserService, VerdictService, FeedbackService ],
 })
 export class AppComponent {
 
