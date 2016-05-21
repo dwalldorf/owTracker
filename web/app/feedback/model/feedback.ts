@@ -1,7 +1,7 @@
 export class Feedback {
 
     title = '';
-    message = '';
+    feedback = {};
     like = true;
 
 }

@@ -1,3 +1,8 @@
+<button class="btn btn-info"
+        (click)="showDialog()">
+    Feedback
+</button>
+
 <div class="modal fade"
      id="feedback-dialog"
      role="dialog">
@@ -11,50 +16,70 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">Your Feedback</h4>
             </div>
 
-            <div class="modal-body">
-                <form role="form"
-                      (ngSubmit)="submitFeedback()">
+            <form role="form"
+                  (ngSubmit)="submitFeedback()">
+                <div class="modal-body">
+
                     <div class="form-group">
-                        <label for="title">Title:</label>
-                        <input type="text"
-                               id="title"
-                               class="form-control"
-                               [(ngModel)]="feedback.title">
+                        <label class="control-label">Do you like the app?</label>
+                        <br>
+                        <span role="button"
+                              class="feedback-icon feedback-like"
+                              [class.active]="feedback.like"
+                              [class.inactive]="!feedback.like"
+                              (click)="feedback.like=true"
+                              title="Like it!">
+                        </span>
+                        <span role="button"
+                              class="feedback-icon feedback-dislike"
+                              [class.active]="!feedback.like"
+                              [class.inactive]="feedback.like"
+                              (click)="feedback.like=false"
+                              title="Argh!">
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label for="message">Message:</label>
-                        <textarea id="message"
+                        <label class="control-label"
+                               for="fixplease">Anything that needs to be fixed?</label>
+                        <textarea id="fixplease"
                                   class="form-control"
-                                  [(ngModel)]="feedback.message"></textarea>
+                                  rows="3"
+                                  [(ngModel)]="feedback.feedback.fixplease"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="like">Like it</label>
-                        <input type="radio"
-                               (click)="feedback.like = true"
-                               [checked]="feedback.like"
-                               id="like">
-
-                        <label for="dislike">Don't like</label>
-                        <input type="radio"
-                               (click)="feedback.like = false"
-                               [checked]="!feedback.like"
-                               id="dislike">
+                        <label class="control-label"
+                               for="featureplease">What features are you missing?</label>
+                        <textarea id="featureplease"
+                                  class="form-control"
+                                  rows="3"
+                                  [(ngModel)]="feedback.feedback.featureplease"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label"
+                               for="freetext">Anything else?</label>
+                        <textarea id="freetext"
+                                  class="form-control"
+                                  rows="3"
+                                  [(ngModel)]="feedback.feedback.freetext"></textarea>
+                    </div>
+                </div>
 
-                    <div class="btn-group">
+                <div class="modal-footer">
+                    <div class="form-group control-group">
                         <button type="submit"
-                                class="btn btn-success">Submit
+                                class="btn btn-primary">Submit
+                        </button>
+                        <button type="button"
+                                class="btn btn-danger"
+                                (click)="resetDialog()">
+                            Cancel
                         </button>
                     </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
