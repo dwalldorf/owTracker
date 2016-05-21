@@ -5,3 +5,6 @@ $font-color-light: lighten($font-color, 20%);
 
 $icon-verdict-true-color: #ee231c;
 $icon-verdict-false-color: #55e61f;
+
+$success-green: #65d865;
+$success-green-hover: darken($success-green, 3%);

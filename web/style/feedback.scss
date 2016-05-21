@@ -1,0 +1,24 @@
+#feedback-dialog {
+    .feedback-icon {
+        border: 0;
+        display: inline-block;
+        height: 48px;
+        width: 48px;
+
+        &.active {
+            opacity: 1.0;
+        }
+        &.inactive {
+            opacity: 0.4;
+        }
+    }
+
+    .feedback-like {
+        background: url('/static/img/thumb-up.gif');
+    }
+    .feedback-dislike {
+        background: url('/static/img/thumbs-down.gif');
+        margin-left: 20px;
+    }
+}
+

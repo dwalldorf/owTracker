@@ -1,3 +1,15 @@
+@import "colors";
+
 .small-form {
     max-width: 300px;
+}
+
+.btn-success {
+    background-color: $success-green;
+    border-color: $success-green;
+
+    &:hover {
+        background-color: $success-green-hover;
+        border-color: $success-green-hover;
+    }
 }
