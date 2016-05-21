@@ -32,16 +32,10 @@ class Feedback {
     private $createdTimestamp;
 
     /**
-     * @var string
-     * @ODM\String
+     * @var array
+     * @ODM\Hash
      */
-    private $title;
-
-    /**
-     * @var string
-     * @ODM\String
-     */
-    private $message;
+    private $feedback;
 
     /**
      * @return string
@@ -86,30 +80,16 @@ class Feedback {
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getTitle() {
-        return $this->title;
+    public function getFeedback() {
+        return $this->feedback;
     }
 
     /**
-     * @param string $title
+     * @param array $feedback
      */
-    public function setTitle($title) {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessage() {
-        return $this->message;
-    }
-
-    /**
-     * @param string $message
-     */
-    public function setMessage($message) {
-        $this->message = $message;
+    public function setFeedback($feedback) {
+        $this->feedback = $feedback;
     }
 }
