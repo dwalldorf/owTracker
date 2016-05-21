@@ -27,7 +27,7 @@ class UserRepository extends BaseRepository {
      * @param User $user
      * @return string userId
      */
-    public function register(User $user) {
+    public function save(User $user) {
         $this->dm->persist($user);
         $this->dm->flush();
 

@@ -34,7 +34,7 @@ class UserService extends BaseService {
         $user->setPassword($this->encryptPassword($user->getPassword()));
         $user->setRegistered(time());
 
-        return $this->repository->register($user);
+        return $this->repository->save($user);
     }
 
     /**
@@ -65,6 +65,13 @@ class UserService extends BaseService {
             return $errors;
         }
         return null;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function update(User $user) {
+        $this->repository->save($user);
     }
 
     /**
