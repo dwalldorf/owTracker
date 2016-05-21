@@ -1,0 +1,107 @@
+<button class="btn btn-primary"
+        (click)="showDialog()">
+    New Verdict
+</button>
+
+<div class="modal fade"
+     id="verdict-dialog"
+     role="dialog">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Overwatch Verdict</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <form role="form"
+                      class="form-horizontal">
+                    <div class="form-group">
+                        <label for="ov_map"
+                               class="control-label col-xs-3">Map:</label>
+                        <div class="col-xs-8">
+                            <select id="ov_map"
+                                    class="form-control"
+                                    [(ngModel)]="verdict.map">
+                                <option *ngFor="let map of mapPool"
+                                        value="{{map}}">{{map}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ov_date"
+                               class="control-label col-xs-3">Date:</label>
+                        <div class="col-xs-8">
+                            <input type="date"
+                                   class="form-control"
+                                   id="ov_date"
+                                   [(ngModel)]="verdict.overwatchDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-8 checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       id="ov_aim"
+                                       [(ngModel)]="verdict.aimAssist"/>
+                                Aim assist
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-8 checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       id="ov_visual"
+                                       [(ngModel)]="verdict.visionAssist"/>
+                                Vision assist
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-8 checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       id="ov_other"
+                                       [(ngModel)]="verdict.otherAssist"/>
+                                Other assist
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-8 checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       id="ov_griefing"
+                                       [(ngModel)]="verdict.griefing"/>
+                                Griefing
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit"
+                        [disabled]="disableSubmit"
+                        (click)="submitVerdict()"
+                        class="btn btn-verdict btn-verdict-submit">
+                    Submit Verdict
+                </button>
+                <button type="button"
+                        [disabled]="disableSubmit"
+                        (click)="cancel()"
+                        class="btn btn-verdict btn-verdict-cancel">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
