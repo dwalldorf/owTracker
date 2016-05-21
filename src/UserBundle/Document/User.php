@@ -46,6 +46,12 @@ class User {
     private $registered;
 
     /**
+     * @ODM\Bool
+     * @var bool
+     */
+    private $isadmin = false;
+
+    /**
      * @return string
      */
     public function getId() {
@@ -113,5 +119,19 @@ class User {
      */
     public function setRegistered($registered) {
         $this->registered = $registered;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsadmin() {
+        return $this->isadmin;
+    }
+
+    /**
+     * @param boolean $isadmin
+     */
+    public function setIsadmin($isadmin) {
+        $this->isadmin = $isadmin;
     }
 }
