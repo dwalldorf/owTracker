@@ -49,5 +49,5 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
         $this->output->writeln('[ERROR] ' . $msg);
     }
 
-    protected abstract function executeCommand(InputInterface $inputInterface, OutputInterface $outputInterface);
+    protected abstract function executeCommand(InputInterface $input, OutputInterface $output);
 }

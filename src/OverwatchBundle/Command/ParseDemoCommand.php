@@ -24,8 +24,8 @@ class ParseDemoCommand extends BaseContainerAwareCommand {
             );
     }
 
-    protected function executeCommand(InputInterface $inputInterface, OutputInterface $outputInterface) {
-        $file = $inputInterface->getArgument(self::ARG_FILE_NAME);
+    protected function executeCommand(InputInterface $input, OutputInterface $output) {
+        $file = $input->getArgument(self::ARG_FILE_NAME);
         $infos = $this->getDemoInfo($file);
     }
 
