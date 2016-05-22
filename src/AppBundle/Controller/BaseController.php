@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use UserBundle\Document\User;
+use UserBundle\Exception\NotAuthorizedException;
 use UserBundle\Exception\NotLoggedInException;
 use UserBundle\Service\UserService;
 
@@ -121,6 +122,19 @@ abstract class BaseController extends Controller implements IGetService {
     protected final function requireLogin() {
         if (!$this->isLoggedIn()) {
             throw new NotLoggedInException();
+        }
+    }
+
+    /**
+     * @throws NotAuthorizedException
+     * @throws NotLoggedInException
+     */
+    protected final function requireAdmin() {
+        $this->requireLogin();
+        $user = $this->getCurrentUser();
+
+        if ($user->isIsadmin()) {
+            throw new NotAuthorizedException();
         }
     }
 

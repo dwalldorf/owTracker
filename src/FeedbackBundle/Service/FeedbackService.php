@@ -6,7 +6,6 @@ use AppBundle\Service\BaseService;
 use FeedbackBundle\Document\Feedback;
 use FeedbackBundle\Repository\FeedbackRepository;
 use UserBundle\Document\User;
-use UserBundle\Exception\NotAuthorizedException;
 
 class FeedbackService extends BaseService {
 
@@ -23,11 +22,8 @@ class FeedbackService extends BaseService {
 
     /**
      * @return Feedback[]
-     * @throws NotAuthorizedException
      */
     public function getAll() {
-        $this->isAllowed();
-
         return $this->feedbackRepository->getAll();
     }
 
@@ -41,16 +37,5 @@ class FeedbackService extends BaseService {
 
     public function deleteByUser(User $user) {
         $this->feedbackRepository->deleteByUserId($user->getId());
-    }
-
-    /**
-     * @return bool
-     * @throws NotAuthorizedException
-     */
-    private function isAllowed() {
-        $user = $this->getCurrentUser();
-
-        // TODO: implement!
-        return true;
     }
 }

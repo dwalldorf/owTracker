@@ -32,7 +32,7 @@ class FeedbackController extends BaseController {
      * @throws NotAuthorizedException
      */
     public function getAllAction() {
-        $this->requireLogin();
+        $this->requireAdmin();
 
         $feedbackCollection = new BaseCollection();
         $feedbackCollection->setItems($this->feedbackService->getAll());
@@ -49,7 +49,7 @@ class FeedbackController extends BaseController {
      * @throws NotAuthorizedException
      */
     public function getByIdAction() {
-        $this->requireLogin();
+        $this->requireAdmin();
         return $this->jsonResponse('implement me');
     }
 
@@ -59,7 +59,6 @@ class FeedbackController extends BaseController {
      *
      * @return Response
      * @throws NotLoggedInException
-     * @throws NotAuthorizedException
      */
     public function postAction() {
         $this->requireLogin();
