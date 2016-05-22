@@ -14,11 +14,15 @@ export class FeedbackDialogComponent {
     private feedbackService: FeedbackService;
     private flashService: FlashService;
 
-    feedback = new Feedback();
+    feedback: Feedback;
 
     constructor(feedbackService: FeedbackService, flashService: FlashService) {
         this.feedbackService = feedbackService;
         this.flashService = flashService;
+    }
+
+    ngOnInit() {
+        this.resetFeedback();
     }
 
     submitFeedback() {
@@ -33,16 +37,12 @@ export class FeedbackDialogComponent {
         jQuery('#feedback-dialog').modal('show');
     }
 
-    feedbackLike() {
-        this.feedback.like = true;
-    }
-
-    feedbackDisike() {
-        this.feedback.like = false;
-    }
-
     resetDialog() {
         jQuery('#feedback-dialog').modal('hide');
+        this.resetFeedback();
+    }
+
+    private resetFeedback() {
         this.feedback = new Feedback();
     }
 }

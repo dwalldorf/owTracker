@@ -28,16 +28,16 @@
                         <br>
                         <span role="button"
                               class="feedback-icon feedback-like"
-                              [class.active]="feedback.like"
-                              [class.inactive]="!feedback.like"
-                              (click)="feedback.like=true"
+                              [class.active]="feedback.feedback.like"
+                              [class.inactive]="!feedback.feedback.like"
+                              (click)="feedback.feedback.like=true"
                               title="Like it!">
                         </span>
                         <span role="button"
                               class="feedback-icon feedback-dislike"
-                              [class.active]="!feedback.like"
-                              [class.inactive]="feedback.like"
-                              (click)="feedback.like=false"
+                              [class.active]="!feedback.feedback.like"
+                              [class.inactive]="feedback.feedback.like"
+                              (click)="feedback.feedback.like=false"
                               title="Argh!">
                         </span>
                     </div>
