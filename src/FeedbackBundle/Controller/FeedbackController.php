@@ -35,8 +35,10 @@ class FeedbackController extends BaseController {
         $this->requireAdmin();
 
         $feedbackCollection = new BaseCollection();
-        $feedbackCollection->setItems($this->feedbackService->getAll());
+        $dbArray = $this->feedbackService->getAll();
+        $dtoArray = $this->feedbackService->toDto($dbArray);
 
+        $feedbackCollection->setItems($dtoArray);
         return $this->jsonResponse($feedbackCollection);
     }
 

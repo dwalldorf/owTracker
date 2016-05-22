@@ -27,7 +27,12 @@ class FeedbackRepository extends BaseRepository {
      * @return Feedback[]
      */
     public function getAll() {
-        return $this->getRepository()->findAll();
+        return $this->getQueryBuilder()
+            ->find()
+            ->sort('created', 'desc')
+            ->getQuery()
+            ->execute()
+            ->toArray();
     }
 
     /**
