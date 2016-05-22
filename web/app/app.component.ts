@@ -20,9 +20,7 @@ import {FeedbackService} from "./feedback/service/feedback.service";
 import {VerdictDialogComponent} from "./overwatch/verdict-dialog.component";
 import {FlashService} from "./core/service/flash.service";
 import {FlashComponent} from "./core/flash.component";
-import {AdminFeedbackComponent} from "./admin/admin-feedback.component";
 import {AdminComponent} from "./admin/admin.component";
-import {AdminFeedbackService} from "./admin/service/admin-feedback.service";
 
 enableProdMode();
 
@@ -71,7 +69,7 @@ enableProdMode();
         VerdictService,
         FeedbackService,
 
-        AdminComponent,
+        AdminComponent
     ],
 })
 export class AppComponent {
