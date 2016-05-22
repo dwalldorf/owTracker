@@ -133,7 +133,7 @@ abstract class BaseController extends Controller implements IGetService {
         $this->requireLogin();
         $user = $this->getCurrentUser();
 
-        if ($user->isIsadmin()) {
+        if (!$user->isIsadmin()) {
             throw new NotAuthorizedException();
         }
     }
