@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {AdminFeedbackService} from "./service/admin-feedback.service";
 import {UserService} from "../user/service/user.service";
-import {Feedback} from "../feedback/model/feedback";
 
 @Component({
     templateUrl: 'app/admin/views/feedback.html',
@@ -12,7 +11,9 @@ export class AdminFeedbackComponent {
 
     private adminFeedbackService: AdminFeedbackService;
 
-    private feedbackArray: Feedback[];
+    private feedback = null;
+
+    private restFinished = false;
 
     constructor(userService: UserService, adminFeedbackService: AdminFeedbackService) {
         this.userService = userService;
@@ -20,12 +21,13 @@ export class AdminFeedbackComponent {
     }
 
     ngOnInit() {
-        console.log('admin feedback');
-
+        this.restFinished = false;
         this.userService.getCurrentUser().subscribe(() => {
             this.adminFeedbackService.getUserFeedback().subscribe(feedbacks => {
-                this.feedbackArray = feedbacks;
-                console.log(this.feedbackArray);
+                this.restFinished = true;
+                this.feedback = feedbacks;
+
+                console.log(this.feedback);
             })
         });
     }
