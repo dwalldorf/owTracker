@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {FeedbackService} from "./service/feedback.service";
 import {Feedback} from "./model/feedback";
+import {FlashService} from "../core/service/flash.service";
+import {FlashMessage} from "../core/model/flash.message";
 
 declare var jQuery: any;
 @Component({
@@ -10,17 +12,21 @@ declare var jQuery: any;
 export class FeedbackDialogComponent {
 
     private feedbackService: FeedbackService;
+    private flashService: FlashService;
 
     feedback = new Feedback();
-    isVisible = false;
 
-    constructor(feedbackService: FeedbackService) {
+    constructor(feedbackService: FeedbackService, flashService: FlashService) {
         this.feedbackService = feedbackService;
+        this.flashService = flashService;
     }
 
     submitFeedback() {
         this.feedbackService.submitFeedback(this.feedback)
-            .subscribe(() => this.resetDialog());
+            .subscribe(() => {
+                this.resetDialog();
+                this.flashService.addMessage(new FlashMessage('Your feedback was submitted!', FlashMessage.SUCCESS));
+            });
     }
 
     showDialog() {
