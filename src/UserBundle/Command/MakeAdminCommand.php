@@ -16,7 +16,7 @@ class MakeAdminCommand extends BaseContainerAwareCommand {
     private $userService;
 
     protected function configure() {
-        $this->setName('user:makeAdmin')
+        $this->setName('owt:user:makeAdmin')
             ->addArgument(
                 'user',
                 InputArgument::REQUIRED,
