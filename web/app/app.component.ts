@@ -11,7 +11,6 @@ import {LoginComponent} from './user/login.component';
 import {RegisterComponent} from './user/register.component';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {ScoreboardComponent} from "./overwatch/scoreboard.component";
-import {VerdictBarComponent} from "./overwatch/verdict-bar.component";
 import {UserService} from './user/service/user.service';
 import {User} from "./user/model/user";
 import {VerdictService} from "./overwatch/service/verdict.service";
@@ -19,6 +18,9 @@ import {CacheService} from "./core/service/cache.service";
 import {FeedbackDialogComponent} from "./feedback/feedback-dialog.component";
 import {FeedbackService} from "./feedback/service/feedback.service";
 import {VerdictDialogComponent} from "./overwatch/verdict-dialog.component";
+import {AdminDashboardComponent} from "./admin/admin-dashboard.component";
+import {FlashService} from "./core/service/flash.service";
+import {FlashComponent} from "./core/flash.component";
 
 enableProdMode();
 
@@ -39,9 +41,14 @@ enableProdMode();
         component: DashboardComponent,
     },
     {
-        path: 'scores',
+        path: '/scores',
         name: AppConfig.ROUTE_NAME_SCOREBOARD,
         component: ScoreboardComponent,
+    },
+    {
+        path: '/admin',
+        name: AppConfig.ROUTE_NAME_ADMIN_DASHBOARD,
+        component: AdminDashboardComponent,
     },
     {
         path: '/**',
@@ -52,8 +59,8 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, VerdictDialogComponent, VerdictBarComponent, FeedbackDialogComponent ],
-    providers: [ HttpService, CacheService, UserService, VerdictService, FeedbackService ],
+    directives: [ ROUTER_DIRECTIVES, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
+    providers: [ HttpService, CacheService, FlashService, UserService, VerdictService, FeedbackService ],
 })
 export class AppComponent {
 
