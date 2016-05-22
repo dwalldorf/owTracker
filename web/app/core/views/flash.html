@@ -1,0 +1,11 @@
+<div class="flash-container">
+    <div *ngFor="let flash of messages"
+         class="flash-message alert alert-{{flash.layoutClass}}">
+        {{flash.message}}
+
+        <a href="#"
+           class="close"
+           data-dismiss="alert"
+           aria-label="close">&times;</a>
+    </div>
+</div>
