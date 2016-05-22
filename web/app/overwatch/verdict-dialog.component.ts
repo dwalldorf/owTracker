@@ -45,6 +45,11 @@ export class VerdictDialogComponent {
         jQuery('#verdict-dialog').modal('show');
     }
 
+    cancel() {
+        jQuery('#verdict-dialog').modal('hide');
+        this.resetVerdict();
+    }
+
     private setMapPool(maps) {
         this.mapPool = maps;
         this.disableSubmit = false;
