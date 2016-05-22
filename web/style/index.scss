@@ -11,28 +11,7 @@
     width: 32px;
 }
 
-.new-overwatch-container {
-
-    .header-form-group {
-        float: left;
-        padding: 10px 0 0 12px;
-
-        &:first-of-type {
-            padding: 10px 0 0 0;
-        }
-
-        label {
-            font-weight: normal;
-        }
-    }
-    .header-form-btn-group {
-        float: left;
-        padding: 5px 0 0 15px;
-    }
-}
-
 .verdict_list_container {
-
     .glyphicon-ok {
         color: $icon-verdict-true-color;
     }
