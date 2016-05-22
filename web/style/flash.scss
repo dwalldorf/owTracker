@@ -1,0 +1,13 @@
+.flash-container {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+
+    .alert {
+        padding: 8px 8px 8px 10px;
+
+        a.close {
+            margin-left: 10px;
+        }
+    }
+}
