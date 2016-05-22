@@ -18,7 +18,7 @@ Once vagrant has finished it's setup, connect to the vm and set up the project:
     ./bin/build.sh
 
 This will install all required composer and npm packages and prepare the frontend application. 
-Now you can point your browser to [localhost:8080/app.php](http://localhost:8080/app.php) or [localhost:8080/app_dev.php](http://localhost:8080/app_dev.php).
+Point your browser to [localhost:8080](http://localhost:8080) and get going.
 
 If you fiddle around with styling or the frontend app, use the watch script to watch for changes and compile your scss to css / typescript to JS: 
 
