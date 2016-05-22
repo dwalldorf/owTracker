@@ -59,7 +59,7 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
+    directives: [ ROUTER_DIRECTIVES, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent, DashboardComponent ],
     providers: [ HttpService, CacheService, FlashService, UserService, VerdictService, FeedbackService ],
 })
 export class AppComponent {
@@ -89,7 +89,6 @@ export class AppComponent {
             user => this.handleLoggedIn(user),
             () => this.handleNotLoggedIn()
         );
-        this.userService.userKnownEventEmitter.subscribe(user => this.handleLoggedIn(user));
     }
 
     handleLoggedIn(user: User) {

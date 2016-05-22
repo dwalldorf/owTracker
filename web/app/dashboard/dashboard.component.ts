@@ -1,11 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {VerdictService} from "../overwatch/service/verdict.service";
 import {UserService} from "../user/service/user.service";
-import {User} from "../user/model/user";
 
 @Component({
-    templateUrl: 'app/dashboard/views/dashboard.html'
+    templateUrl: 'app/dashboard/views/dashboard.html',
 })
 export class DashboardComponent {
 

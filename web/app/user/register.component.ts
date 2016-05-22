@@ -25,8 +25,7 @@ export class RegisterComponent {
     }
 
     ngOnInit() {
-        this.userService.getCurrentUser();
-        this.userService.userKnownEventEmitter.subscribe(() => this.goToLogin())
+        this.userService.getCurrentUser().subscribe(() => this.goToLogin());
     }
 
     register() {

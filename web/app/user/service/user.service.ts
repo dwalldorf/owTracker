@@ -19,7 +19,6 @@ export class UserService {
 
     private cacheService: CacheService;
 
-    public userKnownEventEmitter = new EventEmitter();
     public currentUser: User;
 
     constructor(httpService: HttpService, cacheService: CacheService) {
@@ -43,7 +42,6 @@ export class UserService {
                 this.currentUser = user;
 
                 this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
-                this.userKnownEventEmitter.emit(this.currentUser);
             });
         }
 
@@ -59,7 +57,6 @@ export class UserService {
         requestEventEmitter.subscribe(user => {
             this.currentUser = user;
 
-            this.userKnownEventEmitter.emit(this.currentUser);
             this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
         });
 
