@@ -15,8 +15,6 @@ export class DashboardComponent {
 
     private userService: UserService;
 
-    currentUser: User;
-
     userVerdicts = [];
 
     displayVerdicts = [];
@@ -35,9 +33,6 @@ export class DashboardComponent {
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
         this.fetchVerdicts();
-
-        this.userService.getCurrentUser();
-        this.userService.userKnownEventEmitter.subscribe(user => this.currentUser = user);
 
         this.verdictService.verdictAddedEventEmitter.subscribe(verdict => {
             this.userVerdicts.unshift(verdict);
