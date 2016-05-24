@@ -24,11 +24,16 @@ class FeedbackRepository extends BaseRepository {
     }
 
     /**
-     * @return Feedback[]
+     * @param int $limit
+     * @param int $offset
+     * @return \FeedbackBundle\Document\Feedback[]
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
-    public function getAll() {
+    public function getAll($limit, $offset) {
         return $this->getQueryBuilder()
             ->find()
+            ->skip($offset)
+            ->limit($limit)
             ->sort('created', 'desc')
             ->getQuery()
             ->execute()

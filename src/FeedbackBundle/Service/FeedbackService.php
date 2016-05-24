@@ -21,18 +21,20 @@ class FeedbackService extends BaseService {
     /**
      * @var UserService
      */
-    private $userservice;
+    private $userService;
 
     protected function init() {
         $this->feedbackRepository = $this->getRepository(FeedbackRepository::ID);
-        $this->userservice = $this->getService(UserService::ID);
+        $this->userService = $this->getService(UserService::ID);
     }
 
     /**
+     * @param int $limit
+     * @param int $offset
      * @return Feedback[]
      */
-    public function getAll() {
-        return $this->feedbackRepository->getAll();
+    public function getAll($limit, $offset) {
+        return $this->feedbackRepository->getAll($limit, $offset);
     }
 
     /**
@@ -58,7 +60,7 @@ class FeedbackService extends BaseService {
 
         $retVal = [];
         foreach ($feedback as $item) {
-            $user = $this->userservice->findById($item->getCreatedBy());
+            $user = $this->userService->findById($item->getCreatedBy());
 
             $dto = new FeedbackDto($user, $item);
             $retVal[] = $dto;

@@ -34,8 +34,11 @@ class FeedbackController extends BaseController {
     public function getAllAction() {
         $this->requireAdmin();
 
+        $limit = $this->getRequestParamAsInt('limit', 10);
+        $offset = $this->getRequestParamAsInt('offset');
+
         $feedbackCollection = new BaseCollection();
-        $dbArray = $this->feedbackService->getAll();
+        $dbArray = $this->feedbackService->getAll($limit, $offset);
         $dtoArray = $this->feedbackService->toDto($dbArray);
 
         $feedbackCollection->setItems($dtoArray);

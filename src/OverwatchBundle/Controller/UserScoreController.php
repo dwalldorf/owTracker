@@ -34,7 +34,7 @@ class UserScoreController extends BaseController {
     public function getByUserAction($userId) {
         $this->requireLogin();
 
-        $period = intval($this->getQueryParam('period'));
+        $period = intval($this->getRequestParam('period'));
         $userScore = $this->userScoreService->getByUserId($userId, $period);
 
         return $this->jsonResponse($this->userScoreService->toDto($userScore));
@@ -56,8 +56,8 @@ class UserScoreController extends BaseController {
         $this->requireLogin();
 
         $period = intval($period);
-        $limit = $this->getLimit();
-        $offset = $this->getOffset();
+        $limit = $this->getRequestParamAsInt('limit', 10);
+        $offset = $this->getRequestParamAsInt('offset');
 
         $scores = $this->userScoreService->getHigherThan($userId, $period, $limit, $offset);
         return $this->jsonResponse($scores);
@@ -79,27 +79,10 @@ class UserScoreController extends BaseController {
         $this->requireLogin();
 
         $period = intval($period);
-        $limit = $this->getLimit();
-        $offset = $this->getOffset();
+        $limit = $this->getRequestParamAsInt('limit', 10);
+        $offset = $this->getRequestParamAsInt('offset');
 
         $scores = $this->userScoreService->getLowerThan($userId, $period, $limit, $offset);
         return $this->jsonResponse($scores);
-    }
-
-    private function getOffset() {
-        return intval($this->getQueryParam('offset', 0));
-    }
-
-    /**
-     * @return int
-     */
-    private function getLimit() {
-        $limit = intval($this->getQueryParam('limit', 10));
-
-        if ($limit > 50) {
-            $limit = 50;
-        }
-
-        return $limit;
     }
 }

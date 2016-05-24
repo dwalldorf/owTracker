@@ -153,8 +153,17 @@ abstract class BaseController extends Controller implements IGetService {
      * @param mixed $default
      * @return mixed
      */
-    protected function getQueryParam($paramName, $default = null) {
+    protected function getRequestParam($paramName, $default = null) {
         return $this->request->query->get($paramName, $default);
+    }
+
+    /**
+     * @param string $paramName
+     * @param mixed $default
+     * @return int
+     */
+    protected function getRequestParamAsInt($paramName, $default = 0) {
+        return intval($this->getRequestParam($paramName, $default));
     }
 
     /**
