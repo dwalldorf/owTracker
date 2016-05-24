@@ -2,7 +2,8 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Command\BaseContainerAwareCommand;
+use FeedbackBundle\Document\Feedback;
+use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,6 +23,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @var OverwatchService
      */
     private $overwatchService;
+
+    /**
+     * @var FeedbackService
+     */
+    private $feedbackService;
 
     /**
      * @var string
@@ -52,6 +58,21 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @var int
      */
     private $createdVerdicts = 0;
+
+    /**
+     * @var int
+     */
+    private $createdVerdictsUniqueUsers = 0;
+
+    /**
+     * @var int
+     */
+    private $createdFeedback = 0;
+
+    /**
+     * @var int
+     */
+    private $createdFeedbackUniqueUsers = 0;
 
     const OPT_USER_NAME = 'user';
 
@@ -133,9 +154,17 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
         $output->writeln(
             sprintf(
-                'Created %d users and %d verdicts in %f second',
+                '[END] Created 
+    %d users 
+    %d verdicts from %d unique users
+    %d feedback entries from %d unique users
+    
+    Runtime: %f seconds',
                 $this->createdUsers,
                 $this->createdVerdicts,
+                $this->createdVerdictsUniqueUsers,
+                $this->createdFeedback,
+                $this->createdFeedbackUniqueUsers,
                 microtime(true) - $start
             )
         );
@@ -144,6 +173,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     protected function initServices() {
         $this->userService = $this->container->get(UserService::ID);
         $this->overwatchService = $this->container->get(OverwatchService::ID);
+        $this->feedbackService = $this->container->get(FeedbackService::ID);
     }
 
     /**
@@ -162,15 +192,17 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
             $this->userService->register($user);
 
-            $dice = mt_rand(0, 100);
-
-            if ($dice < 25) {
+            if ($this->getRandomBoolWithProbability(0.25)) {
                 $amountOfOverwatches = mt_rand(100, 150);
             } else {
                 $amountOfOverwatches = mt_rand(0, 40);
             }
 
             $this->createVerdicts($amountOfOverwatches, $user);
+
+            if ($this->getRandomBoolWithProbability(0.2)) {
+                $this->createFeedback($user);
+            }
 
             if ($this->verbose) {
                 $this->info(sprintf('created user %s', $user->getEmail()));
@@ -224,6 +256,47 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->createdVerdicts++;
             unset($verdict);
         }
+        $this->createdVerdictsUniqueUsers++;
+    }
+
+    /**
+     * @param User $user
+     */
+    private function createFeedback(User $user) {
+        $feedback1 = $this->getRandomFeedback($user);
+        $this->feedbackService->save($feedback1);
+
+        $this->createdFeedback++;
+        $this->createdFeedbackUniqueUsers++;
+
+        while ($this->getRandomBool()) {
+            $anotherFeedback = $this->getRandomFeedback($user);
+            $this->feedbackService->save($anotherFeedback);
+            $this->createdFeedback++;
+
+            unset($anotherFeedback);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @return Feedback
+     */
+    private function getRandomFeedback(User $user) {
+        $feedback = new Feedback();
+        $feedback->setCreatedBy($user->getId());
+        $feedback->setCreatedTimestamp($this->getRandomDate());
+
+        /** @noinspection SpellCheckingInspection */
+        $feedbackHash = [
+            'like'          => $this->getRandomBool(),
+            'fixplease'     => $this->getRandomString(200),
+            'featureplease' => $this->getRandomString(200),
+            'freetext'      => $this->getRandomString(100),
+        ];
+        $feedback->setFeedback($feedbackHash);
+
+        return $feedback;
     }
 
     /**
@@ -257,7 +330,16 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return bool
      */
     private function getRandomBool() {
-        return rand(0, 1) == 1;
+        return $this->getRandomBoolWithProbability(0.5);
+    }
+
+    /**
+     * @param float $probability
+     * @return bool
+     */
+    private function getRandomBoolWithProbability($probability) {
+        $test = mt_rand(1, 10000);
+        return $test <= $probability * 10000;
     }
 
     /**
