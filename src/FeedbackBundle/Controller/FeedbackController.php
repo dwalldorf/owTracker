@@ -34,7 +34,7 @@ class FeedbackController extends BaseController {
     public function getAllAction() {
         $this->requireAdmin();
 
-        $limit = $this->getRequestParamAsInt('limit', 10);
+        $limit = $this->getRequestParamAsInt('limit', 10, 50);
         $offset = $this->getRequestParamAsInt('offset');
 
         $feedbackCollection = new BaseCollection();

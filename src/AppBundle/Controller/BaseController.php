@@ -160,10 +160,17 @@ abstract class BaseController extends Controller implements IGetService {
     /**
      * @param string $paramName
      * @param mixed $default
+     * @param int $max
      * @return int
      */
-    protected function getRequestParamAsInt($paramName, $default = 0) {
-        return intval($this->getRequestParam($paramName, $default));
+    protected function getRequestParamAsInt($paramName, $default = 0, $max = 0) {
+        $retVal = intval($this->getRequestParam($paramName, $default));
+
+        if ($max > 0 && $retVal > $max) {
+            $retVal = $max;
+        }
+
+        return $retVal;
     }
 
     /**

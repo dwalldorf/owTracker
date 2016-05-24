@@ -56,7 +56,7 @@ class UserScoreController extends BaseController {
         $this->requireLogin();
 
         $period = intval($period);
-        $limit = $this->getRequestParamAsInt('limit', 10);
+        $limit = $this->getRequestParamAsInt('limit', 10, 50);
         $offset = $this->getRequestParamAsInt('offset');
 
         $scores = $this->userScoreService->getHigherThan($userId, $period, $limit, $offset);
@@ -79,7 +79,7 @@ class UserScoreController extends BaseController {
         $this->requireLogin();
 
         $period = intval($period);
-        $limit = $this->getRequestParamAsInt('limit', 10);
+        $limit = $this->getRequestParamAsInt('limit', 10, 50);
         $offset = $this->getRequestParamAsInt('offset');
 
         $scores = $this->userScoreService->getLowerThan($userId, $period, $limit, $offset);
