@@ -33,7 +33,7 @@
                 </thead>
 
                 <tbody>
-                <tr *ngFor="let score of scoreboard.higher.scores">
+                <tr *ngFor="let score of scoreboard.higher.items">
                     <td>{{score.position}}</td>
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
@@ -53,7 +53,7 @@
                     <td>{{scoreboard.self.username}}</td>
                     <td>{{scoreboard.self.score}}</td>
                 </tr>
-                <tr *ngFor="let score of scoreboard.lower.scores">
+                <tr *ngFor="let score of scoreboard.lower.items">
                     <td>{{score.position}}</td>
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>

@@ -1,5 +1,6 @@
 import{Component} from '@angular/core';
 
+import {ItemCollection} from "../core/model/item.collection";
 import {VerdictService} from "./service/verdict.service";
 import {UserService} from "../user/service/user.service";
 
@@ -36,14 +37,17 @@ export class ScoreboardComponent {
     ];
     period = this.periods[ 0 ];
     scoreboard = {
-        higher: [],
+        higher: <ItemCollection>{},
         self: [],
-        lower: [],
+        lower: <ItemCollection>{},
     };
 
     constructor(verdictService: VerdictService, userService: UserService) {
         this.verdictService = verdictService;
         this.userService = userService;
+
+        this.scoreboard.higher = new ItemCollection();
+        this.scoreboard.lower = new ItemCollection();
     }
 
     //noinspection JSUnusedGlobalSymbols
@@ -63,12 +67,12 @@ export class ScoreboardComponent {
     }
 
     loadMoreHigher() {
-        var offset = this.scoreboard.higher[ 'totalScores' ];
+        var offset = this.scoreboard.higher.totalItems;
         this.getHigherScores(this.period.p, offset);
     }
 
     loadMoreLower() {
-        var offset = this.scoreboard.lower[ 'totalScores' ];
+        var offset = this.scoreboard.lower.totalItems;
         this.getLowerScores(this.period.p, offset);
     }
 
@@ -90,16 +94,8 @@ export class ScoreboardComponent {
             .subscribe(user => {
                 this.verdictService.getHigherScores(user.id, period, offset)
                     .subscribe(scores => {
-                        var newScores = this.scoreboard.higher[ 'scores' ];
-                        if (newScores) {
-                            newScores = newScores.concat(scores.items);
-                        } else {
-                            newScores = scores.items;
-                        }
-
-                        this.scoreboard.higher[ 'scores' ] = newScores;
-                        this.scoreboard.higher[ 'totalScores' ] = this.scoreboard.higher[ 'scores' ].length;
-                        this.scoreboard.higher[ 'hasMore' ] = scores.hasMore;
+                        this.scoreboard.higher.addItems(scores.items);
+                        this.scoreboard.higher.hasMore = scores.hasMore;
 
                         this.higherScoresFetched = true;
                     });
@@ -111,16 +107,8 @@ export class ScoreboardComponent {
             .subscribe(user => {
                 this.verdictService.getLowerScores(user.id, period, offset)
                     .subscribe(scores => {
-                        var newScores = this.scoreboard.lower[ 'scores' ];
-                        if (newScores) {
-                            newScores = newScores.concat(scores.items);
-                        } else {
-                            newScores = scores.items;
-                        }
-
-                        this.scoreboard.lower[ 'scores' ] = newScores;
-                        this.scoreboard.lower[ 'totalScores' ] = this.scoreboard.lower[ 'scores' ].length;
-                        this.scoreboard.lower[ 'hasMore' ] = scores.hasMore;
+                        this.scoreboard.lower.addItems(scores.items);
+                        this.scoreboard.lower.hasMore = scores.hasMore;
 
                         this.lowerScoresFetched = true;
                     });
