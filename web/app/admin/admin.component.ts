@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated'
+import {Router, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated'
 
 import {AppConfig} from "../app.config";
 import {AdminDashboardComponent} from "./admin-dashboard.component";
 import {AdminFeedbackComponent} from "./admin-feedback.component";
 import {AdminFeedbackService} from "./service/admin-feedback.service";
+import {UserService} from "../user/service/user.service";
 
 @RouteConfig([
         {
@@ -17,6 +18,10 @@ import {AdminFeedbackService} from "./service/admin-feedback.service";
             name: AppConfig.ROUTE_NAME_ADMIN_FEEDBACK,
             component: AdminFeedbackComponent,
         },
+        {
+            path: '/**',
+            redirectTo: [ AppConfig.ROUTE_NAME_ADMIN_DASHBOARD ],
+        }
     ]
 )
 @Component({
@@ -26,8 +31,11 @@ import {AdminFeedbackService} from "./service/admin-feedback.service";
 })
 export class AdminComponent {
 
-    ngOnint() {
-        console.log('admin component init');
+    constructor(router: Router, userService: UserService) {
+        userService.getCurrentUser().subscribe(user => {
+            if (!user.isAdmin) {
+                router.navigate([ AppConfig.ROUTE_NAME_ADMIN_DASHBOARD ]);
+            }
+        });
     }
-
 }

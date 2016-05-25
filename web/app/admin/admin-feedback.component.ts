@@ -26,8 +26,6 @@ export class AdminFeedbackComponent {
             this.adminFeedbackService.getUserFeedback().subscribe(feedbacks => {
                 this.restFinished = true;
                 this.feedback = feedbacks;
-
-                console.log(this.feedback);
             })
         });
     }

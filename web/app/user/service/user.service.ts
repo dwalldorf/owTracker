@@ -1,11 +1,9 @@
 import {Injectable, EventEmitter} from '@angular/core';
-
-import {User} from "../model/user";
+import {AppConfig} from "../../app.config";
 import {HttpService} from "../../core/service/http.service";
 import {CacheService} from "../../core/service/cache.service";
 import {CacheIdentifiers} from "../../core/config/cache.identifiers";
-import {AppComponent} from "../../app.component";
-import {AppConfig} from "../../app.config";
+import {User} from "../model/user";
 
 @Injectable()
 export class UserService {
@@ -68,10 +66,6 @@ export class UserService {
      */
     register(user: User) {
         return this.httpService.makeRequest(HttpService.METHOD_POST, this.USERS_URI, user);
-    }
-
-    hasCurrentUser() {
-        return this.currentUser instanceof User;
     }
 
     /**
