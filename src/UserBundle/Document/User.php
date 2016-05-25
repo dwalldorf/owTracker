@@ -49,7 +49,7 @@ class User {
      * @ODM\Bool
      * @var bool
      */
-    private $isadmin = false;
+    private $isAdmin = false;
 
     /**
      * @return string
@@ -124,14 +124,14 @@ class User {
     /**
      * @return boolean
      */
-    public function isIsadmin() {
-        return $this->isadmin;
+    public function isIsAdmin() {
+        return $this->isAdmin;
     }
 
     /**
-     * @param boolean $isadmin
+     * @param boolean $isAdmin
      */
-    public function setIsadmin($isadmin) {
-        $this->isadmin = $isadmin;
+    public function setIsAdmin($isAdmin) {
+        $this->isAdmin = $isAdmin;
     }
 }

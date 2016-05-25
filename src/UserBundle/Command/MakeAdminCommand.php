@@ -37,7 +37,7 @@ class MakeAdminCommand extends BaseContainerAwareCommand {
             return;
         }
 
-        $dbUser->setIsadmin(true);
+        $dbUser->setIsAdmin(true);
         $this->userService->update($dbUser);
 
         $output->writeln(sprintf('[END] %s now has admin privileges', $dbUser->getId()));
