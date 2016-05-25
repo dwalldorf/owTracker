@@ -14,6 +14,8 @@ use UserBundle\Service\UserService;
 
 class CreateTestDataCommand extends BaseContainerAwareCommand {
 
+    const PROBABILITY_LENGTH = 100000;
+
     /**
      * @var UserService
      */
@@ -192,8 +194,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
             $this->userService->register($user);
 
-            if ($this->getRandomBoolWithProbability(0.25)) {
-                $amountOfOverwatches = mt_rand(100, 150);
+            if ($this->getRandomBoolWithProbability(0.15)) {
+                $amountOfOverwatches = mt_rand(2000, 6500);
+            } else if ($this->getRandomBoolWithProbability(40)) {
+                $amountOfOverwatches = mt_rand(100, 350);
             } else {
                 $amountOfOverwatches = mt_rand(0, 40);
             }
@@ -338,8 +342,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return bool
      */
     private function getRandomBoolWithProbability($probability) {
-        $test = mt_rand(1, 10000);
-        return $test <= $probability * 10000;
+        return mt_rand(1, self::PROBABILITY_LENGTH) <= $probability * self::PROBABILITY_LENGTH;
     }
 
     /**
