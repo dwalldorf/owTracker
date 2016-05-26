@@ -37,6 +37,10 @@ class UserScoreController extends BaseController {
         $period = intval($this->getRequestParam('period'));
         $userScore = $this->userScoreService->getByUserId($userId, $period);
 
+        if (!$userScore) {
+            $userScore = new UserScore();
+        }
+
         return $this->jsonResponse($this->userScoreService->toDto($userScore));
     }
 
