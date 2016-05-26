@@ -1,5 +1,9 @@
 import {Component} from '@angular/core';
-import {Router, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated'
+import {
+    Router,
+    RouteConfig,
+    ROUTER_DIRECTIVES
+} from '@angular/router-deprecated'
 
 import {AppConfig} from "../app.config";
 import {AdminDashboardComponent} from "./admin-dashboard.component";

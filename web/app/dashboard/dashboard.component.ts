@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 import {VerdictService} from "../overwatch/service/verdict.service";
 import {UserService} from "../user/service/user.service";
+import {ItemCollection} from "../core/model/item.collection";
 
 @Component({
     templateUrl: 'app/dashboard/views/dashboard.html',
@@ -14,7 +15,7 @@ export class DashboardComponent {
 
     private userService: UserService;
 
-    userVerdicts = [];
+    verdictCollection = <ItemCollection>{};
 
     displayVerdicts = [];
 
@@ -31,11 +32,12 @@ export class DashboardComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
+        this.verdictCollection = new ItemCollection();
         this.fetchVerdicts();
 
         this.verdictService.verdictAddedEventEmitter.subscribe(verdict => {
-            this.userVerdicts.unshift(verdict);
-            this.setUserVerdicts(this.userVerdicts);
+            this.verdictCollection.addItem(verdict);
+            this.setUserVerdicts(this.verdictCollection);
         })
     }
 
@@ -47,11 +49,13 @@ export class DashboardComponent {
         });
     }
 
-    private setUserVerdicts(verdictCollection) {
-        this.userVerdicts = verdictCollection.items;
+    private setUserVerdicts(verdictCollection: ItemCollection) {
+        this.verdictCollection.addItems(verdictCollection.items);
         this.restFinished = true;
+        console.log(verdictCollection);
+        console.log(this.verdictCollection);
 
-        var numberOfEntries = this.userVerdicts.length;
+        var numberOfEntries = verdictCollection.totalItems;
         if (numberOfEntries > 0) {
             this.numberOfPages = Math.ceil(numberOfEntries / this.MAX_ITEMS_PER_PAGE);
             this.paginate(0);
@@ -62,7 +66,7 @@ export class DashboardComponent {
         var start = page * this.MAX_ITEMS_PER_PAGE,
             end   = start + this.MAX_ITEMS_PER_PAGE;
 
-        this.displayVerdicts = this.userVerdicts.slice(start, end);
+        this.displayVerdicts = this.verdictCollection.items.slice(start, end);
         this.currentPage = page;
     }
 

@@ -7,7 +7,7 @@
 
     <div *ngIf="isLoggedIn">
         <div class="row">
-            <div class="col-xs-8">
+            <div class="col-xs-4">
                 <button class="btn btn-default"
                         [class.active]="router.isRouteActive(router.generate(['Dashboard']))"
                         [routerLink]="['Dashboard']">
@@ -18,6 +18,13 @@
                         [routerLink]="['Scoreboard']">
                     Scoreboard
                 </button>
+            </div>
+
+            <div class="col-xs-4">
+                <a class="btn btn-default"
+                   href="/#/admin/dashboard">
+                    Admin
+                </a>
             </div>
             <div class="col-xs-4 pull-right">
                 <verdict-dialog></verdict-dialog>
