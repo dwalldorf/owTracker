@@ -1,16 +1,5 @@
 @import "colors";
 
-.app-loading {
-    background: url('/static/img/loading.gif');
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -32px;
-    margin-left: -32px;
-    height: 32px;
-    width: 32px;
-}
-
 .verdict_list_container {
     .glyphicon-ok {
         color: $icon-verdict-true-color;

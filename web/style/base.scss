@@ -5,3 +5,14 @@
 @import "scores";
 @import "feedback";
 @import "verdict-dialog";
+
+.app-loading {
+    background: url('/static/img/loading.gif');
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -32px;
+    margin-left: -32px;
+    height: 32px;
+    width: 32px;
+}
