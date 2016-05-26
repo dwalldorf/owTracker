@@ -195,7 +195,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->userService->register($user);
 
             if ($this->getRandomBoolWithProbability(0.15)) {
-                $amountOfOverwatches = mt_rand(2000, 6500);
+                $amountOfOverwatches = mt_rand(400, 1000);
             } else if ($this->getRandomBoolWithProbability(40)) {
                 $amountOfOverwatches = mt_rand(100, 350);
             } else {
@@ -230,18 +230,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         }
 
         for ($i = 0; $i < $amount; $i++) {
-            $verdict = new Verdict();
-            $verdict->setUserId($user->getId());
-            $verdict->setMap($this->getRandomMap());
-            $verdict->setAimAssist($this->getRandomBool());
-            $verdict->setVisionAssist($this->getRandomBool());
-            $verdict->setOtherAssist($this->getRandomBool());
-            $verdict->setGriefing($this->getRandomBool());
-
-            $date = $this->getRandomDate();
-            $verdict->setCreationDate($date);
-            $verdict->setOverwatchDate($date);
-
+            $verdict = $this->getRandomVerdict($user);
             $this->overwatchService->save($verdict);
 
             if ($this->verbose) {
@@ -261,6 +250,26 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             unset($verdict);
         }
         $this->createdVerdictsUniqueUsers++;
+    }
+
+    /**
+     * @param User $user
+     * @return Verdict
+     */
+    private function getRandomVerdict(User $user) {
+        $verdict = new Verdict();
+        $verdict->setUserId($user->getId());
+        $verdict->setMap($this->getRandomMap());
+        $verdict->setAimAssist($this->getRandomBool());
+        $verdict->setVisionAssist($this->getRandomBool());
+        $verdict->setOtherAssist($this->getRandomBool());
+        $verdict->setGriefing($this->getRandomBool());
+
+        $date = $this->getRandomDate();
+        $verdict->setCreationDate($date);
+        $verdict->setOverwatchDate($date);
+
+        return $verdict;
     }
 
     /**
