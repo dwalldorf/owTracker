@@ -1,10 +1,10 @@
 <div class="scoreboard-container">
 
     <div class="row">
-        <div class="col-xs-6">
-            <h1>Scoreboard</h1>
+        <div class="col-xs-8">
+            <h2>Scoreboard</h2>
         </div>
-        <div class="col-xs-6"
+        <div class="col-xs-4"
              style="margin-top:25px">
             filter:
             <select data-ng-model="period"
@@ -20,23 +20,17 @@
          class="app-loading">
     </div>
 
-    <div class="row">
+    <div *ngIf="restFinished()"
+         class="row">
         <div class="col-sm-8 scores_list_container">
 
             <!-- no calculated scores available -->
             <div *ngIf="noScoresPresent()"
-                 class="error error-banner">
-
-
-                <!-- TODO: style this -->
-
-                There are no scores present at this time.
-
-                <!-- TODO: dont forget! -->
-
-
+                 class="alert alert-danger">
+                <strong>Scoreboard not available at the moment. Please try again later.</strong>
             </div>
 
+            <!-- scores available -->
             <table *ngIf="!noScoresPresent() && (higherScoresFetched || lowerScoresFetched || userScoreFetched)"
                    class="table table-condensed table-bordered table-hover">
                 <thead>

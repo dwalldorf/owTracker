@@ -7,7 +7,12 @@
      id="verdict-dialog"
      role="dialog">
 
-    <div class="modal-dialog">
+    <div *ngIf="!restFinished"
+         class="app-loading">
+    </div>
+
+    <div *ngIf="restFinished"
+         class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Overwatch Verdict</h4>
@@ -90,14 +95,14 @@
 
             <div class="modal-footer">
                 <button type="submit"
-                        [disabled]="disableSubmit"
+                        [disabled]="!restFinished"
                         (click)="submitVerdict()"
                         class="btn btn-verdict btn-verdict-submit">
                     Submit Verdict
                 </button>
                 <button type="button"
-                        [disabled]="disableSubmit"
-                        (click)="cancel()"
+                        [disabled]="!restFinished"
+                        (click)="closeDialog()"
                         class="btn btn-verdict btn-verdict-cancel">
                     Cancel
                 </button>

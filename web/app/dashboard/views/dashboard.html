@@ -1,5 +1,3 @@
-<h1>Dashboard</h1>
-
 <div *ngIf="!restFinished"
      class="app-loading">
 </div>
@@ -10,6 +8,13 @@
 
     <h2>Your Overwatch verdicts</h2>
 
+    <!-- no verdicts -->
+    <div *ngIf="restFinished && displayVerdicts.length == 0"
+         class="alert alert-danger">
+        <strong>You didn't submit any verdicts yet.</strong>
+    </div>
+
+    <!-- verdicts available -->
     <div *ngIf="restFinished && displayVerdicts.length > 0">
         <table class="table table-condensed table-bordered table-hover">
             <thead>
@@ -66,9 +71,5 @@
                 (click)="paginate(currentPage + 1)">
             <span>Next</span>
         </button>
-    </div>
-
-    <div *ngIf="restFinished && displayVerdicts.length == 0">
-        No verdicts yet.
     </div>
 </div>

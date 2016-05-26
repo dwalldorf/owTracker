@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 import {VerdictService} from "../overwatch/service/verdict.service";
 import {UserService} from "../user/service/user.service";
+import {ItemCollection} from "../core/model/item.collection";
 
 @Component({
     templateUrl: 'app/dashboard/views/dashboard.html',
@@ -14,7 +15,7 @@ export class DashboardComponent {
 
     private userService: UserService;
 
-    userVerdicts = [];
+    userVerdicts = new ItemCollection();
 
     displayVerdicts = [];
 
@@ -34,7 +35,7 @@ export class DashboardComponent {
         this.fetchVerdicts();
 
         this.verdictService.verdictAddedEventEmitter.subscribe(verdict => {
-            this.userVerdicts.unshift(verdict);
+            this.userVerdicts.addItem(verdict);
             this.setUserVerdicts(this.userVerdicts);
         })
     }
@@ -48,10 +49,10 @@ export class DashboardComponent {
     }
 
     private setUserVerdicts(verdictCollection) {
-        this.userVerdicts = verdictCollection.items;
+        this.userVerdicts.setItems(verdictCollection.items);
         this.restFinished = true;
 
-        var numberOfEntries = this.userVerdicts.length;
+        var numberOfEntries = this.userVerdicts.totalItems;
         if (numberOfEntries > 0) {
             this.numberOfPages = Math.ceil(numberOfEntries / this.MAX_ITEMS_PER_PAGE);
             this.paginate(0);
@@ -62,7 +63,7 @@ export class DashboardComponent {
         var start = page * this.MAX_ITEMS_PER_PAGE,
             end   = start + this.MAX_ITEMS_PER_PAGE;
 
-        this.displayVerdicts = this.userVerdicts.slice(start, end);
+        this.displayVerdicts = this.userVerdicts.items.slice(start, end);
         this.currentPage = page;
     }
 

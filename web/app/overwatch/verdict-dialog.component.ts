@@ -14,7 +14,7 @@ export class VerdictDialogComponent {
 
     private verdictService: VerdictService;
 
-    disableSubmit = true;
+    restFinished = false;
     verdict: Verdict;
     mapPool = [];
 
@@ -33,11 +33,11 @@ export class VerdictDialogComponent {
     }
 
     submitVerdict() {
-        this.disableSubmit = true;
+        this.restFinished = false;
         this.verdictService.submitVerdict(this.verdict)
             .subscribe(() => {
-                this.resetVerdict();
-                this.disableSubmit = false;
+                this.restFinished = true;
+                this.closeDialog();
             });
     }
 
@@ -45,14 +45,14 @@ export class VerdictDialogComponent {
         jQuery('#verdict-dialog').modal('show');
     }
 
-    cancel() {
+    closeDialog() {
         jQuery('#verdict-dialog').modal('hide');
         this.resetVerdict();
     }
 
     private setMapPool(maps) {
         this.mapPool = maps;
-        this.disableSubmit = false;
+        this.restFinished = true;
     }
 
     private resetVerdict() {
