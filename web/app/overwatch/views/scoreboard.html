@@ -23,7 +23,22 @@
     <div class="row">
         <div class="col-sm-8 scores_list_container">
 
-            <table class="table table-condensed table-bordered table-hover">
+            <!-- no calculated scores available -->
+            <div *ngIf="noScoresPresent()"
+                 class="error error-banner">
+
+
+                <!-- TODO: style this -->
+
+                There are no scores present at this time.
+
+                <!-- TODO: dont forget! -->
+
+
+            </div>
+
+            <table *ngIf="!noScoresPresent() && (higherScoresFetched || lowerScoresFetched || userScoreFetched)"
+                   class="table table-condensed table-bordered table-hover">
                 <thead>
                 <tr>
                     <th>Position</th>
@@ -33,7 +48,10 @@
                 </thead>
 
                 <tbody>
+
+                <!-- higher scores -->
                 <tr *ngFor="let score of scoreboard.higher.items">
+                    {{score}}
                     <td>{{score.position}}</td>
                     <td>{{score.username}}</td>
                     <td>{{score.score}}</td>
@@ -48,11 +66,17 @@
                     </td>
                     <td></td>
                 </tr>
-                <tr class="info">
+                <!-- END higher scores -->
+
+                <!-- own scores -->
+                <tr *ngIf="restFinished() && scoreboard.self"
+                    class="info">
                     <td>{{scoreboard.self.position}}</td>
                     <td>{{scoreboard.self.username}}</td>
                     <td>{{scoreboard.self.score}}</td>
                 </tr>
+
+                <!-- lower scores -->
                 <tr *ngFor="let score of scoreboard.lower.items">
                     <td>{{score.position}}</td>
                     <td>{{score.username}}</td>
@@ -68,6 +92,7 @@
                     </td>
                     <td></td>
                 </tr>
+                <!-- END lower scores -->
                 </tbody>
             </table>
         </div>

@@ -3,6 +3,7 @@ import{Component} from '@angular/core';
 import {ItemCollection} from "../core/model/item.collection";
 import {VerdictService} from "./service/verdict.service";
 import {UserService} from "../user/service/user.service";
+import {UserScore} from "./model/user.score";
 
 @Component({
     templateUrl: 'app/overwatch/views/scoreboard.html'
@@ -38,7 +39,7 @@ export class ScoreboardComponent {
     period = this.periods[ 0 ];
     scoreboard = {
         higher: <ItemCollection>{},
-        self: [],
+        self: UserScore,
         lower: <ItemCollection>{},
     };
 
@@ -59,6 +60,14 @@ export class ScoreboardComponent {
 
     restFinished() {
         return (this.higherScoresFetched && this.lowerScoresFetched && this.userScoreFetched);
+    }
+
+    noScoresPresent() {
+        if (!this.restFinished()) {
+            return false;
+        }
+
+        return (this.scoreboard.higher.totalItems == 0 && this.scoreboard.lower.totalItems == 0);
     }
 
     updatePeriod() {
