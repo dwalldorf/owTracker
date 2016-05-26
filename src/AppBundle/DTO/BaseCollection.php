@@ -12,7 +12,12 @@ class BaseCollection {
     /**
      * @var int
      */
-    private $totalItems;
+    private $totalItems = 0;
+
+    /**
+     * @var bool
+     */
+    private $hasMore = false;
 
     /**
      * BaseCollection constructor.
@@ -33,10 +38,19 @@ class BaseCollection {
 
     /**
      * @param array $items
+     * @param int $limit
      */
-    public function setItems($items) {
+    public function setItems($items, $limit = 0) {
         if (!is_array($items) && !$items) {
             $items = [];
+        }
+
+        if ($limit > 0 && count($items) > $limit) {
+            while (count($items) > $limit) {
+                array_pop($items);
+            }
+
+            $this->setHasMore();
         }
 
         $this->items = $items;
@@ -60,5 +74,19 @@ class BaseCollection {
 
     protected function setTotalItems() {
         $this->totalItems = count($this->items);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasMore() {
+        return $this->hasMore;
+    }
+
+    /**
+     * @param boolean $hasMore
+     */
+    public function setHasMore($hasMore = true) {
+        $this->hasMore = $hasMore;
     }
 }
