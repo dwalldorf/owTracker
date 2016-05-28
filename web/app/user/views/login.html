@@ -1,45 +1,49 @@
-<div class="loginController row">
+<div class="login-container row">
 
-    <div class="col-xs-2"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Login</h2>
+        </div>
 
-    <div class="col-xs-8">
-
-        <div class="small-form">
-            <h1>Login</h1>
-            <form role="form"
-                  (ngSubmit)="login()">
+        <form (ngSubmit)="login()">
+            <div class="panel-body">
+                <div class="small-form">
 
                 <span *ngIf="loginError"
                       class="error">{{loginError}}</span>
 
-                <div class="form-group">
-                    <label for="loginUsername"
-                           class="control-label">Username or e-mail:</label>
-                    <input type="text"
-                           id="loginUsername"
-                           name="username"
-                           placeholder="Username or email"
-                           class="form-control"
-                           [(ngModel)]="user.username"
-                           required="true"/>
-                </div>
+                    <div class="form-group">
+                        <label for="loginUsername"
+                               class="control-label">Username or e-mail:</label>
+                        <input type="text"
+                               id="loginUsername"
+                               name="username"
+                               placeholder="Username or email"
+                               class="form-control"
+                               [(ngModel)]="user.username"
+                               required="true"/>
+                    </div>
 
-                <div class="form-group">
-                    <label for="loginPassword"
-                           class="control-label">
-                        Password:
-                    </label>
-                    <input type="password"
-                           id="loginPassword"
-                           name="password"
-                           placeholder="********"
-                           class="form-control"
-                           [(ngModel)]="user.password"
-                           required="true"/>
+                    <div class="form-group">
+                        <label for="loginPassword"
+                               class="control-label">
+                            Password:
+                        </label>
+                        <input type="password"
+                               id="loginPassword"
+                               name="password"
+                               placeholder="********"
+                               class="form-control"
+                               [(ngModel)]="user.password"
+                               required="true"/>
+                    </div>
                 </div>
+            </div>
 
+            <div class="panel-footer">
                 <div class="btn-group">
                     <button type="submit"
+                            (click)="login()"
                             class="btn btn-primary">
                         Login
                     </button>
@@ -49,10 +53,7 @@
                         Go to registration
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
-
-    <div class="col-xs-2"></div>
-
 </div>

@@ -1,7 +1,10 @@
-@import "layout";
-@import "flash";
-@import "forms";
-@import "index";
-@import "scores";
+@import "base/layout";
+@import "base/flash";
+@import "base/forms";
+@import "base/tables";
+@import "base/modal";
+
+@import "modules/scoreboard";
+@import "user";
+@import "dashboard";
 @import "feedback";
-@import "verdict-dialog";

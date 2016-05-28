@@ -11,7 +11,7 @@ export class ItemCollection {
     }
 
     public addItem(item: Object) {
-        this.items.concat([ item ]);
+        this.items.unshift(item);
         this.totalItems = this.items.length;
     }
 
@@ -20,4 +20,12 @@ export class ItemCollection {
         this.totalItems = this.items.length;
     }
 
+    public setItems(items) {
+        if (!items) {
+            items = [];
+        }
+
+        this.items = items;
+        this.totalItems = this.items.length;
+    }
 }

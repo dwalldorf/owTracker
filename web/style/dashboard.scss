@@ -1,0 +1,10 @@
+@import "base/colors";
+
+.verdict_list_container {
+    .glyphicon-ok {
+        color: $icon-verdict-true-color;
+    }
+    .glyphicon-remove {
+        color: $icon-verdict-false-color;
+    }
+}

@@ -9,13 +9,13 @@ import {ItemCollection} from "../core/model/item.collection";
 })
 export class DashboardComponent {
 
-    private MAX_ITEMS_PER_PAGE = 10;
+    private MAX_ITEMS_PER_PAGE = 20;
 
     private verdictService: VerdictService;
 
     private userService: UserService;
 
-    verdictCollection = <ItemCollection>{};
+    userVerdicts = new ItemCollection();
 
     displayVerdicts = [];
 
@@ -32,12 +32,11 @@ export class DashboardComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.verdictCollection = new ItemCollection();
         this.fetchVerdicts();
 
         this.verdictService.verdictAddedEventEmitter.subscribe(verdict => {
-            this.verdictCollection.addItem(verdict);
-            this.setUserVerdicts(this.verdictCollection);
+            this.userVerdicts.addItem(verdict);
+            this.setUserVerdicts(this.userVerdicts);
         })
     }
 
@@ -49,13 +48,11 @@ export class DashboardComponent {
         });
     }
 
-    private setUserVerdicts(verdictCollection: ItemCollection) {
-        this.verdictCollection.addItems(verdictCollection.items);
+    private setUserVerdicts(verdictCollection) {
+        this.userVerdicts.setItems(verdictCollection.items);
         this.restFinished = true;
-        console.log(verdictCollection);
-        console.log(this.verdictCollection);
 
-        var numberOfEntries = verdictCollection.totalItems;
+        var numberOfEntries = this.userVerdicts.totalItems;
         if (numberOfEntries > 0) {
             this.numberOfPages = Math.ceil(numberOfEntries / this.MAX_ITEMS_PER_PAGE);
             this.paginate(0);
@@ -66,7 +63,7 @@ export class DashboardComponent {
         var start = page * this.MAX_ITEMS_PER_PAGE,
             end   = start + this.MAX_ITEMS_PER_PAGE;
 
-        this.displayVerdicts = this.verdictCollection.items.slice(start, end);
+        this.displayVerdicts = this.userVerdicts.items.slice(start, end);
         this.currentPage = page;
     }
 

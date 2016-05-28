@@ -106,7 +106,12 @@ class UserService extends BaseService {
      * @return User
      */
     public function findById($id) {
-        return $this->getSecureUserCopy($this->repository->findById($id));
+        $user = $this->repository->findById($id);
+        if (!$user) {
+            return null;
+        }
+
+        return $this->getSecureUserCopy($user);
     }
 
     /**
@@ -114,7 +119,12 @@ class UserService extends BaseService {
      * @return User
      */
     public function findByUsernameOrEmail($email) {
-        return $this->getSecureUserCopy($this->repository->findByUsernameOrEmail($email));
+        $user = $this->repository->findByUsernameOrEmail($email);
+        if (!$user) {
+            return null;
+        }
+
+        return $this->getSecureUserCopy($user);
     }
 
     /**
@@ -123,7 +133,9 @@ class UserService extends BaseService {
     public function getAllActiveUsers() {
         $retVal = [];
         foreach ($this->repository->getAll() as $user) {
-            $retVal[] = $this->getSecureUserCopy($user);
+            if ($user instanceof User) {
+                $retVal[] = $this->getSecureUserCopy($user);
+            }
         }
         return $retVal;
     }

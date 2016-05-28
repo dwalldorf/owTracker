@@ -16,6 +16,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     const PROBABILITY_LENGTH = 100000;
 
+    const POWER_USER_RATE = 15;
+
     /**
      * @var UserService
      */
@@ -47,6 +49,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private $verdictAmount;
 
     /**
+     * @var bool
+     */
+    private $includePowerUsers = false;
+
+    /**
      * @var int
      */
     private $userAmount;
@@ -76,6 +83,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      */
     private $createdFeedbackUniqueUsers = 0;
 
+    /**
+     * @var int
+     */
+    private $createdPowerUsers = 0;
+
     const OPT_USER_NAME = 'user';
 
     const OPT_VERDICT_AMOUNT_NAME = 'verdicts';
@@ -86,25 +98,34 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     const OPT_USER_AMOUNT_DEFAULT = 20;
 
+    const OPT_POWER_USER = 'powerUser';
+
     protected function configure() {
         $this->setName('owt:createTestData')
             ->addOption(
                 self::OPT_USER_NAME,
                 'u',
                 InputArgument::OPTIONAL,
-                'user\'s mongo id or email address'
+                'User\'s mongo id or email address'
             )
             ->addOption(
                 self::OPT_USER_AMOUNT_NAME,
                 'a',
                 InputArgument::OPTIONAL,
-                'amount of users to generate (20 if not set)'
+                'Amount of users to generate (20 if not set)'
             )
             ->addOption(
                 self::OPT_VERDICT_AMOUNT_NAME,
                 'o',
                 InputArgument::OPTIONAL,
-                'only if user specified - amount of overwatch verdicts to generate (20 if not set)'
+                'Only if user specified - amount of overwatch verdicts to generate (20 if not set)'
+            )
+            ->addOption(
+                self::OPT_POWER_USER,
+                'p',
+                InputArgument::OPTIONAL,
+                'Include power users. Will generate user with 10% chance of being a power user with 800 - 5000 verdicts. Useful when working on score calculation.',
+                false
             );
     }
 
@@ -114,6 +135,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $this->verbose = $input->getOption('verbose');
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
         $this->verdictAmount = $input->getOption(self::OPT_VERDICT_AMOUNT_NAME);
+        $this->includePowerUsers = $input->getOption(self::OPT_POWER_USER);
 
         $this->userAmount = $input->getOption(self::OPT_USER_AMOUNT_NAME);
 
@@ -154,19 +176,29 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->createTestData();
         }
 
+        $powerUsersInfo = '';
+        if ($this->includePowerUsers) {
+            $powerUsersInfo = sprintf(
+                '
+    %d power users',
+                $this->createdPowerUsers
+            );
+        }
+
         $output->writeln(
             sprintf(
                 '[END] Created 
     %d users 
     %d verdicts from %d unique users
-    %d feedback entries from %d unique users
-    
+    %d feedback entries from %d unique users %s
+
     Runtime: %f seconds',
                 $this->createdUsers,
                 $this->createdVerdicts,
                 $this->createdVerdictsUniqueUsers,
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
+                $powerUsersInfo,
                 microtime(true) - $start
             )
         );
@@ -182,26 +214,30 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return int
      */
     private function createTestData() {
-        for ($i = 0; $i < $this->userAmount; $i++) {
-            $user = new User();
+        $powerUsersToCreate = 0;
 
+        if ($this->includePowerUsers) {
+            $powerUsersToCreate = $this->userAmount % self::POWER_USER_RATE;
+        }
+
+        for ($i = 0; $i < $this->userAmount; $i++) {
             $username = 'owtTestUser_' . $this->getRandomString();
             $email = $username . '@' . $this->getRandomString(5) . '.com';
 
+            $user = new User();
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setPassword($this->getRandomString());
 
             $this->userService->register($user);
 
-            if ($this->getRandomBoolWithProbability(0.15)) {
-                $amountOfOverwatches = mt_rand(400, 1000);
-            } else if ($this->getRandomBoolWithProbability(40)) {
-                $amountOfOverwatches = mt_rand(100, 350);
+            if ($powerUsersToCreate > 0 && $this->createdPowerUsers < $powerUsersToCreate) {
+                $amountOfOverwatches = mt_rand(1000, 5000);
+            } else if ($this->getRandomBoolWithProbability(20)) {
+                $amountOfOverwatches = mt_rand(40, 100);
             } else {
-                $amountOfOverwatches = mt_rand(0, 40);
+                $amountOfOverwatches = mt_rand(0, 20);
             }
-
             $this->createVerdicts($amountOfOverwatches, $user);
 
             if ($this->getRandomBoolWithProbability(0.2)) {

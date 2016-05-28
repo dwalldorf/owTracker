@@ -1,0 +1,40 @@
+@import "colors";
+@import "mixins";
+
+#main-wrapper {
+    .small-form {
+        max-width: 300px;
+    }
+
+    label {
+        color: $label-font-color;
+    }
+
+    label.checkbox-label {
+        color: $content-font-color;
+    }
+
+    input.form-control, select, textarea {
+        background: $default-bg-color;
+        border-color: $default-border-color;
+        color: $bright-font-color;
+    }
+
+    .btn {
+        border: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+
+        font-size: 18px;
+        letter-spacing: 1px;
+        padding: 4px 12px 6px 12px;
+    }
+
+    button, input, select, textarea {
+        @include notOutline();
+        &:active, &:hover, &:focus {
+            @include notOutline();
+        }
+    }
+}
