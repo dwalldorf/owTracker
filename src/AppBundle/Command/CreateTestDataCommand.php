@@ -176,19 +176,29 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->createTestData();
         }
 
+        $powerUsersInfo = '';
+        if ($this->includePowerUsers) {
+            $powerUsersInfo = sprintf(
+                '
+    %d power users',
+                $this->createdPowerUsers
+            );
+        }
+
         $output->writeln(
             sprintf(
                 '[END] Created 
     %d users 
     %d verdicts from %d unique users
-    %d feedback entries from %d unique users
-    
+    %d feedback entries from %d unique users %s
+
     Runtime: %f seconds',
                 $this->createdUsers,
                 $this->createdVerdicts,
                 $this->createdVerdictsUniqueUsers,
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
+                $powerUsersInfo,
                 microtime(true) - $start
             )
         );
@@ -208,7 +218,6 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
         if ($this->includePowerUsers) {
             $powerUsersToCreate = $this->userAmount % self::POWER_USER_RATE;
-            ldd($powerUsersToCreate);
         }
 
         for ($i = 0; $i < $this->userAmount; $i++) {
@@ -250,11 +259,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param int $amount
      * @param User $user
      */
-    private
-    function createVerdicts(
-        $amount,
-        User $user
-    ) {
+    private function createVerdicts($amount, User $user) {
         if ($this->verbose) {
             $this->info();
             $this->info('aim | vision | other | griefing | map');
@@ -287,10 +292,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param User $user
      * @return Verdict
      */
-    private
-    function getRandomVerdict(
-        User $user
-    ) {
+    private function getRandomVerdict(User $user) {
         $verdict = new Verdict();
         $verdict->setUserId($user->getId());
         $verdict->setMap($this->getRandomMap());
@@ -309,10 +311,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @param User $user
      */
-    private
-    function createFeedback(
-        User $user
-    ) {
+    private function createFeedback(User $user) {
         $feedback1 = $this->getRandomFeedback($user);
         $this->feedbackService->save($feedback1);
 
@@ -332,10 +331,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param User $user
      * @return Feedback
      */
-    private
-    function getRandomFeedback(
-        User $user
-    ) {
+    private function getRandomFeedback(User $user) {
         $feedback = new Feedback();
         $feedback->setCreatedBy($user->getId());
         $feedback->setCreatedTimestamp($this->getRandomDate());
@@ -356,10 +352,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param int $length
      * @return string
      */
-    private
-    function getRandomString(
-        $length = 10
-    ) {
+    private function getRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -373,8 +366,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @return \DateTime
      */
-    private
-    function getRandomDate() {
+    private function getRandomDate() {
         $from = strtotime('-60 days');
         $to = time();
 
@@ -386,8 +378,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @return bool
      */
-    private
-    function getRandomBool() {
+    private function getRandomBool() {
         return $this->getRandomBoolWithProbability(0.5);
     }
 
@@ -395,18 +386,14 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param float $probability
      * @return bool
      */
-    private
-    function getRandomBoolWithProbability(
-        $probability
-    ) {
+    private function getRandomBoolWithProbability($probability) {
         return mt_rand(1, self::PROBABILITY_LENGTH) <= $probability * self::PROBABILITY_LENGTH;
     }
 
     /**
      * @return array
      */
-    private
-    function getRandomMap() {
+    private function getRandomMap() {
         $mapPool = $this->overwatchService->getMapPool();
         $max = count($mapPool) - 1;
 
@@ -417,10 +404,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param bool $bool
      * @return string
      */
-    private
-    function xIf(
-        $bool
-    ) {
+    private function xIf($bool) {
         if ($bool) {
             return 'x';
         }
