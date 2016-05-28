@@ -147,8 +147,14 @@ class UserService extends BaseService {
      * @return User
      */
     private function getSecureUserCopy(User $user) {
-        $user->setPassword(null);
-        return $user;
+        $copy = new User();
+        $copy->setId($user->getId());
+        $copy->setUsername($user->getUsername());
+        $copy->setEmail($user->getEmail());
+        $copy->setIsAdmin($user->isIsAdmin());
+        $copy->setRegistered($user->getRegistered());
+
+        return $copy;
     }
 
     /**
