@@ -43,11 +43,11 @@ class UserScoreRepository extends BaseRepository {
      * @return UserScore[]
      */
     public function findByUserId($userId, $period = null) {
-        $criteria = ['user_id' => $userId];
+        $criteria = [
+            'user_id' => $userId,
+            'period'  => $period,
+        ];
 
-        if ($period) {
-            $criteria['period'] = $period;
-        }
         return $this->getRepository()->findBy($criteria);
     }
 
