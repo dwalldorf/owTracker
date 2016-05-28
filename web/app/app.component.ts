@@ -60,7 +60,7 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, AppLoadingComponent, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
+    directives: [ ROUTER_DIRECTIVES, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
     providers: [
         HttpService,
         CacheService,
