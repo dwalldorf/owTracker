@@ -21,6 +21,7 @@ import {VerdictDialogComponent} from "./overwatch/verdict-dialog.component";
 import {FlashService} from "./core/service/flash.service";
 import {FlashComponent} from "./core/flash.component";
 import {AdminComponent} from "./admin/admin.component";
+import {AppLoadingComponent} from "./core/apploading.component";
 
 enableProdMode();
 
@@ -59,7 +60,7 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, AdminComponent, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
+    directives: [ ROUTER_DIRECTIVES, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
     providers: [
         HttpService,
         CacheService,
@@ -83,10 +84,7 @@ export class AppComponent {
         AppConfig.ROUTE_NAME_REGISTER,
     ];
 
-    currentUser: User;
-
     restFinished = false;
-    isLoggedIn = false;
 
     constructor(router: Router, userService: UserService) {
         this.router = router;
@@ -102,14 +100,10 @@ export class AppComponent {
     }
 
     handleLoggedIn(user: User) {
-        this.currentUser = user;
-
         this.restFinished = true;
-        this.isLoggedIn = true;
     }
 
     handleNotLoggedIn() {
-        this.isLoggedIn = false;
         this.restFinished = true;
 
         var currentRouteAllowedWithoutLogin = false;
@@ -125,6 +119,15 @@ export class AppComponent {
         if (!currentRouteAllowedWithoutLogin) {
             this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
         }
+    }
+
+    isLoggedIn() {
+        var currentUser = this.userService.currentUser;
+
+        if (currentUser && currentUser.hasOwnProperty('id')) {
+            return currentUser.id.length == 24;
+        }
+        return false;
     }
 
     logout() {

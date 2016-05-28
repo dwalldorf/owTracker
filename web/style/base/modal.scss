@@ -1,0 +1,57 @@
+@import "colors";
+@import "mixins";
+
+$modal-bg: #12181e;
+$modal-header-bg: #1c2936;
+
+$modal-button-font-color: #ccd8cf;
+
+#main-wrapper {
+    .modal {
+        .modal-content {
+            background: $modal-bg;
+            color: $content-font-color;
+
+            .modal-header {
+                background: $modal-header-bg;
+                border-bottom: 0;
+                height: 35px;
+                padding: 5px 5px 0 30px;
+            }
+            .modal-footer {
+                border-top: 0;
+            }
+        }
+    }
+
+    .btn-modal {
+        border: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+
+        font-size: 18px;
+        letter-spacing: 1px;
+
+        height: 40px;
+        width: 240px;
+    }
+
+    .btn-modal-primary {
+        float: left;
+        @include linearGradient(#3d817a, #235c43);
+
+        &:hover {
+            @include linearGradient(darken(#3d817a, 3%), darken(#235c43, 3%));
+        }
+    }
+
+    .btn-modal-default {
+        float: right;
+        @include linearGradient(#486a94, #2f445f);
+
+        &:hover {
+            @include linearGradient(darken(#486a94, 3%), darken(#2f445f, 3%));
+        }
+    }
+}

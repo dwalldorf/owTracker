@@ -1,74 +1,83 @@
-<h1>Dashboard</h1>
-
-<div *ngIf="!restFinished"
-     class="app-loading">
+<div *ngIf="!restFinished">
+    <app-loading></app-loading>
 </div>
 
 <div *ngIf="userService.currentUser"
-     class="col-sm-8 verdict_list_container"
+     class="verdict_list_container"
      data-ng-controller="OverwatchController">
 
-    <h2>Your Overwatch verdicts</h2>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Your Overwatch verdicts</h2>
+        </div>
 
-    <div *ngIf="restFinished && displayVerdicts.length > 0">
-        <table class="table table-condensed table-bordered table-hover">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Map</th>
-                <th class="text-center">Aim assist</th>
-                <th class="text-center">Visual assist</th>
-                <th class="text-center">Other assist</th>
-                <th class="text-center">Griefing</th>
-            </tr>
-            </thead>
+        <div class="panel-body">
 
-            <tbody>
-            <tr *ngFor="let verdict of displayVerdicts">
-                <td>{{verdict.displayDate}}</td>
-                <td>{{verdict.map}}</td>
-                <td class="text-center">
-                <span *ngIf="verdict.aimAssist"
-                      class="glyphicon glyphicon-ok"></span>
-                <span *ngIf="!verdict.aimAssist"
-                      class="glyphicon glyphicon-remove"></span>
-                </td>
-                <td class="text-center">
-                <span *ngIf="verdict.visionAssist"
-                      class="glyphicon glyphicon-ok"></span>
-                <span *ngIf="!verdict.visionAssist"
-                      class="glyphicon glyphicon-remove"></span>
-                </td>
-                <td class="text-center">
-                <span *ngIf="verdict.otherAssist"
-                      class="glyphicon glyphicon-ok"></span>
-                <span *ngIf="!verdict.otherAssist"
-                      class="glyphicon glyphicon-remove"></span>
-                </td>
-                <td class="text-center">
-                <span *ngIf="verdict.griefing"
-                      class="glyphicon glyphicon-ok"></span>
-                <span *ngIf="!verdict.griefing"
-                      class="glyphicon glyphicon-remove"></span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+            <!-- no verdicts -->
+            <div *ngIf="restFinished && displayVerdicts.length == 0"
+                 class="alert alert-danger">
+                <h3>You didn't submit any verdicts yet.</h3>
+            </div>
 
-        <button class="btn btn-default btn-pager"
-                [disabled]="currentPage == 0"
-                (click)="paginate(currentPage - 1)">
-            <span>Previous</span>
-        </button>
-        {{currentPage + 1}}/{{numberOfPages}}
-        <button class="btn btn-default btn-pager"
-                [disabled]="currentPage >= numberOfPages - 1"
-                (click)="paginate(currentPage + 1)">
-            <span>Next</span>
-        </button>
-    </div>
+            <!-- verdicts available -->
+            <div *ngIf="restFinished && displayVerdicts.length > 0">
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Map</th>
+                        <th class="text-center">Aim assist</th>
+                        <th class="text-center">Visual assist</th>
+                        <th class="text-center">Other assist</th>
+                        <th class="text-center">Griefing</th>
+                    </tr>
+                    </thead>
 
-    <div *ngIf="restFinished && displayVerdicts.length == 0">
-        No verdicts yet.
+                    <tbody>
+                    <tr *ngFor="let verdict of displayVerdicts">
+                        <td>{{verdict.displayDate}}</td>
+                        <td>{{verdict.map}}</td>
+                        <td class="text-center">
+                            <span *ngIf="verdict.aimAssist"
+                                  class="glyphicon glyphicon-ok"></span>
+                            <span *ngIf="!verdict.aimAssist"
+                                  class="glyphicon glyphicon-remove"></span>
+                        </td>
+                        <td class="text-center">
+                            <span *ngIf="verdict.visionAssist"
+                                  class="glyphicon glyphicon-ok"></span>
+                            <span *ngIf="!verdict.visionAssist"
+                                  class="glyphicon glyphicon-remove"></span>
+                        </td>
+                        <td class="text-center">
+                            <span *ngIf="verdict.otherAssist"
+                                  class="glyphicon glyphicon-ok"></span>
+                            <span *ngIf="!verdict.otherAssist"
+                                  class="glyphicon glyphicon-remove"></span>
+                        </td>
+                        <td class="text-center">
+                            <span *ngIf="verdict.griefing"
+                                  class="glyphicon glyphicon-ok"></span>
+                            <span *ngIf="!verdict.griefing"
+                                  class="glyphicon glyphicon-remove"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- pagination -->
+                <button class="btn btn-pager"
+                        [disabled]="currentPage == 0"
+                        (click)="paginate(currentPage - 1)">
+                    <span>Previous</span>
+                </button>
+                {{currentPage + 1}}/{{numberOfPages}}
+                <button class="btn btn-pager"
+                        [disabled]="currentPage >= numberOfPages - 1"
+                        (click)="paginate(currentPage + 1)">
+                    <span>Next</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

@@ -103,7 +103,9 @@ class UserScoreService extends BaseService {
 
         if ($userScore) {
             $scores = $this->repository->getHigherThan($userScore, $period, $limit + 1, $offset);
-            $retVal->setItems($scores, $limit);
+            $dtos = $this->toDto($scores);
+
+            $retVal->setItems($dtos, $limit);
         }
 
         return $retVal;
@@ -122,7 +124,9 @@ class UserScoreService extends BaseService {
 
         if ($userScore) {
             $scores = $this->repository->getLowerThan($userScore, $period, $limit + 1, $offset);
-            $retVal->setItems($scores);
+            $dtos = $this->toDto($scores);
+
+            $retVal->setItems($dtos, $limit);
         }
 
         return $retVal;
