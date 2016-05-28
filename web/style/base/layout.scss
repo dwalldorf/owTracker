@@ -1,0 +1,95 @@
+@import "colors";
+@import "mixins";
+
+* {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 300;
+}
+
+body {
+    background: url('/static/img/page-bg.jpg') no-repeat fixed center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    color: $bright-font-color;
+}
+
+.alert-danger {
+    background: #f4e906;
+
+    h3 {
+        color: $default-bg-color;
+        margin: 0;
+    }
+}
+
+#main-wrapper {
+    margin: 10px 25px 0 25px;
+    max-width: 1500px !important;
+
+    #top-nav {
+        background: $top-nav-btn-bg;
+        height: 35px;
+    }
+
+    .btn {
+        background: $top-nav-btn-bg;
+        color: $bright-font-color;
+        margin: 0;
+
+        &:active, &:hover, &.active {
+            @include linearGradient(#45648c, #354f75);
+        }
+
+        &.glyphicon {
+            top: 0;
+        }
+    }
+    .btn-home {
+        width: 50px;
+    }
+
+    #page-body {
+        color: $content-font-color;
+        padding-top: 45px;
+
+        .btn {
+            background: lighten($default-bg-color, 5%);
+            &:hover {
+                background: lighten($default-bg-color, 2%);
+            }
+        }
+        .btn-primary {
+            min-width: 100px;
+            @include linearGradient(#3d817a, #235c43);
+
+            &:hover {
+                @include linearGradient(darken(#3d817a, 3%), darken(#235c43, 3%));
+            }
+        }
+
+        .panel {
+            opacity: 0.9;
+            max-height: 80vh;
+            overflow-y: scroll;
+
+            &.panel, .panel-heading, .panel-footer {
+                background: darken($default-bg-color, 5%);
+                border-color: $default-border-color;
+            }
+
+            .panel-heading h2 {
+                color: $bright-font-color;
+                font-weight: 600;
+                margin: 0;
+
+                small {
+                    color: $label-font-color;
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+}

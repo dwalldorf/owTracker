@@ -36,7 +36,7 @@ export class ScoreboardComponent {
             name: 'all time'
         }
     ];
-    period = this.periods[ 0 ];
+    selectedPeriod = 7;
     scoreboard = {
         higher: <ItemCollection>{},
         self: UserScore,
@@ -53,9 +53,9 @@ export class ScoreboardComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.getUserScore(this.period.p);
-        this.getHigherScores(this.period.p);
-        this.getLowerScores(this.period.p);
+        this.getUserScore(this.selectedPeriod);
+        this.getHigherScores(this.selectedPeriod);
+        this.getLowerScores(this.selectedPeriod);
     }
 
     restFinished() {
@@ -70,19 +70,27 @@ export class ScoreboardComponent {
         return (this.scoreboard.higher.totalItems == 0 && this.scoreboard.lower.totalItems == 0);
     }
 
-    updatePeriod() {
+    updatePeriod(period) {
+        this.selectedPeriod = period;
+
         this.resetRestStatusFlags();
-        this.getUserScore(this.period.p);
+
+        this.scoreboard.higher.setItems(null);
+        this.scoreboard.lower.setItems(null);
+
+        this.getUserScore(this.selectedPeriod);
+        this.getHigherScores(this.selectedPeriod);
+        this.getLowerScores(this.selectedPeriod);
     }
 
     loadMoreHigher() {
         var offset = this.scoreboard.higher.totalItems;
-        this.getHigherScores(this.period.p, offset);
+        this.getHigherScores(this.selectedPeriod, offset);
     }
 
     loadMoreLower() {
         var offset = this.scoreboard.lower.totalItems;
-        this.getLowerScores(this.period.p, offset);
+        this.getLowerScores(this.selectedPeriod, offset);
     }
 
     private getUserScore(period: number) {

@@ -9,7 +9,7 @@ import {ItemCollection} from "../core/model/item.collection";
 })
 export class DashboardComponent {
 
-    private MAX_ITEMS_PER_PAGE = 10;
+    private MAX_ITEMS_PER_PAGE = 20;
 
     private verdictService: VerdictService;
 

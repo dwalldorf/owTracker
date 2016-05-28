@@ -1,18 +1,10 @@
-@import "layout";
-@import "flash";
-@import "forms";
-@import "index";
-@import "scores";
-@import "feedback";
-@import "verdict-dialog";
+@import "base/layout";
+@import "base/flash";
+@import "base/forms";
+@import "base/tables";
+@import "base/modal";
 
-.app-loading {
-    background: url('/static/img/loading.gif');
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -32px;
-    margin-left: -32px;
-    height: 32px;
-    width: 32px;
-}
+@import "modules/scoreboard";
+@import "user";
+@import "dashboard";
+@import "feedback";

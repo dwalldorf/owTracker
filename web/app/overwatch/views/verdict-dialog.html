@@ -1,4 +1,4 @@
-<button class="btn btn-primary"
+<button class="btn"
         (click)="showDialog()">
     New Verdict
 </button>
@@ -7,8 +7,8 @@
      id="verdict-dialog"
      role="dialog">
 
-    <div *ngIf="!restFinished"
-         class="app-loading">
+    <div *ngIf="!restFinished">
+        <app-loading></app-loading>
     </div>
 
     <div *ngIf="restFinished"
@@ -49,7 +49,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-8 checkbox">
-                            <label>
+                            <label class="checkbox-label">
                                 <input type="checkbox"
                                        id="ov_aim"
                                        [(ngModel)]="verdict.aimAssist"/>
@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-8 checkbox">
-                            <label>
+                            <label class="checkbox-label">
                                 <input type="checkbox"
                                        id="ov_visual"
                                        [(ngModel)]="verdict.visionAssist"/>
@@ -71,7 +71,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-8 checkbox">
-                            <label>
+                            <label class="checkbox-label">
                                 <input type="checkbox"
                                        id="ov_other"
                                        [(ngModel)]="verdict.otherAssist"/>
@@ -82,7 +82,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-8 checkbox">
-                            <label>
+                            <label class="checkbox-label">
                                 <input type="checkbox"
                                        id="ov_griefing"
                                        [(ngModel)]="verdict.griefing"/>
@@ -97,13 +97,13 @@
                 <button type="submit"
                         [disabled]="!restFinished"
                         (click)="submitVerdict()"
-                        class="btn btn-verdict btn-verdict-submit">
+                        class="btn btn-modal btn-modal-primary">
                     Submit Verdict
                 </button>
                 <button type="button"
                         [disabled]="!restFinished"
                         (click)="closeDialog()"
-                        class="btn btn-verdict btn-verdict-cancel">
+                        class="btn btn-modal btn-modal-default">
                     Cancel
                 </button>
             </div>

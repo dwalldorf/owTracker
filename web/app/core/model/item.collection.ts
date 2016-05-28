@@ -21,6 +21,10 @@ export class ItemCollection {
     }
 
     public setItems(items) {
+        if (!items) {
+            items = [];
+        }
+
         this.items = items;
         this.totalItems = this.items.length;
     }

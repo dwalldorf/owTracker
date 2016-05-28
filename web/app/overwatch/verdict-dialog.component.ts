@@ -1,4 +1,4 @@
-import {Component, EventEmitter} from '@angular/core';
+import {Component} from '@angular/core';
 import {Verdict} from "./model/verdict";
 import {HttpService} from "../core/service/http.service";
 import {VerdictService} from "./service/verdict.service";

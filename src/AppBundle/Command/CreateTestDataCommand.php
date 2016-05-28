@@ -16,6 +16,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     const PROBABILITY_LENGTH = 100000;
 
+    const POWER_USER_RATE = 15;
+
     /**
      * @var UserService
      */
@@ -47,6 +49,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private $verdictAmount;
 
     /**
+     * @var bool
+     */
+    private $includePowerUsers = false;
+
+    /**
      * @var int
      */
     private $userAmount;
@@ -76,6 +83,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      */
     private $createdFeedbackUniqueUsers = 0;
 
+    /**
+     * @var int
+     */
+    private $createdPowerUsers = 0;
+
     const OPT_USER_NAME = 'user';
 
     const OPT_VERDICT_AMOUNT_NAME = 'verdicts';
@@ -86,25 +98,34 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     const OPT_USER_AMOUNT_DEFAULT = 20;
 
+    const OPT_POWER_USER = 'powerUser';
+
     protected function configure() {
         $this->setName('owt:createTestData')
             ->addOption(
                 self::OPT_USER_NAME,
                 'u',
                 InputArgument::OPTIONAL,
-                'user\'s mongo id or email address'
+                'User\'s mongo id or email address'
             )
             ->addOption(
                 self::OPT_USER_AMOUNT_NAME,
                 'a',
                 InputArgument::OPTIONAL,
-                'amount of users to generate (20 if not set)'
+                'Amount of users to generate (20 if not set)'
             )
             ->addOption(
                 self::OPT_VERDICT_AMOUNT_NAME,
                 'o',
                 InputArgument::OPTIONAL,
-                'only if user specified - amount of overwatch verdicts to generate (20 if not set)'
+                'Only if user specified - amount of overwatch verdicts to generate (20 if not set)'
+            )
+            ->addOption(
+                self::OPT_POWER_USER,
+                'p',
+                InputArgument::OPTIONAL,
+                'Include power users. Will generate user with 10% chance of being a power user with 800 - 5000 verdicts. Useful when working on score calculation.',
+                false
             );
     }
 
@@ -114,6 +135,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $this->verbose = $input->getOption('verbose');
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
         $this->verdictAmount = $input->getOption(self::OPT_VERDICT_AMOUNT_NAME);
+        $this->includePowerUsers = $input->getOption(self::OPT_POWER_USER);
 
         $this->userAmount = $input->getOption(self::OPT_USER_AMOUNT_NAME);
 
@@ -182,26 +204,31 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @return int
      */
     private function createTestData() {
-        for ($i = 0; $i < $this->userAmount; $i++) {
-            $user = new User();
+        $powerUsersToCreate = 0;
 
+        if ($this->includePowerUsers) {
+            $powerUsersToCreate = $this->userAmount % self::POWER_USER_RATE;
+            ldd($powerUsersToCreate);
+        }
+
+        for ($i = 0; $i < $this->userAmount; $i++) {
             $username = 'owtTestUser_' . $this->getRandomString();
             $email = $username . '@' . $this->getRandomString(5) . '.com';
 
+            $user = new User();
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setPassword($this->getRandomString());
 
             $this->userService->register($user);
 
-            if ($this->getRandomBoolWithProbability(0.15)) {
-                $amountOfOverwatches = mt_rand(400, 1000);
-            } else if ($this->getRandomBoolWithProbability(40)) {
-                $amountOfOverwatches = mt_rand(100, 350);
+            if ($powerUsersToCreate > 0 && $this->createdPowerUsers < $powerUsersToCreate) {
+                $amountOfOverwatches = mt_rand(1000, 5000);
+            } else if ($this->getRandomBoolWithProbability(20)) {
+                $amountOfOverwatches = mt_rand(40, 100);
             } else {
-                $amountOfOverwatches = mt_rand(0, 40);
+                $amountOfOverwatches = mt_rand(0, 20);
             }
-
             $this->createVerdicts($amountOfOverwatches, $user);
 
             if ($this->getRandomBoolWithProbability(0.2)) {
@@ -223,7 +250,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param int $amount
      * @param User $user
      */
-    private function createVerdicts($amount, User $user) {
+    private
+    function createVerdicts(
+        $amount,
+        User $user
+    ) {
         if ($this->verbose) {
             $this->info();
             $this->info('aim | vision | other | griefing | map');
@@ -256,7 +287,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param User $user
      * @return Verdict
      */
-    private function getRandomVerdict(User $user) {
+    private
+    function getRandomVerdict(
+        User $user
+    ) {
         $verdict = new Verdict();
         $verdict->setUserId($user->getId());
         $verdict->setMap($this->getRandomMap());
@@ -275,7 +309,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @param User $user
      */
-    private function createFeedback(User $user) {
+    private
+    function createFeedback(
+        User $user
+    ) {
         $feedback1 = $this->getRandomFeedback($user);
         $this->feedbackService->save($feedback1);
 
@@ -295,7 +332,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param User $user
      * @return Feedback
      */
-    private function getRandomFeedback(User $user) {
+    private
+    function getRandomFeedback(
+        User $user
+    ) {
         $feedback = new Feedback();
         $feedback->setCreatedBy($user->getId());
         $feedback->setCreatedTimestamp($this->getRandomDate());
@@ -316,7 +356,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param int $length
      * @return string
      */
-    private function getRandomString($length = 10) {
+    private
+    function getRandomString(
+        $length = 10
+    ) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -330,7 +373,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @return \DateTime
      */
-    private function getRandomDate() {
+    private
+    function getRandomDate() {
         $from = strtotime('-60 days');
         $to = time();
 
@@ -342,7 +386,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     /**
      * @return bool
      */
-    private function getRandomBool() {
+    private
+    function getRandomBool() {
         return $this->getRandomBoolWithProbability(0.5);
     }
 
@@ -350,14 +395,18 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param float $probability
      * @return bool
      */
-    private function getRandomBoolWithProbability($probability) {
+    private
+    function getRandomBoolWithProbability(
+        $probability
+    ) {
         return mt_rand(1, self::PROBABILITY_LENGTH) <= $probability * self::PROBABILITY_LENGTH;
     }
 
     /**
      * @return array
      */
-    private function getRandomMap() {
+    private
+    function getRandomMap() {
         $mapPool = $this->overwatchService->getMapPool();
         $max = count($mapPool) - 1;
 
@@ -368,7 +417,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param bool $bool
      * @return string
      */
-    private function xIf($bool) {
+    private
+    function xIf(
+        $bool
+    ) {
         if ($bool) {
             return 'x';
         }
