@@ -21,12 +21,14 @@ class Verdict {
 
     /**
      * @ODM\String(name="user_id", nullable=false)
+     * @ODM\Index
      * @var string
      */
     private $userId;
 
     /**
      * @ODM\Date(name="created", nullable=false)
+     * @ODM\Index(order="desc")
      * @var \DateTime
      */
     private $creationDate;

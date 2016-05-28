@@ -14,44 +14,46 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class UserScore {
 
     /**
-     * @var string
      * @ODM\Id
+     * @var string
      */
     private $id;
 
     /**
-     * @var int
      * @ODM\Int(nullable=false)
+     * @ODM\Index(order="asc")
+     * @var int
      */
     private $period;
 
     /**
-     * @var string
      * @ODM\String(name="user_id", nullable=false)
+     * @var string
      */
     private $userId;
 
     /**
-     * @var \DateTime
      * @ODM\Date(nullable=false)
+     * @var \DateTime
      */
     private $calculated;
 
     /**
-     * @var float
      * @ODM\Float(nullable=false)
+     * @var float
      */
     private $calculatedInMs;
 
     /**
-     * @var int
      * @ODM\Int(nullable=false)
+     * @ODM\Index(order="desc")
+     * @var int
      */
     private $position;
 
     /**
-     * @var int
      * @ODM\Int(nullable=false)
+     * @var int
      */
     private $verdicts = 0;
 
