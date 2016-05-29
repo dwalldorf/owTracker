@@ -1,13 +1,15 @@
-<div *ngIf="!restFinished()"
-     class="app-loading">
+<div *ngIf="!restFinished()">
+    <h1>LOADING</h1>
+    <app-loading></app-loading>
 </div>
 
 
 <div class="scoreboard-container">
-
     <div class="panel panel-default">
+
         <div class="panel-heading">
             <div class="row">
+                <!-- title -->
                 <div class="col-xs-6">
                     <h2>Scoreboard
                         <small>
@@ -18,6 +20,8 @@
                         </small>
                     </h2>
                 </div>
+
+                <!-- period picker -->
                 <div class="col-xs-6">
                     <div class="scoreboard-period-picker pull-right">
                         <label for="periodPicker">filter:</label>

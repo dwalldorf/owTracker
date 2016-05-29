@@ -2,11 +2,13 @@ import {Component} from '@angular/core';
 import {Verdict} from "./model/verdict";
 import {HttpService} from "../core/service/http.service";
 import {VerdictService} from "./service/verdict.service";
+import {AppLoadingComponent} from "../core/apploading.component";
 
 declare var jQuery: any;
 @Component({
     selector: 'verdict-dialog',
-    templateUrl: 'app/overwatch/views/verdict-dialog.html'
+    templateUrl: 'app/overwatch/views/verdict-dialog.html',
+    directives: [ AppLoadingComponent ],
 })
 export class VerdictDialogComponent {
 

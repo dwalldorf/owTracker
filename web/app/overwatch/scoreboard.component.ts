@@ -4,9 +4,11 @@ import {ItemCollection} from "../core/model/item.collection";
 import {VerdictService} from "./service/verdict.service";
 import {UserService} from "../user/service/user.service";
 import {UserScore} from "./model/user.score";
+import {AppLoadingComponent} from "../core/apploading.component";
 
 @Component({
-    templateUrl: 'app/overwatch/views/scoreboard.html'
+    templateUrl: 'app/overwatch/views/scoreboard.html',
+    directives: [ AppLoadingComponent ],
 })
 export class ScoreboardComponent {
 

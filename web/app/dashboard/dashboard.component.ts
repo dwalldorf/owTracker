@@ -3,9 +3,11 @@ import {Component} from '@angular/core';
 import {VerdictService} from "../overwatch/service/verdict.service";
 import {UserService} from "../user/service/user.service";
 import {ItemCollection} from "../core/model/item.collection";
+import {AppLoadingComponent} from "../core/apploading.component";
 
 @Component({
     templateUrl: 'app/dashboard/views/dashboard.html',
+    directives: [ AppLoadingComponent ],
 })
 export class DashboardComponent {
 
