@@ -3,15 +3,17 @@ import {Component} from '@angular/core';
 import {VerdictService} from "../overwatch/service/verdict.service";
 import {UserService} from "../user/service/user.service";
 import {ItemCollection} from "../core/model/item.collection";
-import {AppLoadingComponent} from "../core/apploading.component";
+import {AppLoadingService} from "../core/service/apploading.service";
+import {AppConfig} from "../app.config";
 
 @Component({
     templateUrl: 'app/dashboard/views/dashboard.html',
-    directives: [ AppLoadingComponent ],
 })
 export class DashboardComponent {
 
     private MAX_ITEMS_PER_PAGE = 20;
+
+    private appLoadingService: AppLoadingService;
 
     private verdictService: VerdictService;
 
@@ -27,7 +29,8 @@ export class DashboardComponent {
 
     currentPage = 0;
 
-    constructor(verdictService: VerdictService, userService: UserService) {
+    constructor(appLoadingService: AppLoadingService, verdictService: VerdictService, userService: UserService) {
+        this.appLoadingService = appLoadingService;
         this.verdictService = verdictService;
         this.userService = userService;
     }
@@ -43,6 +46,7 @@ export class DashboardComponent {
     }
 
     fetchVerdicts() {
+        this.appLoadingService.setLoading(AppConfig.ROUTE_NAME_DASHBOARD);
         this.userService.getCurrentUser().subscribe(user => {
             this.verdictService
                 .getUserVerdicts(user.id)
@@ -52,13 +56,15 @@ export class DashboardComponent {
 
     private setUserVerdicts(verdictCollection) {
         this.userVerdicts.setItems(verdictCollection.items);
-        this.restFinished = true;
 
         var numberOfEntries = this.userVerdicts.totalItems;
         if (numberOfEntries > 0) {
             this.numberOfPages = Math.ceil(numberOfEntries / this.MAX_ITEMS_PER_PAGE);
             this.paginate(0);
         }
+
+        this.restFinished = true;
+        this.appLoadingService.finishedLoading(AppConfig.ROUTE_NAME_DASHBOARD);
     }
 
     paginate(page: number) {

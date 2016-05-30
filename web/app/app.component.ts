@@ -22,6 +22,7 @@ import {FlashService} from "./core/service/flash.service";
 import {FlashComponent} from "./core/flash.component";
 import {AdminComponent} from "./admin/admin.component";
 import {AppLoadingComponent} from "./core/apploading.component";
+import {AppLoadingService} from "./core/service/apploading.service";
 
 enableProdMode();
 
@@ -60,8 +61,9 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
+    directives: [ ROUTER_DIRECTIVES, AppLoadingComponent, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
     providers: [
+        AppLoadingService,
         HttpService,
         CacheService,
         FlashService,
@@ -75,9 +77,11 @@ enableProdMode();
 })
 export class AppComponent {
 
-    private userService: UserService;
-
     private router: Router;
+
+    private appLoadingService: AppLoadingService;
+
+    private userService: UserService;
 
     private allowedRoutesWithoutLogin = [
         AppConfig.ROUTE_NAME_LOGIN,
@@ -86,24 +90,28 @@ export class AppComponent {
 
     restFinished = false;
 
-    constructor(router: Router, userService: UserService) {
+    constructor(router: Router, appLoadingService: AppLoadingService, userService: UserService) {
         this.router = router;
+        this.appLoadingService = appLoadingService;
         this.userService = userService;
     }
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
+        this.appLoadingService.setLoading('app');
         this.userService.getCurrentUser().subscribe(
-            user => this.handleLoggedIn(user),
+            () => this.handleLoggedIn(),
             () => this.handleNotLoggedIn()
         );
     }
 
-    handleLoggedIn(user: User) {
+    handleLoggedIn() {
+        this.appLoadingService.finishedLoading('app');
         this.restFinished = true;
     }
 
     handleNotLoggedIn() {
+        this.appLoadingService.finishedLoading('app');
         this.restFinished = true;
 
         var currentRouteAllowedWithoutLogin = false;

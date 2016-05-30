@@ -2,33 +2,38 @@ import {Component} from '@angular/core';
 import {Verdict} from "./model/verdict";
 import {HttpService} from "../core/service/http.service";
 import {VerdictService} from "./service/verdict.service";
-import {AppLoadingComponent} from "../core/apploading.component";
+import {AppLoadingService} from "../core/service/apploading.service";
 
 declare var jQuery: any;
 @Component({
     selector: 'verdict-dialog',
     templateUrl: 'app/overwatch/views/verdict-dialog.html',
-    directives: [ AppLoadingComponent ],
 })
 export class VerdictDialogComponent {
+
+    private STATUS_ID = 'verdictDialog';
 
     private httpService: HttpService;
 
     private verdictService: VerdictService;
 
+    private appLoadingService: AppLoadingService;
+
     restFinished = false;
     verdict: Verdict;
     mapPool = [];
 
-    constructor(verdictService: VerdictService, httpService: HttpService) {
+    constructor(verdictService: VerdictService, httpService: HttpService, appLoadingService: AppLoadingService) {
         this.verdictService = verdictService;
         this.httpService = httpService;
+        this.appLoadingService = appLoadingService;
 
         this.resetVerdict();
     }
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
+        this.appLoadingService.setLoading(this.STATUS_ID);
         this.verdictService
             .getMapPool()
             .subscribe(maps => this.setMapPool(maps));
@@ -54,7 +59,9 @@ export class VerdictDialogComponent {
 
     private setMapPool(maps) {
         this.mapPool = maps;
+        
         this.restFinished = true;
+        this.appLoadingService.finishedLoading(this.STATUS_ID);
     }
 
     private resetVerdict() {

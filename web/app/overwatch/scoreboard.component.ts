@@ -4,13 +4,19 @@ import {ItemCollection} from "../core/model/item.collection";
 import {VerdictService} from "./service/verdict.service";
 import {UserService} from "../user/service/user.service";
 import {UserScore} from "./model/user.score";
-import {AppLoadingComponent} from "../core/apploading.component";
+import {AppLoadingService} from "../core/service/apploading.service";
+import {AppConfig} from "../app.config";
 
 @Component({
     templateUrl: 'app/overwatch/views/scoreboard.html',
-    directives: [ AppLoadingComponent ],
 })
 export class ScoreboardComponent {
+
+    private LOADING_STATUS = AppConfig.ROUTE_NAME_SCOREBOARD;
+    private LOADING_STATUS_HIGHER = this.LOADING_STATUS + ':higher';
+    private LOADING_STATUS_LOWER = this.LOADING_STATUS + ':lower';
+
+    private appLoadingService: AppLoadingService;
 
     private verdictService: VerdictService;
 
@@ -45,7 +51,8 @@ export class ScoreboardComponent {
         lower: <ItemCollection>{},
     };
 
-    constructor(verdictService: VerdictService, userService: UserService) {
+    constructor(appLoadingService: AppLoadingService, verdictService: VerdictService, userService: UserService) {
+        this.appLoadingService = appLoadingService;
         this.verdictService = verdictService;
         this.userService = userService;
 
@@ -55,13 +62,15 @@ export class ScoreboardComponent {
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.getUserScore(this.selectedPeriod);
-        this.getHigherScores(this.selectedPeriod);
-        this.getLowerScores(this.selectedPeriod);
+        this.getScoreboard(this.selectedPeriod);
     }
 
     restFinished() {
-        return (this.higherScoresFetched && this.lowerScoresFetched && this.userScoreFetched);
+        if (this.higherScoresFetched && this.lowerScoresFetched && this.userScoreFetched) {
+            this.appLoadingService.finishedLoading(AppConfig.ROUTE_NAME_SCOREBOARD);
+            return true;
+        }
+        return false;
     }
 
     noScoresPresent() {
@@ -74,15 +83,7 @@ export class ScoreboardComponent {
 
     updatePeriod(period) {
         this.selectedPeriod = period;
-
-        this.resetRestStatusFlags();
-
-        this.scoreboard.higher.setItems(null);
-        this.scoreboard.lower.setItems(null);
-
-        this.getUserScore(this.selectedPeriod);
-        this.getHigherScores(this.selectedPeriod);
-        this.getLowerScores(this.selectedPeriod);
+        this.getScoreboard(this.selectedPeriod);
     }
 
     loadMoreHigher() {
@@ -93,6 +94,18 @@ export class ScoreboardComponent {
     loadMoreLower() {
         var offset = this.scoreboard.lower.totalItems;
         this.getLowerScores(this.selectedPeriod, offset);
+    }
+
+    private getScoreboard(period: number) {
+        this.resetRestStatusFlags();
+        this.appLoadingService.setLoading(this.LOADING_STATUS);
+
+        this.scoreboard.higher.setItems(null);
+        this.scoreboard.lower.setItems(null);
+
+        this.getUserScore(period);
+        this.getHigherScores(period);
+        this.getLowerScores(period);
     }
 
     private getUserScore(period: number) {
@@ -109,6 +122,7 @@ export class ScoreboardComponent {
     }
 
     private getHigherScores(period: number, offset = 0) {
+        this.appLoadingService.setLoading(this.LOADING_STATUS_HIGHER);
         this.userService.getCurrentUser()
             .subscribe(user => {
                 this.verdictService.getHigherScores(user.id, period, offset)
@@ -117,11 +131,13 @@ export class ScoreboardComponent {
                         this.scoreboard.higher.hasMore = scores.hasMore;
 
                         this.higherScoresFetched = true;
+                        this.appLoadingService.finishedLoading(this.LOADING_STATUS_HIGHER);
                     });
             });
     }
 
     private getLowerScores(period: number, offset = 0) {
+        this.appLoadingService.setLoading(this.LOADING_STATUS_LOWER);
         this.userService.getCurrentUser()
             .subscribe(user => {
                 this.verdictService.getLowerScores(user.id, period, offset)
@@ -130,6 +146,7 @@ export class ScoreboardComponent {
                         this.scoreboard.lower.hasMore = scores.hasMore;
 
                         this.lowerScoresFetched = true;
+                        this.appLoadingService.finishedLoading(this.LOADING_STATUS_LOWER);
                     });
             });
     }
