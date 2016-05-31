@@ -15,3 +15,10 @@
     -moz-box-shadow: none !important;
     box-shadow: none !important;
 }
+
+@mixin trimTextOverflow() {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
