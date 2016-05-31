@@ -13,6 +13,12 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  */
 class Feedback {
 
+    const STATUS_NEW = 'new';
+
+    const STATUS_READ = 'read';
+
+    const STATUS_ANSWERED = 'answered';
+
     /**
      * @var string
      * @ODM\Id
@@ -36,6 +42,19 @@ class Feedback {
      * @ODM\Hash
      */
     private $feedback;
+
+    /**
+     * @ODM\String
+     * @var string
+     */
+    private $status = self::STATUS_NEW;
+
+    /**
+     * @ODM\Bool
+     * @ODM\Index
+     * @var bool
+     */
+    private $archived = false;
 
     /**
      * @return string
@@ -91,5 +110,33 @@ class Feedback {
      */
     public function setFeedback($feedback) {
         $this->feedback = $feedback;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus() {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isArchived() {
+        return $this->archived;
+    }
+
+    /**
+     * @param boolean $archived
+     */
+    public function setArchived($archived) {
+        $this->archived = $archived;
     }
 }
