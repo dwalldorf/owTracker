@@ -9,10 +9,12 @@
                 <div class="col-xs-8">
                     <button class="btn glyphicon glyphicon-home"
                             [class.active]="router.isRouteActive(router.generate(['Dashboard']))"
+                            title="Dashboard"
                             [routerLink]="['Dashboard']">
                     </button>
                     <button class="btn btn-default"
                             [class.active]="router.isRouteActive(router.generate(['Scoreboard']))"
+                            title="Scoreboard"
                             [routerLink]="['Scoreboard']">
                         Scoreboard
                     </button>
@@ -23,6 +25,7 @@
                     <feedback-dialog></feedback-dialog>
 
                     <button class="btn btn-logout glyphicon glyphicon-off"
+                            title="Logout"
                             (click)="logout()">
                     </button>
                 </div>

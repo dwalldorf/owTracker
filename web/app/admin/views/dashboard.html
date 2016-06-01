@@ -1,1 +1,45 @@
-<h1>Admin Dashboard</h1>
+<div class="admin-dashboard-container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Admin Dashboard</h2>
+        </div>
+
+        <div class="panel-body">
+            <table *ngIf="restFinished"
+                   class="table table-generic table-numeric">
+                <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Last 24h</th>
+                    <th>Last 7 days</th>
+                    <th>Last 30 days</th>
+                    <th>total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Users</td>
+                    <td>{{stats.usersLast24h}}</td>
+                    <td>{{stats.usersLast7d}}</td>
+                    <td>{{stats.usersLast30d}}</td>
+                    <td>{{stats.totalUsers}}</td>
+                </tr>
+                <tr>
+                    <td>Verdicts</td>
+                    <td>{{stats.verdictsLast24h}}</td>
+                    <td>{{stats.verdictsLast7d}}</td>
+                    <td>{{stats.verdictsLast30d}}</td>
+                    <td>{{stats.totalVerdicts}}</td>
+                </tr>
+                <tr>
+                    <td>Feedback</td>
+                    <td>{{stats.feedbackLast24h}}</td>
+                    <td>{{stats.feedbackLast7d}}</td>
+                    <td>{{stats.feedbackLast30d}}</td>
+                    <td>{{stats.totalFeedback}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -23,6 +23,7 @@ import {FlashComponent} from "./core/flash.component";
 import {AdminComponent} from "./admin/admin.component";
 import {AppLoadingComponent} from "./core/apploading.component";
 import {AppLoadingService} from "./core/service/apploading.service";
+import {AdminStatsService} from "./admin/service/admin-stat.service";
 
 enableProdMode();
 
@@ -72,7 +73,8 @@ enableProdMode();
         VerdictService,
         FeedbackService,
 
-        AdminComponent
+        AdminComponent,
+        AdminStatsService
     ],
 })
 export class AppComponent {

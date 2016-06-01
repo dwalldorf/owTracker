@@ -1,32 +1,39 @@
-<h1>Feedback</h1>
-
-<table *ngIf="restFinished"
-       class="table">
-    <thead>
-    <tr>
-        <th>Time</th>
-        <th>Username</th>
-        <th>Like</th>
-        <th>Message</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let feedback of feedback.items">
-        <td>
-            {{feedback.createdTimestamp}}
-        </td>
-        <td>
-            {{feedback.createdBy.username}}
-        </td>
-        <td>
-            <span *ngIf="feedback.feedback.like"
-                  class="glyphicon glyphicon-ok"></span>
-            <span *ngIf="!feedback.feedback.like"
-                  class="glyphicon glyphicon-remove"></span>
-        </td>
-        <td>
-            {{feedback.feedback.freetext}}
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="admin-feedback-container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Feedback</h2>
+        </div>
+        <div class="panel-body">
+            <table *ngIf="restFinished"
+                   class="table">
+                <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Username</th>
+                    <th>Like</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let feedback of feedback.items">
+                    <td>
+                        {{feedback.createdTimestamp}}
+                    </td>
+                    <td>
+                        {{feedback.createdBy.username}}
+                    </td>
+                    <td>
+                        <span *ngIf="feedback.feedback.like"
+                              class="glyphicon glyphicon-ok"></span>
+                        <span *ngIf="!feedback.feedback.like"
+                              class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td class="trim-text-overflow">
+                        {{feedback.status}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
