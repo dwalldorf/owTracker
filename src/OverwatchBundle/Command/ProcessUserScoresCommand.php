@@ -52,6 +52,7 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
 
         foreach ($periods as $period) {
             $aggregatedUserScores = $this->overwatchRepository->getUserscores($period);
+            $this->overwatchRepository->deleteByPeriod($period);
 
             foreach ($aggregatedUserScores as $aggregatedUserScore) {
                 $userScore = new UserScore();
