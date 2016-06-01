@@ -58,6 +58,17 @@ class OverwatchRepository extends BaseRepository {
             ->execute();
     }
 
+    /**
+     * @param int $period
+     */
+    public function deleteByPeriod($period) {
+        $this->getQueryBuilder()
+            ->remove()
+            ->field('period')->equals($period)
+            ->getQuery()
+            ->execute();
+    }
+
     public function getUserscores($period = null) {
         $qb = $this->getQueryBuilder();
 
@@ -79,5 +90,23 @@ class OverwatchRepository extends BaseRepository {
             ->getQuery()
             ->execute()
             ->toArray();
+    }
+
+    /**
+     * @param \DateTime $from
+     * @return int
+     */
+    public function getVerdictCount(\DateTime $from = null) {
+        $qb = $this->getQueryBuilder()
+            ->sort('creationDate');
+
+        if ($from != null) {
+            $date = new \MongoDate($from->getTimestamp());
+            $qb->field('creationDate')->gte($date);
+        }
+
+        return $qb->getQuery()
+            ->execute()
+            ->count();
     }
 }

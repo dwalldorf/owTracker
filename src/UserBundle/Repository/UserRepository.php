@@ -82,4 +82,20 @@ class UserRepository extends BaseRepository {
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * @param \DateTime|null $from
+     * @return int
+     */
+    public function getUserCount(\DateTime $from = null) {
+        $qb = $this->getQueryBuilder();
+
+        if ($from != null) {
+            $qb->field('registered')->gte($from->getTimestamp());
+        }
+
+        return $qb->getQuery()
+            ->execute()
+            ->count();
+    }
 }

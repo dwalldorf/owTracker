@@ -32,7 +32,9 @@ class UserService extends BaseService {
         }
 
         $user->setPassword($this->encryptPassword($user->getPassword()));
-        $user->setRegistered(time());
+        if (!$user->getRegistered()) {
+            $user->setRegistered(time());
+        }
 
         return $this->repository->save($user);
     }
@@ -152,6 +154,21 @@ class UserService extends BaseService {
      */
     public function deleteUser(User $user) {
         $this->repository->remove($user);
+    }
+
+    /**
+     * @param \DateTime $from
+     * @return int
+     */
+    public function getUserCountByTime(\DateTime $from) {
+        return $this->repository->getUserCount($from);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalUserCount() {
+        return $this->repository->getUserCount();
     }
 
     /**

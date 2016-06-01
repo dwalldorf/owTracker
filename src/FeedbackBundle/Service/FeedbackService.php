@@ -49,6 +49,15 @@ class FeedbackService extends BaseService {
         $this->feedbackRepository->deleteByUserId($user->getId());
     }
 
+    public function getFeedbackCountByTime(\DateTime $from) {
+        return $this->feedbackRepository->getFeedbackCount($from);
+    }
+
+    public function getTotalFeedbackCount() {
+        return $this->feedbackRepository->getFeedbackCount();
+    }
+    
+
     /**
      * @param Feedback|Feedback[] $feedback
      * @return Feedback[]
