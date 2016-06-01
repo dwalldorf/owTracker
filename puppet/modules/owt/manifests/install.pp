@@ -23,10 +23,6 @@ class owt::install inherits owt {
         creates => '/usr/local/bin/sass',
     }
 
-    package { 'memcached':
-        ensure => latest,
-    }
-
     exec { 'install_composer':
         command    => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
         require    => Package['curl', 'php5', 'git'],
