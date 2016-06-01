@@ -228,6 +228,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setPassword($this->getRandomString());
+            $user->setRegistered($this->getRandomDate()->getTimestamp());
 
             $this->userService->register($user);
 
