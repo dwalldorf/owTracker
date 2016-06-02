@@ -18,6 +18,12 @@
                             [routerLink]="['Scoreboard']">
                         Scoreboard
                     </button>
+                    <a *ngIf="userService.currentUser.isAdmin"
+                       class="btn btn-default"
+                       title="Admin"
+                       href="/#/admin">
+                        Admin
+                    </a>
                 </div>
                 <div class="col-xs-4 pull-right">
                     <verdict-dialog></verdict-dialog>
