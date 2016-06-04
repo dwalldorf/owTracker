@@ -11,23 +11,6 @@ import {AdminFeedbackComponent} from "./admin-feedback.component";
 import {AdminFeedbackService} from "./service/admin-feedback.service";
 import {UserService} from "../user/service/user.service";
 
-@RouteConfig([
-        {
-            path: 'dashboard',
-            name: AppConfig.ROUTE_NAME_ADMIN_DASHBOARD,
-            component: AdminDashboardComponent,
-        },
-        {
-            path: 'feedback',
-            name: AppConfig.ROUTE_NAME_ADMIN_FEEDBACK,
-            component: AdminFeedbackComponent,
-        },
-        {
-            path: '/**',
-            redirectTo: [ AppConfig.ROUTE_NAME_ADMIN_DASHBOARD ],
-        }
-    ]
-)
 @Component({
     templateUrl: 'app/admin/views/admin-base.html',
     directives: [ ROUTER_DIRECTIVES ],

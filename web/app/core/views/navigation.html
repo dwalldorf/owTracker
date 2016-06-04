@@ -1,0 +1,7 @@
+<a *ngFor="let navElem of navigationElements"
+   class="btn btn-default {{navElem.customClasses}}"
+   title="{{navElem.title}}"
+   [class.active]="isActive(navElem.route)"
+   href="/#{{navElem.link}}">
+    {{navElem.label}}
+</a>

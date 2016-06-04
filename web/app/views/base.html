@@ -7,23 +7,7 @@
         <div class="row">
             <div *ngIf="isLoggedIn()">
                 <div class="col-xs-8">
-                    <button class="btn glyphicon glyphicon-home"
-                            [class.active]="router.isRouteActive(router.generate(['Dashboard']))"
-                            title="Dashboard"
-                            [routerLink]="['Dashboard']">
-                    </button>
-                    <button class="btn btn-default"
-                            [class.active]="router.isRouteActive(router.generate(['Scoreboard']))"
-                            title="Scoreboard"
-                            [routerLink]="['Scoreboard']">
-                        Scoreboard
-                    </button>
-                    <a *ngIf="userService.currentUser.isAdmin"
-                       class="btn btn-default"
-                       title="Admin"
-                       href="/#/admin">
-                        Admin
-                    </a>
+                    <navigation></navigation>
                 </div>
                 <div class="col-xs-4 pull-right">
                     <verdict-dialog></verdict-dialog>
@@ -40,7 +24,12 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-3"></div>
+        <div class="col-xs-3">
+            <div *ngIf="displayAdminMenu()">
+                Admin menu
+            </div>
+
+        </div>
         <div id="page-body"
              class="col-xs-9">
             <router-outlet></router-outlet>
