@@ -131,7 +131,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         /*
-         * TODO: user stop watch
+         * TODO: use stop watch
          * by dwalldorf at 00:43 02.06.16
          */
         $start = microtime(true);
