@@ -16,7 +16,7 @@ class php::install inherits php {
     package { 'memcached':
         ensure => latest,
     }
-    package { 'php5-memcached':
+    package { 'php5-memcache':
         ensure  => latest,
         require => Package['memcached'],
         notify  => Service['php5-fpm'],
