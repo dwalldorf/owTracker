@@ -36,26 +36,6 @@
         "symfony/phpunit-bridge": "^3.0",
         "raulfraile/ladybug-bundle": "^1.0"
     },
-    "scripts": {
-        "post-install-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "./bin/console cache:clear",
-            "./bin/console cache:clear --env=prod",
-            "./bin/console cache:warmup --env=prod",
-            "./bin/console assets:install",
-            "./bin/console assets:install --env=prod",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
-        ],
-        "post-update-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "./bin/console cache:clear",
-            "./bin/console cache:clear --env=prod",
-            "./bin/console cache:warmup --env=prod",
-            "./bin/console assets:install",
-            "./bin/console assets:install --env=prod",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
-        ]
-    },
     "config": {
         "platform": {
             "php": "5.5.9"
