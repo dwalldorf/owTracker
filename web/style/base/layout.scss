@@ -65,6 +65,12 @@ table.table-generic {
     }
 }
 
+.user-input {
+    overflow: visible;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
 #main-wrapper {
     margin: 15px auto auto;
     max-width: 1500px !important;
