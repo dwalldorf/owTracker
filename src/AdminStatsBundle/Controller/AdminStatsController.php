@@ -3,6 +3,7 @@
 namespace AdminStatsBundle\Controller;
 
 use AppBundle\Controller\BaseController;
+use AppBundle\Util\NumberUtil;
 use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Service\OverwatchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -47,21 +48,25 @@ class AdminStatsController extends BaseController {
         $d7d = new \DateTime('-7 days');
         $d30d = new \DateTime('-30 days');
 
+        function format($number) {
+            return NumberUtil::thousandsSeparator($number);
+        }
+
         $data = [
-            'verdictsLast24h' => $this->overwatchService->getVerdictCountByTime($d24h),
-            'verdictsLast7d'  => $this->overwatchService->getVerdictCountByTime($d7d),
-            'verdictsLast30d' => $this->overwatchService->getVerdictCountByTime($d30d),
-            'totalVerdicts'   => $this->overwatchService->getTotalVerdictCount(),
+            'verdictsLast24h' => format($this->overwatchService->getVerdictCountByTime($d24h)),
+            'verdictsLast7d'  => format($this->overwatchService->getVerdictCountByTime($d7d)),
+            'verdictsLast30d' => format($this->overwatchService->getVerdictCountByTime($d30d)),
+            'totalVerdicts'   => format($this->overwatchService->getTotalVerdictCount()),
 
-            'totalUsers'   => $this->userService->getTotalUserCount(),
-            'usersLast24h' => $this->userService->getUserCountByTime($d24h),
-            'usersLast7d'  => $this->userService->getUserCountByTime($d7d),
-            'usersLast30d' => $this->userService->getUserCountByTime($d30d),
+            'totalUsers'   => format($this->userService->getTotalUserCount()),
+            'usersLast24h' => format($this->userService->getUserCountByTime($d24h)),
+            'usersLast7d'  => format($this->userService->getUserCountByTime($d7d)),
+            'usersLast30d' => format($this->userService->getUserCountByTime($d30d)),
 
-            'totalFeedback'   => $this->feedbackService->getTotalFeedbackCount(),
-            'feedbackLast24h' => $this->feedbackService->getFeedbackCountByTime($d24h),
-            'feedbackLast7d'  => $this->feedbackService->getFeedbackCountByTime($d7d),
-            'feedbackLast30d' => $this->feedbackService->getFeedbackCountByTime($d30d),
+            'totalFeedback'   => format($this->feedbackService->getTotalFeedbackCount()),
+            'feedbackLast24h' => format($this->feedbackService->getFeedbackCountByTime($d24h)),
+            'feedbackLast7d'  => format($this->feedbackService->getFeedbackCountByTime($d7d)),
+            'feedbackLast30d' => format($this->feedbackService->getFeedbackCountByTime($d30d)),
         ];
 
         return $this->jsonResponse($data);

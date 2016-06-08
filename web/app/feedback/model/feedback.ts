@@ -3,7 +3,8 @@ export class Feedback {
 
     id: string;
     createdBy: User;
-    createdTimestamp: Date;
+    createdTimestamp: number;
+    displayDate: string;
     feedback = {
         like: true,
         fixplease: '',
