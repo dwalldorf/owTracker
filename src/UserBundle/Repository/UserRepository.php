@@ -30,6 +30,7 @@ class UserRepository extends BaseRepository {
     public function save(User $user) {
         $this->dm->persist($user);
         $this->dm->flush();
+        $this->dm->clear();
 
         return $user->getId();
     }

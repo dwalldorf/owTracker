@@ -30,6 +30,7 @@ class OverwatchRepository extends BaseRepository {
     public function save(Verdict $verdict) {
         $this->dm->persist($verdict);
         $this->dm->flush();
+        $this->dm->clear();
 
         return $verdict;
     }
@@ -67,6 +68,9 @@ class OverwatchRepository extends BaseRepository {
             ->field('period')->equals($period)
             ->getQuery()
             ->execute();
+
+        $this->dm->flush();
+        $this->dm->clear();
     }
 
     public function getUserscores($period = null) {
