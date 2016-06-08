@@ -21,8 +21,6 @@ import {AppLoadingService} from "./core/service/apploading.service";
 import {AdminStatsService} from "./admin/service/admin-stat.service";
 import {NavigationComponent} from "./core/navigation.component";
 import {NavigationService} from "./core/service/navigation.service";
-import {AdminDashboardComponent} from "./admin/admin-dashboard.component";
-import {AdminFeedbackComponent} from "./admin/admin-feedback.component";
 import {AdminFeedbackService} from "./admin/service/admin-feedback.service";
 
 enableProdMode();
@@ -49,14 +47,8 @@ enableProdMode();
         component: ScoreboardComponent,
     },
     {
-        path: '/admin/dashboard',
-        name: AppConfig.ROUTE_NAME_ADMIN_DASHBOARD,
-        component: AdminDashboardComponent,
-    },
-    {
-        path: '/admin/feedback',
-        name: AppConfig.ROUTE_NAME_ADMIN_FEEDBACK,
-        component: AdminFeedbackComponent,
+        path: '/admin/...',
+        component: AdminComponent,
     },
     {
         path: '/**',
@@ -73,7 +65,8 @@ enableProdMode();
         FlashComponent,
         NavigationComponent,
         VerdictDialogComponent,
-        FeedbackDialogComponent
+        FeedbackDialogComponent,
+        AdminComponent,
     ],
     providers: [
         AppLoadingService,

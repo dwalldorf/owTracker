@@ -1,0 +1,22 @@
+<div *ngIf="feedback">
+
+    <div>
+        <label for="fixplease">Fix:</label>
+        <span id="fixplease"
+             class="user-input">{{feedback.feedback.featureplease}}
+        </span>
+    </div>
+    <div>
+        <label for="featureplease">Feature:</label>
+        <div id="featureplease"
+             class="user-input">{{feedback.feedback.featureplease}}
+        </div>
+    </div>
+    <div>
+        <label for="freetext">Freetext:</label>
+        <div id="freetext"
+             class="user-input">{{feedback.feedback.freetext}}
+        </div>
+    </div>
+
+</div>

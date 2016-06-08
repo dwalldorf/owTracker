@@ -24,14 +24,16 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-3">
-            <div *ngIf="displayAdminMenu()">
-                Admin menu
+        <div *ngIf="!displayAdminMenu()"
+             class="col-xs-3">
+            <div>
+                ad?
             </div>
-
         </div>
+
         <div id="page-body"
-             class="col-xs-9">
+             [class.col-xs-9]="!displayAdminMenu()"
+             [class.col-xs-12]="displayAdminMenu()">
             <router-outlet></router-outlet>
         </div>
     </div>
