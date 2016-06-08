@@ -61,4 +61,20 @@ class FeedbackRepository extends BaseRepository {
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * @param \DateTime|null $from
+     * @return int
+     */
+    public function getFeedbackCount(\DateTime $from = null) {
+        $qb = $this->getQueryBuilder();
+
+        if ($from != null) {
+            $qb->field('createdTimestamp')->gte($from);
+        }
+
+        return $qb->getQuery()
+            ->execute()
+            ->count();
+    }
 }

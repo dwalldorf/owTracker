@@ -30,11 +30,11 @@ class UserScoreRepository extends BaseRepository {
         $oldUserScore = $this->findByUserIdAndPeriod($userScore->getUserId(), $userScore->getPeriod());
         if ($oldUserScore) {
             $this->remove($oldUserScore);
-            $this->dm->flush();
         }
 
         $this->dm->persist($userScore);
         $this->dm->flush();
+        $this->dm->clear();
     }
 
     /**

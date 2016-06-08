@@ -30,6 +30,7 @@ class OverwatchRepository extends BaseRepository {
     public function save(Verdict $verdict) {
         $this->dm->persist($verdict);
         $this->dm->flush();
+        $this->dm->clear();
 
         return $verdict;
     }
@@ -58,6 +59,20 @@ class OverwatchRepository extends BaseRepository {
             ->execute();
     }
 
+    /**
+     * @param int $period
+     */
+    public function deleteByPeriod($period) {
+        $this->getQueryBuilder()
+            ->remove()
+            ->field('period')->equals($period)
+            ->getQuery()
+            ->execute();
+
+        $this->dm->flush();
+        $this->dm->clear();
+    }
+
     public function getUserscores($period = null) {
         $qb = $this->getQueryBuilder();
 
@@ -79,5 +94,23 @@ class OverwatchRepository extends BaseRepository {
             ->getQuery()
             ->execute()
             ->toArray();
+    }
+
+    /**
+     * @param \DateTime $from
+     * @return int
+     */
+    public function getVerdictCount(\DateTime $from = null) {
+        $qb = $this->getQueryBuilder()
+            ->sort('creationDate');
+
+        if ($from != null) {
+            $date = new \MongoDate($from->getTimestamp());
+            $qb->field('creationDate')->gte($date);
+        }
+
+        return $qb->getQuery()
+            ->execute()
+            ->count();
     }
 }

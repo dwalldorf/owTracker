@@ -6,6 +6,7 @@ import {UserService} from "../user/service/user.service";
 import {UserScore} from "./model/user.score";
 import {AppLoadingService} from "../core/service/apploading.service";
 import {AppConfig} from "../app.config";
+import {Scoreboard} from "./model/scoreboard";
 
 @Component({
     templateUrl: 'app/overwatch/views/scoreboard.html',
@@ -45,19 +46,12 @@ export class ScoreboardComponent {
         }
     ];
     selectedPeriod = 7;
-    scoreboard = {
-        higher: <ItemCollection>{},
-        self: UserScore,
-        lower: <ItemCollection>{},
-    };
+    scoreboard = new Scoreboard();
 
     constructor(appLoadingService: AppLoadingService, verdictService: VerdictService, userService: UserService) {
         this.appLoadingService = appLoadingService;
         this.verdictService = verdictService;
         this.userService = userService;
-
-        this.scoreboard.higher = new ItemCollection();
-        this.scoreboard.lower = new ItemCollection();
     }
 
     //noinspection JSUnusedGlobalSymbols

@@ -1,0 +1,30 @@
+@import "colors";
+@import "mixins";
+
+$btn-admin-nav-top: #bbbbbb;
+$btn-admin-nav-bottom: darken($btn-admin-nav-top, 10%);
+
+#main-wrapper {
+    #admin-wrapper {
+        .admin-nav-container {
+            .btn.btn-admin-nav {
+                color: $default-border-color;
+                text-align: left;
+                text-indent: 20px;
+                width: 100%;
+
+                @include linearGradient($btn-admin-nav-top, $btn-admin-nav-bottom);
+                &:hover, &.active {
+                    $top: darken($btn-admin-nav-top, 10%);
+                    $bottom: darken($btn-admin-nav-bottom, 10%);
+                    @include linearGradient($top, $bottom);
+                }
+
+                border-bottom: 1px solid $default-border-color;
+                &:last-child {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+}

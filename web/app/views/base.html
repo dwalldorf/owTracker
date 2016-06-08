@@ -7,15 +7,7 @@
         <div class="row">
             <div *ngIf="isLoggedIn()">
                 <div class="col-xs-8">
-                    <button class="btn glyphicon glyphicon-home"
-                            [class.active]="router.isRouteActive(router.generate(['Dashboard']))"
-                            [routerLink]="['Dashboard']">
-                    </button>
-                    <button class="btn btn-default"
-                            [class.active]="router.isRouteActive(router.generate(['Scoreboard']))"
-                            [routerLink]="['Scoreboard']">
-                        Scoreboard
-                    </button>
+                    <navigation></navigation>
                 </div>
                 <div class="col-xs-4 pull-right">
                     <verdict-dialog></verdict-dialog>
@@ -23,6 +15,7 @@
                     <feedback-dialog></feedback-dialog>
 
                     <button class="btn btn-logout glyphicon glyphicon-off"
+                            title="Logout"
                             (click)="logout()">
                     </button>
                 </div>
@@ -31,9 +24,16 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-3"></div>
+        <div *ngIf="!displayAdminMenu()"
+             class="col-xs-3">
+            <div>
+                ad?
+            </div>
+        </div>
+
         <div id="page-body"
-             class="col-xs-9">
+             [class.col-xs-9]="!displayAdminMenu()"
+             [class.col-xs-12]="displayAdminMenu()">
             <router-outlet></router-outlet>
         </div>
     </div>

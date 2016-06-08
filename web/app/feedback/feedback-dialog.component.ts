@@ -3,6 +3,7 @@ import {FeedbackService} from "./service/feedback.service";
 import {Feedback} from "./model/feedback";
 import {FlashService} from "../core/service/flash.service";
 import {FlashMessage} from "../core/model/flash.message";
+import {AppLoadingService} from "../core/service/apploading.service";
 
 declare var jQuery: any;
 @Component({
@@ -11,14 +12,18 @@ declare var jQuery: any;
 })
 export class FeedbackDialogComponent {
 
-    private feedbackService: FeedbackService;
+    private STATUS_ID = 'feedback';
+
+    private appLoadingService: AppLoadingService;
     private flashService: FlashService;
+    private feedbackService: FeedbackService;
 
     feedback: Feedback;
 
-    constructor(feedbackService: FeedbackService, flashService: FlashService) {
-        this.feedbackService = feedbackService;
+    constructor(appLoadingService: AppLoadingService, flashService: FlashService, feedbackService: FeedbackService) {
+        this.appLoadingService = appLoadingService;
         this.flashService = flashService;
+        this.feedbackService = feedbackService;
     }
 
     ngOnInit() {
@@ -26,8 +31,10 @@ export class FeedbackDialogComponent {
     }
 
     submitFeedback() {
+        this.appLoadingService.setLoading(this.STATUS_ID);
         this.feedbackService.submitFeedback(this.feedback)
             .subscribe(() => {
+                this.appLoadingService.finishedLoading(this.STATUS_ID);
                 this.resetDialog();
                 this.flashService.addMessage(new FlashMessage('Your feedback was submitted!', FlashMessage.SUCCESS));
             });

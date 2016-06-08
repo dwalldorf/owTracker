@@ -1,9 +1,5 @@
 import {Component, enableProdMode} from '@angular/core';
-import {
-    Router,
-    RouteConfig,
-    ROUTER_DIRECTIVES
-} from '@angular/router-deprecated'
+import {Router, RouteConfig, ROUTER_DIRECTIVES} from '@angular/router-deprecated'
 
 import {AppConfig} from "./app.config";
 import {HttpService} from "./core/service/http.service";
@@ -12,7 +8,6 @@ import {RegisterComponent} from './user/register.component';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {ScoreboardComponent} from "./overwatch/scoreboard.component";
 import {UserService} from './user/service/user.service';
-import {User} from "./user/model/user";
 import {VerdictService} from "./overwatch/service/verdict.service";
 import {CacheService} from "./core/service/cache.service";
 import {FeedbackDialogComponent} from "./feedback/feedback-dialog.component";
@@ -23,6 +18,10 @@ import {FlashComponent} from "./core/flash.component";
 import {AdminComponent} from "./admin/admin.component";
 import {AppLoadingComponent} from "./core/apploading.component";
 import {AppLoadingService} from "./core/service/apploading.service";
+import {AdminStatsService} from "./admin/service/admin-stat.service";
+import {NavigationComponent} from "./core/navigation.component";
+import {NavigationService} from "./core/service/navigation.service";
+import {AdminFeedbackService} from "./admin/service/admin-feedback.service";
 
 enableProdMode();
 
@@ -49,7 +48,6 @@ enableProdMode();
     },
     {
         path: '/admin/...',
-        name: AppConfig.ROUTE_NAME_ADMIN,
         component: AdminComponent,
     },
     {
@@ -61,76 +59,89 @@ enableProdMode();
 @Component({
     selector: 'owt-app',
     templateUrl: 'app/views/base.html',
-    directives: [ ROUTER_DIRECTIVES, AppLoadingComponent, FlashComponent, VerdictDialogComponent, FeedbackDialogComponent ],
+    directives: [
+        ROUTER_DIRECTIVES,
+        AppLoadingComponent,
+        FlashComponent,
+        NavigationComponent,
+        VerdictDialogComponent,
+        FeedbackDialogComponent,
+        AdminComponent,
+    ],
     providers: [
         AppLoadingService,
         HttpService,
         CacheService,
+        NavigationService,
         FlashService,
 
         UserService,
         VerdictService,
         FeedbackService,
 
-        AdminComponent
+        AdminComponent,
+        AdminFeedbackService,
+        AdminStatsService
     ],
 })
 export class AppComponent {
 
-    private router: Router;
+    private _router: Router;
 
-    private appLoadingService: AppLoadingService;
+    private _appLoadingService: AppLoadingService;
 
-    private userService: UserService;
+    private _userService: UserService;
 
-    private allowedRoutesWithoutLogin = [
+    private _navigationService: NavigationService;
+
+    private _allowedRoutesWithoutLogin = [
         AppConfig.ROUTE_NAME_LOGIN,
         AppConfig.ROUTE_NAME_REGISTER,
     ];
-
     restFinished = false;
 
-    constructor(router: Router, appLoadingService: AppLoadingService, userService: UserService) {
-        this.router = router;
-        this.appLoadingService = appLoadingService;
-        this.userService = userService;
+    constructor(router: Router, appLoadingService: AppLoadingService, navigationService: NavigationService, userService: UserService) {
+        this._router = router;
+        this._appLoadingService = appLoadingService;
+        this._navigationService = navigationService;
+        this._userService = userService;
     }
 
     //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
-        this.appLoadingService.setLoading('app');
-        this.userService.getCurrentUser().subscribe(
+        this._appLoadingService.setLoading('app');
+        this._userService.getCurrentUser().subscribe(
             () => this.handleLoggedIn(),
             () => this.handleNotLoggedIn()
         );
     }
 
     handleLoggedIn() {
-        this.appLoadingService.finishedLoading('app');
+        this._appLoadingService.finishedLoading('app');
         this.restFinished = true;
     }
 
     handleNotLoggedIn() {
-        this.appLoadingService.finishedLoading('app');
+        this._appLoadingService.finishedLoading('app');
         this.restFinished = true;
 
         var currentRouteAllowedWithoutLogin = false;
-        for (var routeName of this.allowedRoutesWithoutLogin) {
-            var route = this.router.generate([ routeName ]);
+        for (var routeName of this._allowedRoutesWithoutLogin) {
+            var route = this._router.generate([ routeName ]);
 
-            if (this.router.isRouteActive(route)) {
+            if (this._router.isRouteActive(route)) {
                 currentRouteAllowedWithoutLogin = true;
                 break;
             }
         }
 
         if (!currentRouteAllowedWithoutLogin) {
-            this.router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
+            this._router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
         }
     }
 
     isLoggedIn() {
-        var currentUser = this.userService.currentUser;
+        var currentUser = this._userService.currentUser;
 
         if (currentUser && currentUser.hasOwnProperty('id')) {
             return currentUser.id.length == 24;
@@ -139,7 +150,11 @@ export class AppComponent {
     }
 
     logout() {
-        this.userService.logout().subscribe(() => this.handleNotLoggedIn());
+        this._userService.logout().subscribe(() => this.handleNotLoggedIn());
+    }
+
+    displayAdminMenu() {
+        return this._navigationService.isRouteActive(AppConfig.ROUTE_NAME_ADMIN);
     }
 
 }

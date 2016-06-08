@@ -2,6 +2,8 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Util\NumberUtil;
+use AppBundle\Util\StopWatch;
 use FeedbackBundle\Document\Feedback;
 use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Document\Verdict;
@@ -130,7 +132,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $start = microtime(true);
+        $sw = new StopWatch();
+        $sw->start();
 
         $this->verbose = $input->getOption('verbose');
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
@@ -185,6 +188,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             );
         }
 
+        $sw->stop();
         $output->writeln(
             sprintf(
                 '[END] Created 
@@ -192,14 +196,14 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     %d verdicts from %d unique users
     %d feedback entries from %d unique users %s
 
-    Runtime: %f seconds',
+    Runtime: %s seconds',
                 $this->createdUsers,
                 $this->createdVerdicts,
                 $this->createdVerdictsUniqueUsers,
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
                 $powerUsersInfo,
-                microtime(true) - $start
+                number_format($sw->getRuntime(), 3)
             )
         );
     }
@@ -228,6 +232,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setPassword($this->getRandomString());
+            $user->setRegistered($this->getRandomDate()->getTimestamp());
 
             $this->userService->register($user);
 
@@ -251,7 +256,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             }
 
             $this->createdUsers++;
-            unset($user);
+            $user = null;
         }
     }
 
@@ -283,7 +288,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             }
 
             $this->createdVerdicts++;
-            unset($verdict);
+            $verdict = null;
         }
         $this->createdVerdictsUniqueUsers++;
     }
@@ -336,12 +341,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $feedback->setCreatedBy($user->getId());
         $feedback->setCreatedTimestamp($this->getRandomDate());
 
-        /** @noinspection SpellCheckingInspection */
         $feedbackHash = [
             'like'          => $this->getRandomBool(),
-            'fixplease'     => $this->getRandomString(200),
-            'featureplease' => $this->getRandomString(200),
-            'freetext'      => $this->getRandomString(100),
+            'fixplease'     => $this->getRandomString(mt_rand(200, 2000), true),
+            'featureplease' => $this->getRandomString(mt_rand(200, 2000), true),
+            'freetext'      => $this->getRandomString(mt_rand(200, 2000), true),
         ];
         $feedback->setFeedback($feedbackHash);
 
@@ -350,15 +354,20 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     /**
      * @param int $length
+     * @param bool $withWhitespaces
      * @return string
      */
-    private function getRandomString($length = 10) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-        $charactersLength = strlen($characters);
+    private function getRandomString($length = 10, $withWhitespaces = false) {
+        $allowedCharacters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        if ($withWhitespaces) {
+            $allowedCharacters .= '        ';
+        }
+
+        $charactersLength = strlen($allowedCharacters);
         $randomString = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+            $randomString .= $allowedCharacters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
     }

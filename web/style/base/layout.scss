@@ -36,6 +36,41 @@ body {
     }
 }
 
+table.table-generic {
+    border: 0;
+    width: auto !important;
+
+    tr th {
+        font-weight: 600;
+    }
+    tr td, tr th {
+        border: 0;
+        border-right: 1px solid $default-border-color;
+        border-bottom: 1px solid $default-border-color;
+
+        &:first-child {
+            margin-left: 20px;
+            text-align: right;
+            padding-right: 10px;
+        }
+        &:last-child {
+            border-right: 0;
+        }
+    }
+}
+
+.table-numeric {
+    tr td {
+        text-align: right;
+    }
+}
+
+.user-input {
+    overflow: visible;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
 #main-wrapper {
     margin: 15px auto auto;
     max-width: 1500px !important;
@@ -60,6 +95,11 @@ body {
     }
     .btn-home {
         width: 50px;
+    }
+    .btn-logout {
+        &:active, &:hover, &.active {
+            @include linearGradient(#8c0a00, #750a00);
+        }
     }
 
     #page-body {

@@ -1,0 +1,43 @@
+<div class="admin-feedback-container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Feedback</h2>
+        </div>
+        <div class="panel-body">
+            <div class="admin-feedback-list">
+                <table *ngIf="restFinished"
+                       class="table">
+                    <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Username</th>
+                        <th>Like</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let feedback of feedback.items">
+                        <td (click)="onSelect(feedback)">
+                            {{feedback.displayDate}}
+                        </td>
+                        <td>
+                            {{feedback.createdBy.username}}
+                        </td>
+                        <td>
+                        <span *ngIf="feedback.feedback.like"
+                              class="glyphicon glyphicon-ok"></span>
+                        <span *ngIf="!feedback.feedback.like"
+                              class="glyphicon glyphicon-remove"></span>
+                        </td>
+                        <td class="trim-text-overflow">
+                            {{feedback.status}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <admin-feedback-detail [feedback]="selectedFeedback"></admin-feedback-detail>
+        </div>
+    </div>
+</div>

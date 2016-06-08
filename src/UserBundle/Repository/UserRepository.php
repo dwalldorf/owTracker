@@ -30,6 +30,7 @@ class UserRepository extends BaseRepository {
     public function save(User $user) {
         $this->dm->persist($user);
         $this->dm->flush();
+        $this->dm->clear();
 
         return $user->getId();
     }
@@ -81,5 +82,21 @@ class UserRepository extends BaseRepository {
             ->field('_id')->equals($user->getId())
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * @param \DateTime|null $from
+     * @return int
+     */
+    public function getUserCount(\DateTime $from = null) {
+        $qb = $this->getQueryBuilder();
+
+        if ($from != null) {
+            $qb->field('registered')->gte($from->getTimestamp());
+        }
+
+        return $qb->getQuery()
+            ->execute()
+            ->count();
     }
 }

@@ -77,6 +77,21 @@ class OverwatchService extends BaseService {
     }
 
     /**
+     * @param \DateTime $from
+     * @return int
+     */
+    public function getVerdictCountByTime(\DateTime $from) {
+        return $this->repository->getVerdictCount($from);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalVerdictCount() {
+        return $this->repository->getVerdictCount();
+    }
+
+    /**
      * @param Verdict[] $verdicts
      * @return Verdict[]
      */

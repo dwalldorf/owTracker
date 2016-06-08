@@ -14,3 +14,10 @@ parameters:
     mongo_server: mongodb://localhost:27017
     mongo_default_database: overwatch
 
+    memcached.servers:
+        - { host: 127.0.0.1, port: 11211 }
+
+    session_memcached_host: localhost
+    session_memcached_port: 11211
+    session_memcached_prefix: sess
+    session_memcached_expire: 3600

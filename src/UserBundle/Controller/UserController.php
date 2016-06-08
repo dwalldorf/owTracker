@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Document\User;
+use UserBundle\Exception\NotLoggedInException;
 use UserBundle\Exception\RegisterUserException;
 use UserBundle\Service\UserService;
 
@@ -27,6 +28,7 @@ class UserController extends BaseController {
      * @Method({"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws NotLoggedInException
      */
     public function meAction() {
         $this->requireLogin();
@@ -37,7 +39,7 @@ class UserController extends BaseController {
      * @Route("/api/user/login")
      * @Method({"POST"})
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws BadRequestException
      */
     public function loginAction() {
@@ -60,9 +62,9 @@ class UserController extends BaseController {
     /**
      * @Route("/api/user/logout")
      * @Method("POST")
-     * 
+     *
      * @return Response
-     * @throws \UserBundle\Exception\NotLoggedInException
+     * @throws NotLoggedInException
      */
     public function logoutAction() {
         $this->requireLogin();
@@ -75,7 +77,7 @@ class UserController extends BaseController {
      * @Route("/api/users")
      * @Method({"POST"})
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws RegisterUserException
      *
      * @internal $user User

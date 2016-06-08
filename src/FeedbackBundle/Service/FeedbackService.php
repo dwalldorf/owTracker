@@ -50,6 +50,22 @@ class FeedbackService extends BaseService {
     }
 
     /**
+     * @param \DateTime $from
+     * @return int
+     */
+    public function getFeedbackCountByTime(\DateTime $from) {
+        return $this->feedbackRepository->getFeedbackCount($from);
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalFeedbackCount() {
+        return $this->feedbackRepository->getFeedbackCount();
+    }
+
+
+    /**
      * @param Feedback|Feedback[] $feedback
      * @return Feedback[]
      */
