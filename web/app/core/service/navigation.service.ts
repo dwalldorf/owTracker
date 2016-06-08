@@ -25,7 +25,7 @@ export class NavigationService {
             if (currentInstruction == null) {
                 return false;
             }
-            return currentInstruction.component.routeName.startsWith('Admin');
+            return currentInstruction.component.urlPath == 'admin';
         }
 
         try {
