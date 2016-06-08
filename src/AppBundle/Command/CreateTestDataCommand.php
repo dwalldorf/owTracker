@@ -2,6 +2,8 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Util\NumberUtil;
+use AppBundle\Util\StopWatch;
 use FeedbackBundle\Document\Feedback;
 use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Document\Verdict;
@@ -130,11 +132,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        /*
-         * TODO: use stop watch
-         * by dwalldorf at 00:43 02.06.16
-         */
-        $start = microtime(true);
+        $sw = new StopWatch();
+        $sw->start();
 
         $this->verbose = $input->getOption('verbose');
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
@@ -189,6 +188,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             );
         }
 
+        $sw->stop();
         $output->writeln(
             sprintf(
                 '[END] Created 
@@ -196,14 +196,14 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     %d verdicts from %d unique users
     %d feedback entries from %d unique users %s
 
-    Runtime: %f seconds',
+    Runtime: %s seconds',
                 $this->createdUsers,
                 $this->createdVerdicts,
                 $this->createdVerdictsUniqueUsers,
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
                 $powerUsersInfo,
-                microtime(true) - $start
+                number_format($sw->getRuntime(), 3)
             )
         );
     }
@@ -360,7 +360,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private function getRandomString($length = 10, $withWhitespaces = false) {
         $allowedCharacters = '0123456789abcdefghijklmnopqrstuvwxyz';
         if ($withWhitespaces) {
-            $allowedCharacters .= ' ';
+            $allowedCharacters .= '        ';
         }
 
         $charactersLength = strlen($allowedCharacters);

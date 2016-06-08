@@ -4,8 +4,14 @@ namespace AppBundle\Util;
 
 class StopWatch {
 
+    /**
+     * @var float
+     */
     private $start;
 
+    /**
+     * @var float
+     */
     private $end;
 
     /**
@@ -29,14 +35,23 @@ class StopWatch {
         $this->elapsedMs = $this->elapsedSeconds * 1000;
     }
 
+    /**
+     * @return float
+     */
     public function getRuntime() {
         return $this->elapsedSeconds;
     }
 
+    /**
+     * @return string
+     */
     public function getRuntimeStringInMs() {
         return sprintf('%f ms', $this->elapsedMs);
     }
 
+    /**
+     * @return string
+     */
     public function getRuntimeStringInS() {
         return sprintf('%fs', $this->elapsedMs);
     }

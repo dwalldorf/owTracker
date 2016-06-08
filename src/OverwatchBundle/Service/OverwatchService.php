@@ -84,6 +84,9 @@ class OverwatchService extends BaseService {
         return $this->repository->getVerdictCount($from);
     }
 
+    /**
+     * @return int
+     */
     public function getTotalVerdictCount() {
         return $this->repository->getVerdictCount();
     }

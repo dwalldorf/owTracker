@@ -8,6 +8,7 @@ use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Service\OverwatchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Exception\NotAuthorizedException;
 use UserBundle\Service\UserService;
 
@@ -37,7 +38,7 @@ class AdminStatsController extends BaseController {
     /**
      * @Route("/api/adminstats")
      * @Method("GET")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @throws NotAuthorizedException
      */
