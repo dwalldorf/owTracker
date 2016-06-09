@@ -3,19 +3,19 @@
 parameters:
 
 services:
-    memcached:
-        class: Memcached
+    memcache:
+        class: Memcache
         calls:
-            - [ addServers, [ %memcached.servers% ]]
-    session.memcached:
-        class: Memcached
+            - [ addServers, [ %memcache.servers% ]]
+    session.memcache:
+        class: Memcache
         arguments:
-            persistent_id: %session_memcached_prefix%
+            persistent_id: %session_memcache_prefix%
         calls:
-            - [ addServer, [ %session_memcached_host%, %session_memcached_port% ]]
-    session.handler.memcached:
-        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
-        arguments: ["@session.memcached", { prefix: %session_memcached_prefix%, expiretime: %session_memcached_expire% }]
+            - [ addServer, [ %session_memcache_host%, %session_memcache_port% ]]
+    session.handler.memcache:
+        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler
+        arguments: ["@session.memcache", { prefix: %session_memcache_prefix%, expiretime: %session_memcache_expire% }]
 
     app.exception_listener:
         class: AppBundle\Exception\ApiExceptionListener
