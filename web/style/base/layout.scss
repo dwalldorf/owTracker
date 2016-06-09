@@ -71,6 +71,10 @@ table.table-generic {
     word-wrap: break-word;
 }
 
+.transparent {
+    opacity: 0;
+}
+
 #main-wrapper {
     margin: 15px auto auto;
     max-width: 1500px !important;

@@ -1,9 +1,11 @@
 import {Injectable, EventEmitter} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 import {AppConfig} from "../../app.config";
 import {HttpService} from "../../core/service/http.service";
 import {CacheService} from "../../core/service/cache.service";
 import {CacheIdentifiers} from "../../core/config/cache.identifiers";
 import {User} from "../model/user";
+import {AppLoadingService} from "../../core/service/apploading.service";
 
 @Injectable()
 export class UserService {
@@ -13,15 +15,21 @@ export class UserService {
     private LOGOUT_URI = AppConfig.API_PREFIX + '/user/logout';
     private USERS_URI = AppConfig.API_PREFIX + '/users';
 
-    private httpService: HttpService;
+    private _router: Router;
 
-    private cacheService: CacheService;
+    private _httpService: HttpService;
+
+    private _appLoadingService: AppLoadingService;
+
+    private _cacheService: CacheService;
 
     public currentUser: User;
 
-    constructor(httpService: HttpService, cacheService: CacheService) {
-        this.httpService = httpService;
-        this.cacheService = cacheService;
+    constructor(router: Router, httpService: HttpService, cacheService: CacheService, appLoadingService: AppLoadingService) {
+        this._router = router;
+        this._httpService = httpService;
+        this._cacheService = cacheService;
+        this._appLoadingService = appLoadingService;
     }
 
     /**
@@ -29,20 +37,18 @@ export class UserService {
      */
     getCurrentUser() {
         var eventEmitter = new EventEmitter(),
-            cachedUser   = this.cacheService.get(CacheIdentifiers.CACHE_ID_CURRENT_USER);
+            cachedUser   = this._cacheService.get(CacheIdentifiers.CACHE_ID_CURRENT_USER);
 
         if (cachedUser !== null) {
-            this.cacheService.emitCachedEvent(cachedUser, eventEmitter);
+            this._cacheService.emitCachedEvent(cachedUser, eventEmitter);
             return eventEmitter;
         } else {
-            eventEmitter = this.httpService.makeRequest(HttpService.METHOD_GET, this.CURRENT_USER_URI);
+            eventEmitter = this._httpService.makeRequest(HttpService.METHOD_GET, this.CURRENT_USER_URI);
             eventEmitter.subscribe(user => {
                 this.currentUser = user;
-
-                this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
-            });
+                this._cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
+            }, () => this.handleNotLoggedin());
         }
-
         return eventEmitter;
     }
 
@@ -50,12 +56,11 @@ export class UserService {
      * @returns {EventEmitter}
      */
     login(user) {
-        var requestEventEmitter = this.httpService.makeRequest(HttpService.METHOD_POST, this.LOGIN_URI, user);
+        var requestEventEmitter = this._httpService.makeRequest(HttpService.METHOD_POST, this.LOGIN_URI, user);
 
         requestEventEmitter.subscribe(user => {
             this.currentUser = user;
-
-            this.cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
+            this._cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
         });
 
         return requestEventEmitter;
@@ -65,7 +70,7 @@ export class UserService {
      * @returns {EventEmitter}
      */
     register(user: User) {
-        return this.httpService.makeRequest(HttpService.METHOD_POST, this.USERS_URI, user);
+        return this._httpService.makeRequest(HttpService.METHOD_POST, this.USERS_URI, user);
     }
 
     /**
@@ -73,9 +78,14 @@ export class UserService {
      */
     logout() {
         this.currentUser = null;
-        this.cacheService.invalidate(CacheIdentifiers.CACHE_ID_CURRENT_USER);
+        this._cacheService.invalidate(CacheIdentifiers.CACHE_ID_CURRENT_USER);
 
-        return this.httpService.makeRequest(HttpService.METHOD_POST, this.LOGOUT_URI, null);
+        return this._httpService.makeRequest(HttpService.METHOD_POST, this.LOGOUT_URI, null);
     }
 
+    private handleNotLoggedin() {
+        console.log('redirecting to login');
+        this._appLoadingService.resetAll();
+        this._router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
+    }
 }

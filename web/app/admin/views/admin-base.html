@@ -1,4 +1,5 @@
-<div id="admin-wrapper"
+<div *ngIf="_userService.currentUser && _userService.currentUser.isAdmin"
+     id="admin-wrapper"
      class="row">
 
     <div class="col-xs-3 admin-nav-container btn-group-vertical">

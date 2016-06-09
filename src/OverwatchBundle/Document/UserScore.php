@@ -46,7 +46,7 @@ class UserScore {
 
     /**
      * @ODM\Int(nullable=false)
-     * @ODM\Index(order="desc")
+     * @ODM\Index(order="asc")
      * @var int
      */
     private $position;

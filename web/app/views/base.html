@@ -3,7 +3,8 @@
 <div id="main-wrapper"
      class="container-fluid full-height">
 
-    <div id="top-nav">
+    <div id="top-nav"
+         [class.transparent]="!_userService.currentUser">
         <div class="row">
             <div *ngIf="isLoggedIn()">
                 <div class="col-xs-8">
