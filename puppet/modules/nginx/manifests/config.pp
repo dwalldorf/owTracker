@@ -1,5 +1,4 @@
 class nginx::config inherits nginx {
-
     file { 'nginx_conf':
         path    => '/etc/nginx/nginx.conf',
         source  => 'puppet:///modules/nginx/nginx.conf',
@@ -40,5 +39,4 @@ class nginx::config inherits nginx {
         notify  => Service['nginx'],
         require => File['nginx_owt'],
     }
-
 }

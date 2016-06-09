@@ -1,5 +1,4 @@
 class base::config inherits base {
-
     file { 'bash_profile_vagrant':
         path    => '/home/vagrant/.profile',
         content  => template('base/profile.erb'),
@@ -65,5 +64,4 @@ class base::config inherits base {
         user    => root,
         require => Package['zsh'],
     }
-
 }

@@ -1,5 +1,4 @@
 class owt::install inherits owt {
-
     exec { 'add_node5x':
         command => 'curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -',
         user    => root,
@@ -39,5 +38,4 @@ class owt::install inherits owt {
         owner   => vagrant,
         group   => vagrant,
     }
-
 }

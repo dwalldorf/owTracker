@@ -18,10 +18,6 @@ export class AppLoadingService {
         this.fireLoadingStatusChanged();
     }
 
-    public isLoading(component: string) {
-        return component in this.loading;
-    }
-
     public finishedLoading(component: string) {
         if (component in this.loading) {
             delete this.loading[ component ];
@@ -29,7 +25,12 @@ export class AppLoadingService {
         }
     }
 
-    private fireLoadingStatusChanged() {
+    public resetAll() {
+        this.loading = [];
+        this.fireLoadingStatusChanged();
+    }
+
+    fireLoadingStatusChanged() {
         this.loadingEventEmitter.emit(this.hasLoadingComponents());
     }
 

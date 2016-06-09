@@ -98,6 +98,7 @@ export class AppComponent {
         AppConfig.ROUTE_NAME_LOGIN,
         AppConfig.ROUTE_NAME_REGISTER,
     ];
+
     restFinished = false;
 
     constructor(router: Router, appLoadingService: AppLoadingService, navigationService: NavigationService, userService: UserService) {

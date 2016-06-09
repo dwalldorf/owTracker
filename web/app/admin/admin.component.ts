@@ -30,7 +30,9 @@ import {AdminStatsService} from "./service/admin-stat.service";
     providers: [ AdminDashboardComponent, AdminFeedbackComponent, AdminStatsService, AdminFeedbackService ],
 })
 export class AdminComponent {
+
     private _router: Router;
+
     private _userService: UserService;
 
     constructor(router: Router, userService: UserService) {
@@ -39,10 +41,6 @@ export class AdminComponent {
     }
 
     ngOnInit() {
-        this._userService.getCurrentUser().subscribe(user => {
-            if (!user.isAdmin) {
-                this._router.navigate([ AppConfig.ROUTE_NAME_DASHBOARD ]);
-            }
-        });
+        this._userService.getCurrentUser();
     }
 }

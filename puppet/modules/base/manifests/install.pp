@@ -1,5 +1,4 @@
 class base::install inherits base {
-
     package{ 'zsh':
         ensure => latest,
     }
@@ -61,5 +60,4 @@ class base::install inherits base {
         user    => root,
         require => Exec['install_my-zsh_root'],
     }
-
 }

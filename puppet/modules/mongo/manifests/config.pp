@@ -1,5 +1,4 @@
 class mongo::config inherits mongo {
-
     exec { 'create_mongo_admin':
         environment=>'LC_ALL=C',
         command    => '/usr/bin/mongo --eval \'db.createUser({ user: "sa", pwd: "sa", roles: [ {role: "root", db: "admin"} ] })\' admin',
@@ -17,5 +16,4 @@ class mongo::config inherits mongo {
         require => [Package['mongodb-org'], Exec['create_mongo_admin']],
         notify  => Service['mongod'],
     }
-
 }

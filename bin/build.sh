@@ -7,8 +7,7 @@ composer install
 
 ./node_modules/ntypescript/bin/tsc --outDir web/app/dist
 
-./bin/console cache:clear --env=dev
-./bin/console cache:clear --env=prod
+rm -rf ./var/cache/*
 ./bin/console cache:warmup --env=dev
 ./bin/console cache:warmup --env=prod
 

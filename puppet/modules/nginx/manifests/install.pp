@@ -1,5 +1,4 @@
 class nginx::install inherits nginx {
-
     package { 'nginx':
         ensure => latest,
     }
@@ -10,5 +9,4 @@ class nginx::install inherits nginx {
         ensure  => purged,
         require => Package['php5', 'php5-cgi', 'php5-fpm', 'php5-intl'],
     }
-
 }

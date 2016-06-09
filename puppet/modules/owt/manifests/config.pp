@@ -1,5 +1,4 @@
 class owt::config inherits owt {
-
     file { 'node_modules_dir':
         path   => "${owtDir}/node_modules",
         ensure => directory,
@@ -15,5 +14,4 @@ class owt::config inherits owt {
         ensure  => symlink,
         require => File['web-lib-dir', 'node_modules_dir'],
     }
-
 }

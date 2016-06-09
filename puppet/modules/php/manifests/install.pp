@@ -22,6 +22,7 @@ class php::install inherits php {
         notify  => Service['php5-fpm'],
     }
     package{ 'php-apc':
-        ensure => latest,
+        ensure  => latest,
+        require => Package['php5'],
     }
 }
