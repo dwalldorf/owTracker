@@ -13,9 +13,6 @@ export class FeedbackService {
     }
 
     submitFeedback(feedback: Feedback) {
-        console.log('submitFeedback');
-        console.log(feedback);
-
         return this.httpService
             .makeRequest(HttpService.METHOD_POST, AppConfig.API_PREFIX + '/feedback', feedback);
     }

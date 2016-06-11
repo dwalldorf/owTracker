@@ -38,7 +38,6 @@ export class AdminFeedbackComponent {
                 for (let i = 0; i < this.feedback.totalItems; i++) {
                     let currentFeedback = this.feedback.items[ i ];
                     currentFeedback.displayDate = TimeFormatUtil.toDateTimeString(currentFeedback.createdTimestamp);
-                    console.log(currentFeedback);
 
                     this.feedback.items[ i ] = currentFeedback;
                 }

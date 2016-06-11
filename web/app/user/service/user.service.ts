@@ -84,7 +84,6 @@ export class UserService {
     }
 
     private handleNotLoggedin() {
-        console.log('redirecting to login');
         this._appLoadingService.resetAll();
         this._router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
     }
