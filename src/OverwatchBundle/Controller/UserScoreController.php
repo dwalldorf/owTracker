@@ -3,12 +3,10 @@
 namespace OverwatchBundle\Controller;
 
 use AppBundle\Controller\BaseController;
-use OverwatchBundle\Document\UserScore;
-use OverwatchBundle\DTO\UserScoreDto;
+use AppBundle\Exception\NotFoundException;
 use OverwatchBundle\Service\UserScoreService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Exception\NotLoggedInException;
 
@@ -29,19 +27,22 @@ class UserScoreController extends BaseController {
      *
      * @param string $userId
      * @return Response
+     *
+     * @throws NotFoundException
      * @throws NotLoggedInException
      */
     public function getByUserAction($userId) {
         $this->requireLogin();
 
-        $period = intval($this->getRequestParam('period'));
+        $period = $this->getRequestParamAsInt('period', -1);
         $userScore = $this->userScoreService->getByUserId($userId, $period);
 
         if (!$userScore) {
-            $userScore = new UserScore();
+            throw new NotFoundException();
         }
 
-        return $this->jsonResponse($this->userScoreService->toDto($userScore));
+        $retVal = $this->userScoreService->toDto($userScore);
+        return $this->jsonResponse($retVal);
     }
 
     /**
@@ -54,6 +55,7 @@ class UserScoreController extends BaseController {
      * @param string $userId
      * @param int $period
      * @return Response
+     *
      * @throws NotLoggedInException
      */
     public function getHigherThanUserAction($userId, $period = 30) {
@@ -77,6 +79,7 @@ class UserScoreController extends BaseController {
      * @param string $userId
      * @param int $period
      * @return Response
+     *
      * @throws NotLoggedInException
      */
     public function getLowerThanUserAction($userId, $period = 30) {

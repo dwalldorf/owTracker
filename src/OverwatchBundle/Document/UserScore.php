@@ -39,12 +39,6 @@ class UserScore {
     private $calculated;
 
     /**
-     * @ODM\Float(nullable=false)
-     * @var float
-     */
-    private $calculatedInMs;
-
-    /**
      * @ODM\Int(nullable=false)
      * @ODM\Index(order="asc")
      * @var int
@@ -111,20 +105,6 @@ class UserScore {
      */
     public function setCalculated($calculated) {
         $this->calculated = $calculated;
-    }
-
-    /**
-     * @return float
-     */
-    public function getCalculatedInMs() {
-        return $this->calculatedInMs;
-    }
-
-    /**
-     * @param float $calculatedInMs
-     */
-    public function setCalculatedInMs($calculatedInMs) {
-        $this->calculatedInMs = $calculatedInMs;
     }
 
     /**

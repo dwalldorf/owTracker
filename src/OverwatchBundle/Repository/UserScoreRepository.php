@@ -34,7 +34,6 @@ class UserScoreRepository extends BaseRepository {
 
         $this->dm->persist($userScore);
         $this->dm->flush();
-        $this->dm->clear();
     }
 
     /**
@@ -43,10 +42,11 @@ class UserScoreRepository extends BaseRepository {
      * @return UserScore[]
      */
     public function findByUserId($userId, $period = null) {
-        $criteria = [
-            'user_id' => $userId,
-            'period'  => $period,
-        ];
+        $criteria = ['user_id' => $userId];
+
+        if ($period >= 0) {
+            $criteria['period'] = $period;
+        }
 
         return $this->getRepository()->findBy($criteria);
     }
@@ -65,18 +65,17 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param UserScore $higherThan
+     * @param int $position
      * @param int $period
      * @param int $limit
      * @param int $offset
      *
      * @return UserScore[]
      */
-    public function getHigherThan(UserScore $higherThan, $period, $limit = 10, $offset = 0) {
+    public function getHigherThan($position, $period, $limit = 10, $offset = 0) {
         $res = $this->getQueryBuilder()
-            ->field('user_id')->notEqual($higherThan->getUserId())
             ->field('period')->equals($period)
-            ->field('position')->lt($higherThan->getPosition())
+            ->field('position')->lt($position)
             ->skip($offset)
             ->limit($limit)
             ->sort('position', 'asc')
@@ -88,17 +87,16 @@ class UserScoreRepository extends BaseRepository {
     }
 
     /**
-     * @param UserScore $lowerThan
+     * @param int $lowerThan
      * @param int $period
      * @param int $limit
      * @param int $offset
      * @return UserScore[]
      */
-    public function getLowerThan(UserScore $lowerThan, $period, $limit = 10, $offset = 0) {
+    public function getLowerThan($lowerThan, $period, $limit = 10, $offset = 0) {
         $res = $this->getQueryBuilder()
-            ->field('user_id')->notEqual($lowerThan->getUserId())
             ->field('period')->equals($period)
-            ->field('position')->gt($lowerThan->getPosition())
+            ->field('position')->gt($lowerThan)
             ->sort('position', 'asc')
             ->skip($offset)
             ->limit($limit)

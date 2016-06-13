@@ -2,7 +2,9 @@
 
 namespace OverwatchBundle\Service;
 
+use AppBundle\Model\CacheKey;
 use AppBundle\Service\BaseService;
+use AppBundle\Service\CacheService;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\DTO\UserScoreCollection;
 use OverwatchBundle\DTO\UserScoreDto;
@@ -32,6 +34,11 @@ class UserScoreService extends BaseService {
     ];
 
     /**
+     * @var CacheService
+     */
+    private $cacheService;
+
+    /**
      * @var UserService
      */
     private $userService;
@@ -42,6 +49,7 @@ class UserScoreService extends BaseService {
     private $repository;
 
     protected function init() {
+        $this->cacheService = $this->getService(CacheService::ID);
         $this->repository = $this->getRepository(UserScoreRepository::ID);
         $this->userService = $this->getService(UserService::ID);
     }
@@ -81,13 +89,22 @@ class UserScoreService extends BaseService {
      * @return UserScore|UserScore[]
      */
     public function getByUserId($userId, $period = null) {
-        $retVal = $this->repository->findByUserId($userId, $period);
+        $cacheKey = new CacheKey('scores:%s:%d', $userId, $period);
+        $cacheHit = $this->cacheService->get($cacheKey);
 
-        if (count($retVal) === 1) {
-            $retVal = $retVal[0];
+        if ($cacheHit !== false) {
+            return $cacheHit;
         }
 
-        return $retVal;
+        $retVal = $this->repository->findByUserId($userId, $period);
+        if (!$retVal) {
+            return null;
+        }
+
+        if (count($retVal) == 1) {
+            $retVal = $retVal[0];
+        }
+        return $this->cacheService->set($cacheKey, $retVal, 30);
     }
 
     /**
@@ -101,14 +118,22 @@ class UserScoreService extends BaseService {
         $retVal = new UserScoreCollection();
         $userScore = $this->getByUserId($userId, $period);
 
-        if ($userScore) {
-            $scores = $this->repository->getHigherThan($userScore, $period, $limit + 1, $offset);
-            $dtos = $this->toDto($scores);
+        if (!$userScore) {
+            return $retVal;
+        }
+        $position = $userScore->getPosition();
 
-            $retVal->setItems($dtos, $limit);
+        $cacheKey = new CacheKey('scores:higher:%d:%d:%d:%d', $position, $period, $offset, $limit);
+        $cacheHit = $this->cacheService->get($cacheKey);
+        if ($cacheHit !== false) {
+            return $cacheHit;
         }
 
-        return $retVal;
+        $scores = $this->repository->getHigherThan($position, $period, $limit + 1, $offset);
+        $dtos = $this->toDto($scores);
+        $retVal->setItems($dtos, $limit);
+
+        return $this->cacheService->set($cacheKey, $retVal, 30);
     }
 
     /**
@@ -121,15 +146,26 @@ class UserScoreService extends BaseService {
     public function getLowerThan($userId, $period, $limit = 10, $offset = 0) {
         $retVal = new UserScoreCollection();
         $userScore = $this->getByUserId($userId, $period);
+        $actualLimit = $limit;
 
         if ($userScore) {
-            $scores = $this->repository->getLowerThan($userScore, $period, $limit + 1, $offset);
-            $dtos = $this->toDto($scores);
-
-            $retVal->setItems($dtos, $limit);
+            $position = $userScore->getPosition();
+            $actualLimit++;
+        } else {
+            $position = 0;
         }
 
-        return $retVal;
+        $cacheKey = new CacheKey('scores:lower:%d:%d:%d:%d', $position, $period, $offset, $limit);
+        $cacheHit = $this->cacheService->get($cacheKey);
+        if ($cacheHit !== false) {
+            return $cacheHit;
+        }
+
+        $scores = $this->repository->getLowerThan($position, $period, $actualLimit, $offset);
+        $dtos = $this->toDto($scores);
+        $retVal->setItems($dtos, $limit);
+
+        return $this->cacheService->set($cacheKey, $retVal, 30);
     }
 
     /**
