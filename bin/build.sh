@@ -2,6 +2,8 @@
 
 cd /usr/share/nginx/owt
 
+./bin/service-restart.sh
+
 npm install
 composer install
 
