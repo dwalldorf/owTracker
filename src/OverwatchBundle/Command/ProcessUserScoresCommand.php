@@ -49,21 +49,27 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
         $start = microtime(true);
 
         $periods = $this->userScoreService->getAvailablePeriods();
+        $calculated = new \DateTime();
 
         foreach ($periods as $period) {
             $aggregatedUserScores = $this->overwatchRepository->getUserscores($period);
             $this->overwatchRepository->deleteByPeriod($period);
 
+            $position = 1;
             foreach ($aggregatedUserScores as $aggregatedUserScore) {
                 $userScore = new UserScore();
 
                 $userScore->setUserId($aggregatedUserScore['_id']);
                 $userScore->setVerdicts($aggregatedUserScore['value']);
                 $userScore->setPeriod($period);
-                $userScore->setPosition(8);
+                $userScore->setPosition($position);
+                $userScore->setCalculated($calculated);
 
                 $this->userScoreService->save($userScore);
+
+                $position++;
                 $this->processed++;
+                unset($userScore);
             }
 
             $i = 1;
