@@ -44,6 +44,14 @@ doctrine_mongodb:
                 port: %session_memcache_port%
                 instance_class: Memcache
 
+lsw_memcache:
+    session:
+        pool: default
+    pools:
+        default:
+            servers:
+              - { host: %session_memcache_host%, tcp_port: %session_memcache_port% }
+
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
