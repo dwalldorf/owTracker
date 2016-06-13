@@ -1,6 +1,7 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
 import {Observable} from "rxjs/Observable";
+import {AppConfig} from "../../app.config";
 
 @Injectable()
 export class HttpService {
@@ -41,6 +42,7 @@ export class HttpService {
             throw new Error('invalid http method: ' + method);
         }
 
+        url = AppConfig.API_PREFIX + url;
         var requestEventEmitter = new EventEmitter(),
             requestHash         = this.getRequestHash(method, url);
 

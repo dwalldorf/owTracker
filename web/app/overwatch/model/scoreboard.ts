@@ -8,6 +8,7 @@ export class Scoreboard {
 
     constructor() {
         this.higher = new ItemCollection<UserScore>();
+        this.self = new UserScore();
         this.lower = new ItemCollection<UserScore>();
     }
 }

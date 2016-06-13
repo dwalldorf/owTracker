@@ -72,7 +72,7 @@ export class ScoreboardComponent {
             return false;
         }
 
-        return (this.scoreboard.higher.totalItems == 0 && this.scoreboard.lower.totalItems == 0);
+        return (this.scoreboard.lower.totalItems == 0);
     }
 
     updatePeriod(period) {
@@ -94,9 +94,6 @@ export class ScoreboardComponent {
         this.resetRestStatusFlags();
         this.appLoadingService.setLoading(this.LOADING_STATUS);
 
-        this.scoreboard.higher.setItems(null);
-        this.scoreboard.lower.setItems(null);
-
         this.getUserScore(period);
         this.getHigherScores(period);
         this.getLowerScores(period);
@@ -110,7 +107,8 @@ export class ScoreboardComponent {
                         score => {
                             this.scoreboard.self = score;
                             this.userScoreFetched = true;
-                        }
+                        },
+                        () => this.userScoreFetched = true
                     );
             });
     }

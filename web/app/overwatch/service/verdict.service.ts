@@ -5,13 +5,12 @@ import {UserService} from "../../user/service/user.service";
 import {CacheService} from "../../core/service/cache.service";
 import {CacheIdentifiers} from "../../core/config/cache.identifiers";
 import {Verdict} from "../model/verdict";
-import {AppConfig} from "../../app.config";
 
 @Injectable()
 export class VerdictService {
 
-    private MAPPOOL_URI = AppConfig.API_PREFIX + '/overwatch/mappool';
-    private USER_VERDICTS_URI = AppConfig.API_PREFIX + '/overwatch/verdicts/';
+    private MAPPOOL_URI = '/overwatch/mappool';
+    private USER_VERDICTS_URI = '/overwatch/verdicts/';
 
     private httpService: HttpService;
 
@@ -100,18 +99,19 @@ export class VerdictService {
         if (cachedScores !== null) {
             this.cacheService.emitCachedEvent(cachedScores, eventEmitter);
         } else {
-            this.httpService.makeRequest(HttpService.METHOD_GET, AppConfig.API_PREFIX + '/overwatch/scores/' + userId + '?period=' + period)
+            this.httpService.makeRequest(HttpService.METHOD_GET, '/overwatch/scores/' + userId + '?period=' + period)
                 .subscribe(res => {
-                    res = res[ 0 ];
-                    this.cacheService.cache(cacheId, res, 60);
-                    eventEmitter.emit(res);
-                });
+                        res = res[ 0 ];
+                        this.cacheService.cache(cacheId, res, 60);
+                        eventEmitter.emit(res);
+                    },
+                    err => eventEmitter.error(err));
         }
         return eventEmitter;
     }
 
     submitVerdict(verdict: Verdict) {
-        var requestObservable = this.httpService.makeRequest(HttpService.METHOD_POST, AppConfig.API_PREFIX + '/overwatch/verdicts', verdict);
+        var requestObservable = this.httpService.makeRequest(HttpService.METHOD_POST, '/overwatch/verdicts', verdict);
         requestObservable.subscribe(verdict => {
             this.verdictAddedEventEmitter.emit(verdict);
         });
@@ -131,7 +131,7 @@ export class VerdictService {
      * @returns {string}
      */
     private buildQueryUri(lowerHigher: string, userId: string, period: number, offset: number = 0) {
-        var uri = AppConfig.API_PREFIX + '/overwatch/scores/' + lowerHigher + '/' + userId + '/' + period;
+        var uri = '/overwatch/scores/' + lowerHigher + '/' + userId + '/' + period;
 
         if (offset > 0) {
             uri += '?offset=' + offset;

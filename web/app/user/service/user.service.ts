@@ -10,10 +10,10 @@ import {AppLoadingService} from "../../core/service/apploading.service";
 @Injectable()
 export class UserService {
 
-    private CURRENT_USER_URI = AppConfig.API_PREFIX + '/users/me';
-    private LOGIN_URI = AppConfig.API_PREFIX + '/user/login';
-    private LOGOUT_URI = AppConfig.API_PREFIX + '/user/logout';
-    private USERS_URI = AppConfig.API_PREFIX + '/users';
+    private CURRENT_USER_URI = '/users/me';
+    private LOGIN_URI = '/user/login';
+    private LOGOUT_URI = '/user/logout';
+    private USERS_URI = '/users';
 
     private _router: Router;
 

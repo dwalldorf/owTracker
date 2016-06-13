@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from "../../core/service/http.service";
-import {AppConfig} from "../../app.config";
 
 @Injectable()
 export class AdminFeedbackService {
@@ -12,7 +11,7 @@ export class AdminFeedbackService {
     }
 
     public getUserFeedback() {
-        return this.httpService.makeRequest(HttpService.METHOD_GET, AppConfig.API_PREFIX + '/feedback');
+        return this.httpService.makeRequest(HttpService.METHOD_GET, '/feedback');
     }
 
 }
