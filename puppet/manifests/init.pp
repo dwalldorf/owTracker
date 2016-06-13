@@ -1,4 +1,5 @@
 $owtDir = "/usr/share/nginx/owt"
+$parserDir = "/opt/demo-parser"
 
 exec { 'apt-update':
     command => '/usr/bin/apt-get update'
@@ -11,3 +12,4 @@ include nginx
 include mongo
 include php
 include owt
+include demo-parser
