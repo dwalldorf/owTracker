@@ -25,7 +25,7 @@ export class RegisterComponent {
     }
 
     ngOnInit() {
-        this.userService.getCurrentUser().subscribe(() => this.goToLogin());
+        this.userService.getCurrentUser(true).subscribe(() => this.goToLogin());
     }
 
     register() {
