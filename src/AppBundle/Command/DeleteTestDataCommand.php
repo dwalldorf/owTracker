@@ -30,7 +30,19 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
         $this->setName('owt:clearTestData');
     }
 
+    protected function initServices() {
+        $this->userService = $this->container->get(UserService::ID);
+        $this->overwatchService = $this->container->get(OverwatchService::ID);
+        $this->feedbackService = $this->container->get(FeedbackService::ID);
+    }
+
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
+        $this->info('deleting test data');
+        $this->deleteTestData();
+        $this->info('done');
+    }
+
+    private function deleteTestData() {
         $testUsers = $this->userService->getTestUsers();
         foreach ($testUsers as $testUser) {
             $this->overwatchService->deleteByUser($testUser);
@@ -38,11 +50,5 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
 
             $this->userService->deleteUser($testUser);
         }
-    }
-
-    protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->feedbackService = $this->container->get(FeedbackService::ID);
     }
 }
