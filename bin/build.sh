@@ -15,3 +15,4 @@ rm -rf ./var/cache/*
 ./bin/console assets:install --env=prod
 
 ./bin/console owt:createIndices
+./bin/console owt:memcache
