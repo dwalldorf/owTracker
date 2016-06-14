@@ -35,11 +35,12 @@
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "raulfraile/ladybug-bundle": "^1.0"
+        "raulfraile/ladybug-bundle": "^1.0",
+        "phpunit/phpunit": "^4.8"
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "5.6"
         }
     },
     "extra": {
