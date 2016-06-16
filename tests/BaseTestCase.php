@@ -14,6 +14,11 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
      */
     private $_doctrineManager;
 
+    /**
+     * @var Session
+     */
+    protected $_sessionMock;
+
     public function __construct() {
         parent::__construct();
 
@@ -33,10 +38,10 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
             ->willReturn($this->_doctrineManager);
         $this->_container->set('doctrine_mongodb', $doctrineStub);
 
-        $sessionMock = $this->getMockBuilder(Session::class)
+        $this->_sessionMock = $this->getMockBuilder(Session::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->_container->set('session', $sessionMock);
+        $this->updateSessionMock();
 
         $this->init();
     }
@@ -51,9 +56,17 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
     protected function mockService() {
     }
 
-    protected function mockRepository($repositoryName, $mockRepository) {
+    /**
+     * @param string $repositoryId
+     * @param \PHPUnit_Framework_MockObject_MockObject $mockRepository
+     */
+    protected function mockRepository($repositoryId, $mockRepository) {
         $this->_doctrineManager->method('getRepository')
-            ->with($repositoryName)
+            ->with($repositoryId)
             ->willReturn($mockRepository);
+    }
+
+    protected function updateSessionMock() {
+        $this->_container->set('session', $this->_sessionMock);
     }
 }
