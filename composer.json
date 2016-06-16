@@ -31,11 +31,12 @@
         "symfony/console": "^3.0",
         "doctrine/mongodb-odm-bundle": "dev-master",
         "leaseweb/memcache-bundle": "^2.1",
+        "raulfraile/ladybug": "^1.0",
         "raulfraile/ladybug-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
+        "symfony/phpunit-bridge": "^3.1",
         "phpunit/phpunit": "^4.8"
     },
     "config": {
