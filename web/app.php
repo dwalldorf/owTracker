@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 $loader = require __DIR__ . '/../app/autoload.php';
 include_once __DIR__ . '/../var/bootstrap.php.cache';
 
-$apcLoader = new Symfony\Component\ClassLoader\ApcClassLoader(sha1(__FILE__), $loader);
+$cacheLoader = new \Symfony\Component\ClassLoader\XcacheClassLoader(sha1(__FILE__), $loader);
 $loader->unregister();
-$apcLoader->register(true);
+$cacheLoader->register(true);
 
 $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();

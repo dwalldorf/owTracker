@@ -24,9 +24,11 @@ class base::install inherits base {
     package { 'build-essential':
         ensure => latest,
     }
-
     package { 'curl':
         ensure => installed,
+    }
+    package { 'unzip':
+        ensure => latest,
     }
 
     exec { 'install_my-zsh_vagrant':

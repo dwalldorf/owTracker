@@ -23,13 +23,13 @@ class owt::install inherits owt {
     }
 
     exec { 'install_composer':
-        command    => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
-        require    => Package['curl', 'php5', 'git'],
-        environment=>'HOME=/home/vagrant',
-        user       => vagrant,
-        creates    =>'/usr/local/bin/composer',
-        path       => '/usr/bin',
-        cwd        => '/tmp'
+        command     => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
+        require     => Package['curl', 'php5.6-common', 'git'],
+        environment =>'HOME=/home/vagrant',
+        user        => vagrant,
+        creates     =>'/usr/local/bin/composer',
+        path        => '/usr/bin',
+        cwd         => '/tmp'
     }
 
     file { 'create_node_modules_dir':
