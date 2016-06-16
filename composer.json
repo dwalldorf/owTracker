@@ -30,12 +30,12 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/console": "^3.0",
         "doctrine/mongodb-odm-bundle": "dev-master",
-        "leaseweb/memcache-bundle": "^2.1"
+        "leaseweb/memcache-bundle": "^2.1",
+        "raulfraile/ladybug-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "raulfraile/ladybug-bundle": "^1.0",
         "phpunit/phpunit": "^4.8"
     },
     "config": {
