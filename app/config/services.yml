@@ -6,16 +6,16 @@ services:
     memcache:
         class: Memcache
         calls:
-            - [ addServers, [ %memcache.servers% ]]
+            - [ addServers, [ "%memcache.servers%" ]]
     session.memcache:
         class: Memcache
         arguments:
-            persistent_id: %session_memcache_prefix%
+            persistent_id: "%session_memcache_prefix%"
         calls:
-            - [ addServer, [ %session_memcache_host%, %session_memcache_port% ]]
+            - [ addServer, [ "%session_memcache_host%", "%session_memcache_port%" ]]
     session.handler.memcache:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler
-        arguments: ["@session.memcache", { prefix: %session_memcache_prefix%, expiretime: %session_memcache_expire% }]
+        arguments: ["@session.memcache", { prefix: "%session_memcache_prefix%", expiretime: "%session_memcache_expire%" }]
 
     app.exception_listener:
         class: AppBundle\Exception\ApiExceptionListener

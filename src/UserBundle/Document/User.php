@@ -52,6 +52,24 @@ class User {
     private $isAdmin = false;
 
     /**
+     * User constructor.
+     * @param string $id
+     * @param string $username
+     * @param string $email
+     * @param string $password
+     * @param int $registered
+     * @param bool $isAdmin
+     */
+    public function __construct($id = null, $username = null, $email = null, $password = null, $registered = null, $isAdmin = false) {
+        $this->id = $id;
+        $this->username = $username;
+        $this->email = $email;
+        $this->password = $password;
+        $this->registered = $registered;
+        $this->isAdmin = $isAdmin;
+    }
+
+    /**
      * @return string
      */
     public function getId() {

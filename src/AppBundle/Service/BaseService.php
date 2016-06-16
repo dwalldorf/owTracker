@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -15,14 +16,21 @@ abstract class BaseService implements ContainerAwareInterface, IGetService, IGet
     protected $container;
 
     /**
+     * @var DocumentManager
+     */
+    private $dm;
+
+    /**
      * @var Session
      */
     protected $session;
 
     public function setContainer(ContainerInterface $container = null) {
         $this->container = $container;
-
         $this->session = $this->container->get('session');
+        $this->dm = $this->container
+            ->get('doctrine_mongodb')
+            ->getManager();
 
         $this->init();
     }
@@ -34,11 +42,8 @@ abstract class BaseService implements ContainerAwareInterface, IGetService, IGet
         return $this->container->get($serviceId);
     }
 
-    public function getRepository($repository) {
-        return $this->container
-            ->get('doctrine_mongodb')
-            ->getManager()
-            ->getRepository($repository);
+    public function getRepository($repositoryId) {
+        return $this->dm->getRepository($repositoryId);
     }
 
     /**

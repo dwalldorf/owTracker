@@ -31,17 +31,17 @@ framework:
 doctrine_mongodb:
     connections:
         default:
-            server: %mongo_server%
+            server: "%mongo_server%"
             options: {}
-    default_database: %mongo_default_database%
+    default_database: "%mongo_default_database%"
     document_managers:
         default:
             auto_mapping: true
             metadata_cache_driver:
                 type: memcache
                 class: Doctrine\Common\Cache\MemcacheCache
-                host: %session_memcache_host%
-                port: %session_memcache_port%
+                host: "%session_memcache_host%"
+                port: "%session_memcache_port%"
                 instance_class: Memcache
 
 lsw_memcache:
@@ -50,7 +50,7 @@ lsw_memcache:
     pools:
         default:
             servers:
-              - { host: %session_memcache_host%, tcp_port: %session_memcache_port% }
+              - { host: "%session_memcache_host%", tcp_port: "%session_memcache_port%" }
 
 swiftmailer:
     transport: "%mailer_transport%"

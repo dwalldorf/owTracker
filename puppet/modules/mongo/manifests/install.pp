@@ -9,9 +9,9 @@ class mongo::install inherits mongo {
         ensure  => latest,
         require => Exec['add_mongo_org_ppa'],
     }
-    package{ 'php5-mongo':
+    package{ 'php-mongo':
         ensure  => latest,
-        require => Package['php5'],
-        notify  => Service['php5-fpm'],
+        require => Package['php5.6-common'],
+        notify  => Service['php5.6-fpm'],
     }
 }
