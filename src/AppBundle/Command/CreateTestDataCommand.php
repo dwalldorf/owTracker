@@ -203,7 +203,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
                 $powerUsersInfo,
-                number_format($sw->getRuntimeInS(), 3)
+                $sw->getRuntimeStringInS()
             )
         );
     }
