@@ -26,6 +26,11 @@ class php::install inherits php {
         require => Package['php5.6-common'],
         notify  => Service['php5.6-fpm'],
     }
+    package{ 'php5.6-zip':
+        ensure  => latest,
+        require => Package['php5.6-common'],
+        notify  => Service['php5.6-fpm'],
+    }
     package { 'memcached':
         ensure => latest,
     }
@@ -50,5 +55,6 @@ class php::install inherits php {
     }
 
     Apt::Ppa['ppa:ondrej/php'] ->
+    Exec['apt-update'] ->
     Package['php5.6-common']
 }

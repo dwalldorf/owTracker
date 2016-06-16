@@ -5,9 +5,9 @@ namespace AppBundle\Service;
 interface IGetRepository {
 
     /**
-     * @param string $repository
+     * @param string $repositoryId
      * @return object
      */
-    public function getRepository($repository);
+    public function getRepository($repositoryId);
 
 }

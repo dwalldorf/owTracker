@@ -189,9 +189,9 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         }
 
         $sw->stop();
-        $output->writeln(
+        $this->info(
             sprintf(
-                '[END] Created 
+                'Finished: 
     %d users 
     %d verdicts from %d unique users
     %d feedback entries from %d unique users %s
@@ -203,7 +203,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
                 $powerUsersInfo,
-                number_format($sw->getRuntime(), 3)
+                number_format($sw->getRuntimeInS(), 3)
             )
         );
     }

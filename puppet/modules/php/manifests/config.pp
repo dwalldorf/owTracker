@@ -20,4 +20,14 @@ class php::config inherits php {
         require => Package['php5.6-fpm'],
         notify  => Service['php5.6-fpm'],
     }
+    file { 'php5-cgi_ini':
+        path    => '/etc/php/5.6/cgi/php.ini',
+        source  => 'puppet:///modules/php/php.ini',
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => 0644,
+        require => Package['php5.6-cgi'],
+        notify  => Service['php5.6-fpm'],
+    }
 }

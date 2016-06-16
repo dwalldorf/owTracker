@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Command\BaseContainerAwareCommand;
 use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Service\OverwatchService;
 use Symfony\Component\Console\Input\InputInterface;
