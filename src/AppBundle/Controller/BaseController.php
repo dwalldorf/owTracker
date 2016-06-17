@@ -145,7 +145,7 @@ abstract class BaseController extends Controller implements IGetService {
         if (!$this->isLoggedIn()) {
             return null;
         }
-        return $this->session->get('user');
+        return $this->userService->getSecureUserCopy($this->session->get('user'));
     }
 
     /**

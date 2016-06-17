@@ -162,7 +162,7 @@ class UserServiceTest extends BaseTestCase {
      * @test
      */
     public function logout() {
-        $test = $this->_sessionMock->expects($this->once())
+        $this->_sessionMock->expects($this->once())
             ->method('clear');
         $this->_sessionMock->expects($this->once())
             ->method('invalidate');
