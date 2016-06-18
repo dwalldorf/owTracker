@@ -1,5 +1,5 @@
 class owt::install inherits owt {
-    exec { 'add_node5x':
+    exec { 'install_node5x':
         command => 'curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -',
         user    => root,
         path    => '/usr/bin',
@@ -8,7 +8,7 @@ class owt::install inherits owt {
 
     package { 'nodejs':
         ensure  => latest,
-        require => Exec['add_node5x'],
+        require => Exec['install_node5x'],
     }
 
     package{ 'ruby':
