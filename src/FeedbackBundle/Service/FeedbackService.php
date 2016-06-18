@@ -16,7 +16,7 @@ class FeedbackService extends BaseService {
     /**
      * @var FeedbackRepository
      */
-    private $feedbackRepository;
+    private $repository;
 
     /**
      * @var UserService
@@ -24,7 +24,7 @@ class FeedbackService extends BaseService {
     private $userService;
 
     protected function init() {
-        $this->feedbackRepository = $this->getRepository(FeedbackRepository::ID);
+        $this->repository = $this->getRepository(FeedbackRepository::ID);
         $this->userService = $this->getService(UserService::ID);
     }
 
@@ -34,7 +34,7 @@ class FeedbackService extends BaseService {
      * @return Feedback[]
      */
     public function getAll($limit, $offset) {
-        return $this->feedbackRepository->getAll($limit, $offset);
+        return $this->repository->getAll($limit, $offset);
     }
 
     /**
@@ -42,11 +42,11 @@ class FeedbackService extends BaseService {
      * @return Feedback
      */
     public function save(Feedback $feedback) {
-        return $this->feedbackRepository->save($feedback);
+        return $this->repository->save($feedback);
     }
 
     public function deleteByUser(User $user) {
-        $this->feedbackRepository->deleteByUserId($user->getId());
+        $this->repository->deleteByUserId($user->getId());
     }
 
     /**
@@ -54,14 +54,14 @@ class FeedbackService extends BaseService {
      * @return int
      */
     public function getFeedbackCountByTime(\DateTime $from) {
-        return $this->feedbackRepository->getFeedbackCount($from);
+        return $this->repository->getFeedbackCount($from);
     }
 
     /**
      * @return int
      */
     public function getTotalFeedbackCount() {
-        return $this->feedbackRepository->getFeedbackCount();
+        return $this->repository->getFeedbackCount();
     }
 
 

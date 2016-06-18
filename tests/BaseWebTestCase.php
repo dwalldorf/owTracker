@@ -20,7 +20,7 @@ class BaseWebTestCase extends WebTestCase {
     protected $mockedSessionUser;
 
     public function setUp() {
-        $this->client = static::createClient();
+        $this->client = static::createClient(['environment' => 'test']);
         $this->beforeTest();
     }
 

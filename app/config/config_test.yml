@@ -2,6 +2,12 @@ imports:
     - { resource: config_dev.yml }
     - { resource: parameters_test.yml }
 
+doctrine_mongodb:
+    document_managers:
+        default:
+            auto_mapping: true
+            metadata_cache_driver: array
+
 framework:
     test: ~
     session:
