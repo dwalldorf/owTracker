@@ -6,7 +6,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\Document(
- *     db="owt",
  *     collection="verdicts",
  *     repositoryClass="OverwatchBundle\Repository\OverwatchRepository"
  * )

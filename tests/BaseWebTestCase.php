@@ -30,13 +30,13 @@ class BaseWebTestCase extends WebTestCase {
     /**
      * @param $method
      * @param $uri
+     * @param null $content
      * @param array $parameters
      * @param array $files
      * @param array $server
-     * @param null $content
      * @return Response
      */
-    protected function apiRequest($method, $uri, $parameters = [], $files = [], $server = [], $content = null) {
+    protected function apiRequest($method, $uri, $content = null, $parameters = [], $files = [], $server = []) {
         $parameters['CONTENT_TYPE'] = 'application/json';
 
         $this->client->request($method, '/api' . $uri, $parameters, $files, $server, $content);
