@@ -64,12 +64,15 @@ class FeedbackService extends BaseService {
         return $this->repository->getFeedbackCount();
     }
 
-
     /**
      * @param Feedback|Feedback[] $feedback
      * @return Feedback[]
      */
     public function toDto($feedback) {
+        if (!$feedback) {
+            return null;
+        }
+
         if ($feedback instanceof Feedback) {
             $feedback = [$feedback];
         }

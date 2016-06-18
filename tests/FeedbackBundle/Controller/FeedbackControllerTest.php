@@ -2,13 +2,51 @@
 
 namespace Tests\FeedbackBundle\Controller;
 
+use AppBundle\DTO\BaseCollection;
 use AppBundle\Util\AppSerializer;
 use FeedbackBundle\Document\Feedback;
+use FeedbackBundle\DTO\FeedbackDto;
+use FeedbackBundle\Service\FeedbackService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BaseWebTestCase;
+use UserBundle\Document\User;
 
 class FeedbackControllerTest extends BaseWebTestCase {
+
+    /**
+     * @test
+     */
+    public function getAll() {
+        $this->mockSessionUser();
+        $this->mockedSessionUser->setIsAdmin(true);
+
+        $mockedFeedbackUser = new User('fakeId', 'username');
+
+        $mockedFeedback1 = new Feedback();
+        $mockedFeedback1->setCreatedBy($mockedFeedbackUser->getId());
+        $mockedFeedback2 = new Feedback();
+        $mockedFeedback2->setCreatedBy($mockedFeedbackUser->getId());
+
+        $mockFeedbackService = $this->getMockBuilder(FeedbackService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockFeedbackService->expects($this->once())
+            ->method('getAll')
+            ->willReturn([$mockedFeedback1, $mockedFeedback2]);
+        $mockFeedbackService->expects($this->once())
+            ->method('toDto')
+            ->willReturn([new FeedbackDto($mockedFeedbackUser, $mockedFeedback1), new FeedbackDto($mockedFeedbackUser, $mockedFeedback2)]);
+
+        $this->mockService($mockFeedbackService, FeedbackService::ID);
+
+        /* @var BaseCollection $responseItemCollection */
+        $response = $this->apiRequest(Request::METHOD_GET, '/feedback');
+        $responseItemCollection = AppSerializer::getInstance()->fromJson($response->getContent(), BaseCollection::class);
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertEquals(2, $responseItemCollection->getTotalItems());
+    }
 
     /**
      * @test
@@ -25,8 +63,8 @@ class FeedbackControllerTest extends BaseWebTestCase {
         $this->mockSessionUser();
         $this->mockedSessionUser->setIsAdmin(false);
 
-        $response2 = $this->apiRequest(Request::METHOD_GET, '/feedback');
-        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response2->getStatusCode());
+        $response = $this->apiRequest(Request::METHOD_GET, '/feedback');
+        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
     /**

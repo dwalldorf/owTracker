@@ -50,4 +50,9 @@ class BaseWebTestCase extends WebTestCase {
         $session = $this->client->getContainer()->get('session');
         $session->set('user', $this->mockedSessionUser);
     }
+
+    protected function mockService($mock, $serviceId) {
+        $this->client->getContainer()->set($serviceId, $mock);
+    }
+
 }
