@@ -2,4 +2,4 @@ imports:
     - { resource: parameters.yml }
 
 parameters:
-    mongo_database: "owt_test"
+    mongo_database: owt_test
