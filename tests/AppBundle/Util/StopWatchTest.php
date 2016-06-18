@@ -4,6 +4,9 @@ namespace Tests\AppBundle\Util;
 
 use AppBundle\Util\StopWatch;
 
+/**
+ * @runInSeparateProcess
+ */
 class StopWatchTest extends \PHPUnit_Framework_TestCase {
 
     /**

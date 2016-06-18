@@ -14,37 +14,43 @@ class UserControllerTest extends BaseWebTestCase {
      * @test
      */
     public function getMeRequiresLogin() {
-        $client = $this->apiRequest(Request::METHOD_GET, '/api/users/me');
-        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $client->getResponse()->getStatusCode());
+        $response = $this->apiRequest(Request::METHOD_GET, '/users/me');
+        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
     /**
      * @test
      */
     public function getMe() {
-        $user = $this->getMockUser();
-        $session = $this->client->getContainer()->get('session');
-        $session->set('user', $user);
+        $this->mockSessionUser();
 
         /* @var User $responseUser */
-        $client = $this->apiRequest(Request::METHOD_GET, '/api/users/me');
-        $responseJson = $client->getResponse()->getContent();
+        $response = $this->apiRequest(Request::METHOD_GET, '/users/me');
+        $responseJson = $response->getContent();
         $responseUser = AppSerializer::getInstance()->fromJson($responseJson, User::class);
 
-        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-        $this->assertEquals($user->getId(), $responseUser->getId());
-        $this->assertEquals($user->getUsername(), $responseUser->getUsername());
-        $this->assertEquals($user->getEmail(), $responseUser->getEmail());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertEquals($this->mockedSessionUser->getId(), $responseUser->getId());
+        $this->assertEquals($this->mockedSessionUser->getUsername(), $responseUser->getUsername());
+        $this->assertEquals($this->mockedSessionUser->getEmail(), $responseUser->getEmail());
         $this->assertNull($responseUser->getPassword());
     }
 
     /**
-     * @return User
+     * @test
      */
-    private function getMockUser() {
-        $password = 'somePassword';
-        $hashedPassword = '$2y$12$UK52MfBoKkMTCYhpvPEEOumh0qsSPezoJYWH.3HkuTjc4oqNyQBOu';
+    public function logout() {
+        $this->mockSessionUser();
 
-        return new User('5763199f8ead0ead6a8b4567', 'testUser', 'test@user.com', $hashedPassword);
+        $response = $this->apiRequest(Request::METHOD_POST, '/user/logout');
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function logoutWithoutLogin() {
+        $response = $this->apiRequest(Request::METHOD_POST, '/user/logout');
+        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 }
