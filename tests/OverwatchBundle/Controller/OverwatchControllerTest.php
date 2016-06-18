@@ -23,6 +23,16 @@ class OverwatchControllerTest extends BaseWebTestCase {
     /**
      * @test
      */
+    public function getByUser() {
+        $this->mockSessionUser();
+
+        $response = $this->apiRequest(Request::METHOD_GET, '/overwatch/verdicts/someFakeID');
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
     public function getByUserRequiresLogin() {
         $response = $this->apiRequest(Request::METHOD_GET, '/overwatch/verdicts/someFakeID');
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
@@ -62,5 +72,25 @@ class OverwatchControllerTest extends BaseWebTestCase {
 
         // cleanup
         $this->overwatchService->deleteByUser($this->mockedSessionUser);
+    }
+
+    /**
+     * @test
+     */
+    public function getMapPoolDoesNotRequireLogin() {
+        $response = $this->apiRequest(Request::METHOD_GET, '/overwatch/mappool');
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function getMapPool() {
+        $response = $this->apiRequest(Request::METHOD_GET, '/overwatch/mappool');
+
+        $mapPool = $this->overwatchService->getMapPool();
+        $jsonMapPool = AppSerializer::getInstance()->toJson($mapPool);
+
+        $this->assertEquals($jsonMapPool, $response->getContent());
     }
 }
