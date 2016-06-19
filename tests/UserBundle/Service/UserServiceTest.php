@@ -80,11 +80,103 @@ class UserServiceTest extends BaseTestCase {
 
         $this->mockRepository(UserRepository::ID, $repoMock);
 
-        /* @var UserService $userService */
-        $userService = $this->get(UserService::ID);
+        $userService = $this->getUserService();
         $loginUser = $userService->login($loginName, $password);
 
         $this->assertNull($loginUser);
+    }
+
+    /**
+     * @test
+     */
+    public function registerValidUser() {
+        $user = new User(null, 'username', 'mail@host.tld', 'password');
+
+        $repoMock = $this->getUserRepositoryMock();
+        $this->mockRepository(UserRepository::ID, $repoMock);
+
+        $userService = $this->getUserService();
+        $userService->register($user);
+    }
+
+    /**
+     * @test
+     * @expectedException UserBundle\Exception\RegisterUserException
+     */
+    public function registerDuplicateUser() {
+        $username = 'username';
+        $email = 'mail@host.tld';
+        $user = new User(null, $username, $email, 'password');
+
+        $repoMock = $this->getUserRepositoryMock();
+        $repoMock->expects($this->once())
+            ->method('findByUsernameOrEmail')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo($email),
+                    $this->equalTo($username)
+                )
+            )
+            ->willReturn($user);
+        $this->mockRepository(UserRepository::ID, $repoMock);
+
+        $userService = $this->getUserService();
+        $result = $userService->register($user);
+
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     * @expectedException UserBundle\Exception\RegisterUserException
+     */
+    public function registerWithoutUsername() {
+        $user = new User(null, '', 'mail@host.tld', 'password');
+
+        $repoMock = $this->getUserRepositoryMock();
+        $this->mockRepository(UserRepository::ID, $repoMock);
+
+        $userService = $this->getUserService();
+        $result = $userService->register($user);
+
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     * @expectedException UserBundle\Exception\RegisterUserException
+     */
+    public function registerWithoutPassword() {
+        $user = new User(null, 'username', 'mail@host.tld', '');
+
+        $repoMock = $this->getUserRepositoryMock();
+        $this->mockRepository(UserRepository::ID, $repoMock);
+
+        $userService = $this->getUserService();
+        $result = $userService->register($user);
+
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function logout() {
+        $this->_sessionMock->expects($this->once())
+            ->method('clear');
+        $this->_sessionMock->expects($this->once())
+            ->method('invalidate');
+        $this->updateSessionMock();
+
+        $userService = $this->getUserService();
+        $userService->logout();
+    }
+
+    /**
+     * @return UserService
+     */
+    private function getUserService() {
+        return $this->get(UserService::ID);
     }
 
     /**

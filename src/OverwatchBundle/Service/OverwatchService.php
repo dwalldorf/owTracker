@@ -53,9 +53,10 @@ class OverwatchService extends BaseService {
     public function save(Verdict $verdict) {
         $errors = $this->validateVerdict($verdict);
         if ($errors) {
-            throw new InvalidArgumentException('invalid map');
+            throw new InvalidArgumentException('invalid verdict', $errors);
         }
 
+        $verdict->setCreationDate(new \DateTime());
         $dbVerdict = $this->repository->save($verdict);
         return $this->prepareDto($dbVerdict);
     }

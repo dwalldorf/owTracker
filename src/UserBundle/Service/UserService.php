@@ -175,7 +175,7 @@ class UserService extends BaseService {
      * @param User $user
      * @return User
      */
-    private function getSecureUserCopy(User $user) {
+    public function getSecureUserCopy(User $user) {
         $copy = new User();
         $copy->setId($user->getId());
         $copy->setUsername($user->getUsername());

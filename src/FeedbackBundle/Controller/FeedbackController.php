@@ -65,7 +65,7 @@ class FeedbackController extends BaseController {
      * @return Response
      * @throws NotLoggedInException
      */
-    public function postAction() {
+    public function submitAction() {
         $this->requireLogin();
         $user = $this->getCurrentUser();
 
@@ -74,8 +74,8 @@ class FeedbackController extends BaseController {
         $feedback->setCreatedBy($user->getId());
         $feedback->setCreatedTimestamp(new \DateTime());
 
-        $this->feedbackService->save($feedback);
+        $dbFeedback = $this->feedbackService->save($feedback);
 
-        return $this->jsonResponse(null, Response::HTTP_NO_CONTENT);
+        return $this->jsonResponse($dbFeedback, Response::HTTP_CREATED);
     }
 }

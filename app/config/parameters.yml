@@ -12,7 +12,7 @@ parameters:
     secret: jUZofDIm3TfGJuppgCBYD5USPvLn0BGivsO2
 
     mongo_server: mongodb://localhost:27017
-    mongo_default_database: overwatch
+    mongo_database: owt
 
     memcache.servers:
         - { host: 127.0.0.1, port: 11211 }
