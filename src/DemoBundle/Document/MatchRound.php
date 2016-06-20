@@ -23,7 +23,7 @@ class MatchRound {
 
     /**
      * @var RoundEvents
-     * @ODM\EmbedOne(targetDocument="RoundEvents")
+     * @ODM\EmbedOne(name="events", targetDocument="RoundEvents")
      */
     private $roundEvents;
 

@@ -17,13 +17,13 @@ class RoundEvents {
 
     /**
      * @var RoundEventBombPlant
-     * @ODM\EmbedOne(targetDocument="RoundEventBombPlant")
+     * @ODM\EmbedOne(name="plant", targetDocument="RoundEventBombPlant")
      */
     private $bombPlant;
 
     /**
      * @var RoundEventBombDefuse
-     * @ODM\EmbedOne(targetDocument="RoundEventBombDefuse")
+     * @ODM\EmbedOne(name="defuse", targetDocument="RoundEventBombDefuse")
      */
     private $bombDefuse;
 

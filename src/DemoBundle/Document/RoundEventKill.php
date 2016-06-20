@@ -39,6 +39,11 @@ class RoundEventKill {
      * @param bool $headshot
      */
     public function __construct($killerSteamId = null, $killedSteamId = null, $headshot = false) {
+        /*
+         * TODO: add timeInRound
+         * by dwalldorf at 23:44 20.06.16
+         */
+
         $this->killer = $killerSteamId;
         $this->killed = $killedSteamId;
         $this->headshot = $headshot;

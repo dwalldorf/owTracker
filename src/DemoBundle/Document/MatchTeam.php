@@ -11,7 +11,7 @@ class MatchTeam {
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\String(name="name")
      */
     private $teamName;
 

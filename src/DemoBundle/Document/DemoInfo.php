@@ -27,13 +27,13 @@ class DemoInfo {
 
     /**
      * @var MatchInfo
-     * @ODM\EmbedOne(targetDocument="MatchInfo")
+     * @ODM\EmbedOne(name="info", targetDocument="MatchInfo")
      */
     private $matchInfo;
 
     /**
      * @var MatchRound[]
-     * @ODM\EmbedMany(targetDocument="MatchRound")
+     * @ODM\EmbedMany(name="rounds", targetDocument="MatchRound")
      */
     private $rounds;
 
