@@ -69,20 +69,6 @@ abstract class BaseController extends Controller implements IGetService {
     }
 
     /**
-     * @param $content
-     * @param int $status
-     * @return Response
-     */
-    protected final function jsonResponse($content, $status = 200) {
-        $jsonContent = AppSerializer::getInstance()->toJson($content);
-
-        $response = $this->response($jsonContent, $status);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    }
-
-    /**
      * @param $targetEntity
      * @return object
      */

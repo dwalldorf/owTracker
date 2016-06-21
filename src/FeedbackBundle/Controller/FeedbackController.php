@@ -42,7 +42,7 @@ class FeedbackController extends BaseController {
         $dtoArray = $this->feedbackService->toDto($dbArray);
 
         $feedbackCollection->setItems($dtoArray);
-        return $this->jsonResponse($feedbackCollection);
+        return $this->json($feedbackCollection);
     }
 
     /**
@@ -55,7 +55,7 @@ class FeedbackController extends BaseController {
      */
     public function getByIdAction() {
         $this->requireAdmin();
-        return $this->jsonResponse('implement me');
+        return $this->json('implement me');
     }
 
     /**
@@ -76,6 +76,6 @@ class FeedbackController extends BaseController {
 
         $dbFeedback = $this->feedbackService->save($feedback);
 
-        return $this->jsonResponse($dbFeedback, Response::HTTP_CREATED);
+        return $this->json($dbFeedback, Response::HTTP_CREATED);
     }
 }

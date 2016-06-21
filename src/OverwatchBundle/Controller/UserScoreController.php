@@ -42,7 +42,7 @@ class UserScoreController extends BaseController {
         }
 
         $retVal = $this->userScoreService->toDto($userScore);
-        return $this->jsonResponse($retVal);
+        return $this->json($retVal);
     }
 
     /**
@@ -66,7 +66,7 @@ class UserScoreController extends BaseController {
         $offset = $this->getRequestParamAsInt('offset');
 
         $scores = $this->userScoreService->getHigherThan($userId, $period, $limit, $offset);
-        return $this->jsonResponse($scores);
+        return $this->json($scores);
     }
 
     /**
@@ -90,6 +90,6 @@ class UserScoreController extends BaseController {
         $offset = $this->getRequestParamAsInt('offset');
 
         $scores = $this->userScoreService->getLowerThan($userId, $period, $limit, $offset);
-        return $this->jsonResponse($scores);
+        return $this->json($scores);
     }
 }

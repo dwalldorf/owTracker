@@ -38,7 +38,7 @@ class OverwatchController extends BaseController {
         $verdicts = $this->overwatchService->getByUserId($userId);
         $retVal->setItems($verdicts);
 
-        return $this->jsonResponse($retVal);
+        return $this->json($retVal);
     }
 
     /**
@@ -48,7 +48,7 @@ class OverwatchController extends BaseController {
      * @return Response
      */
     public function getMapPoolAction() {
-        return $this->jsonResponse($this->overwatchService->getMapPool());
+        return $this->json($this->overwatchService->getMapPool());
     }
 
     /**
@@ -70,8 +70,8 @@ class OverwatchController extends BaseController {
         $dbVerdict = $this->overwatchService->save($verdict);
 
         if ($dbVerdict->getId()) {
-            return $this->jsonResponse($dbVerdict, Response::HTTP_CREATED);
+            return $this->json($dbVerdict, Response::HTTP_CREATED);
         }
-        return $this->jsonResponse('handle this', Response::HTTP_BAD_REQUEST);
+        return $this->json('handle this', Response::HTTP_BAD_REQUEST);
     }
 }
