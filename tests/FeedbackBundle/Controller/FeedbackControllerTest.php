@@ -42,7 +42,7 @@ class FeedbackControllerTest extends BaseWebTestCase {
 
         /* @var BaseCollection $responseItemCollection */
         $response = $this->apiRequest(Request::METHOD_GET, '/feedback');
-        $responseItemCollection = AppSerializer::getInstance()->fromJson($response->getContent(), BaseCollection::class);
+        $responseItemCollection = $this->getEntityFromRequest($response, BaseCollection::class);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertEquals(2, $responseItemCollection->getTotalItems());
@@ -92,9 +92,8 @@ class FeedbackControllerTest extends BaseWebTestCase {
     public function submitRequiresLogin() {
         $feedback = new Feedback();
         $feedback->setFeedback(['fixplease' => 'this and that']);
-        $jsonFeedback = AppSerializer::getInstance()->toJson($feedback);
 
-        $response = $this->apiRequest(Request::METHOD_POST, '/feedback', $jsonFeedback);
+        $response = $this->apiRequest(Request::METHOD_POST, '/feedback', $feedback);
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
@@ -104,12 +103,11 @@ class FeedbackControllerTest extends BaseWebTestCase {
     public function submitSetsTimestampAndUser() {
         $feedback = new Feedback();
         $feedback->setFeedback(['fixplease' => 'this and that']);
-        $jsonFeedback = AppSerializer::getInstance()->toJson($feedback);
         $this->mockSessionUser();
 
         /* @var Feedback $responseFeedback */
-        $response = $this->apiRequest(Request::METHOD_POST, '/feedback', $jsonFeedback);
-        $responseFeedback = AppSerializer::getInstance()->fromJson($response->getContent(), Feedback::class);
+        $response = $this->apiRequest(Request::METHOD_POST, '/feedback', $feedback);
+        $responseFeedback = $this->getEntityFromRequest($response, Feedback::class);
         $feedbackCreated = new \DateTime($responseFeedback->getCreated());
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());

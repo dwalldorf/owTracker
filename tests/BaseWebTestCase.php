@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use AppBundle\Util\AppSerializer;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,17 +31,38 @@ class BaseWebTestCase extends WebTestCase {
     /**
      * @param $method
      * @param $uri
-     * @param null $content
+     * @param mixed $content
+     * @param string $apiToken
+     * @param array $server
      * @param array $parameters
      * @param array $files
-     * @param array $server
      * @return Response
      */
-    protected function apiRequest($method, $uri, $content = null, $parameters = [], $files = [], $server = []) {
-        $parameters['CONTENT_TYPE'] = 'application/json';
+    protected function apiRequest($method, $uri, $content = null, $apiToken = null, $server = [], $parameters = [], $files = []) {
+        if (!is_array($server)) {
+            $server = [];
+            $server['CONTENT_TYPE'] = 'application/json';
+        }
+
+        if ($apiToken) {
+            $server['HTTP_API_TOKEN'] = $apiToken;
+        }
+
+        if ($content) {
+            $content = AppSerializer::getInstance()->toJson($content);
+        }
 
         $this->client->request($method, '/api' . $uri, $parameters, $files, $server, $content);
         return $this->client->getResponse();
+    }
+
+    /**
+     * @param Response $response
+     * @param $targetEntity
+     * @return object
+     */
+    protected function getEntityFromRequest(Response $response, $targetEntity) {
+        return AppSerializer::getInstance()->fromJson($response->getContent(), $targetEntity);
     }
 
     protected function mockSessionUser() {
@@ -55,4 +77,10 @@ class BaseWebTestCase extends WebTestCase {
         $this->client->getContainer()->set($serviceId, $mock);
     }
 
+    /**
+     * @return string
+     */
+    protected function getDemoApiToken() {
+        return $this->client->getContainer()->getParameter('demo_api_token');
+    }
 }

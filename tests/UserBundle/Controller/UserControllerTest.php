@@ -26,8 +26,7 @@ class UserControllerTest extends BaseWebTestCase {
 
         /* @var User $responseUser */
         $response = $this->apiRequest(Request::METHOD_GET, '/users/me');
-        $responseJson = $response->getContent();
-        $responseUser = AppSerializer::getInstance()->fromJson($responseJson, User::class);
+        $responseUser = $this->getEntityFromRequest($response, User::class);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertEquals($this->mockedSessionUser->getId(), $responseUser->getId());

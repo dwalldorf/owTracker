@@ -44,9 +44,8 @@ class OverwatchControllerTest extends BaseWebTestCase {
     public function submitRequiresLogin() {
         $verdict = new Verdict();
         $verdict->setMap('de_dust2');
-        $verdictJson = AppSerializer::getInstance()->toJson($verdict);
 
-        $response = $this->apiRequest(Request::METHOD_POST, '/overwatch/verdicts', $verdictJson);
+        $response = $this->apiRequest(Request::METHOD_POST, '/overwatch/verdicts', $verdict);
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 
@@ -59,11 +58,10 @@ class OverwatchControllerTest extends BaseWebTestCase {
         $verdict = new Verdict();
         $verdict->setMap('de_dust2');
         $verdict->setOverwatchDate(time());
-        $verdictJson = AppSerializer::getInstance()->toJson($verdict);
 
         /* @var Verdict $responseVerdict */
-        $response = $this->apiRequest(Request::METHOD_POST, '/overwatch/verdicts', $verdictJson);
-        $responseVerdict = AppSerializer::getInstance()->fromJson($response->getContent(), Verdict::class);
+        $response = $this->apiRequest(Request::METHOD_POST, '/overwatch/verdicts', $verdict);
+        $responseVerdict = $this->getEntityFromRequest($response, Verdict::class);
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertNotNull($responseVerdict->getId());
