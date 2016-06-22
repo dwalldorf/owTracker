@@ -33,7 +33,7 @@ class Verdict {
     private $creationDate;
 
     /**
-     * @ODM\Date(name="verdict_date" ,nullable=false)
+     * @ODM\Date(name="verdict_date", nullable=false)
      * @var \DateTime
      */
     private $overwatchDate;

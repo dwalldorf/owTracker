@@ -34,7 +34,7 @@ class Feedback {
      * @var \DateTime
      * @ODM\Date(name="created", nullable=false)
      */
-    private $createdTimestamp;
+    private $created;
 
     /**
      * @var array
@@ -54,6 +54,13 @@ class Feedback {
      * @var bool
      */
     private $archived = false;
+
+    /**
+     * Feedback constructor.
+     */
+    public function __construct() {
+        $this->created = new \DateTime();
+    }
 
     /**
      * @return string
@@ -86,15 +93,15 @@ class Feedback {
     /**
      * @return \DateTime
      */
-    public function getCreatedTimestamp() {
-        return $this->createdTimestamp;
+    public function getCreated() {
+        return $this->created;
     }
 
     /**
-     * @param \DateTime $createdTimestamp
+     * @param \DateTime $created
      */
-    public function setCreatedTimestamp($createdTimestamp) {
-        $this->createdTimestamp = $createdTimestamp;
+    public function setCreated($created) {
+        $this->created = $created;
     }
 
     /**

@@ -506,7 +506,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private function getRandomFeedback(User $user) {
         $feedback = new Feedback();
         $feedback->setCreatedBy($user->getId());
-        $feedback->setCreatedTimestamp($this->getRandomDate());
+        $feedback->setCreated($this->getRandomDate());
 
         $feedbackHash = [
             'like'          => $this->getRandomBool(),

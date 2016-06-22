@@ -72,7 +72,7 @@ class FeedbackController extends BaseController {
         /* @var $feedback Feedback */
         $feedback = $this->getEntityFromRequest(Feedback::class);
         $feedback->setCreatedBy($user->getId());
-        $feedback->setCreatedTimestamp(new \DateTime());
+        $feedback->setCreated(new \DateTime());
 
         $dbFeedback = $this->feedbackService->save($feedback);
 
