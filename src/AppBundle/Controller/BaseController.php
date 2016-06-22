@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Exception\ServerErrorException;
 use AppBundle\Service\IGetService;
 use AppBundle\Util\AppSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -122,6 +123,26 @@ abstract class BaseController extends Controller implements IGetService {
         if (!$user->isIsAdmin()) {
             throw new NotAuthorizedException();
         }
+    }
+
+    /**
+     * @param string $apiToken
+     * @return string
+     * @throws NotAuthorizedException
+     * @throws ServerErrorException
+     */
+    protected final function validateApiToken($apiToken) {
+        if (!$apiToken) {
+            throw new ServerErrorException('cannot call validateApiToken without passing the valid token.');
+        }
+
+        $requestApiToken = $this->request->headers->get('api-token');
+
+        if ($apiToken !== $requestApiToken) {
+            throw new NotAuthorizedException();
+        }
+
+        return $apiToken;
     }
 
     /**
