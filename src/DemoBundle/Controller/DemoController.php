@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Exception\NotAuthorizedException;
 
-class DemoInfoController extends BaseController {
+class DemoController extends BaseController {
 
     /**
      * @Route("/api/demos")
