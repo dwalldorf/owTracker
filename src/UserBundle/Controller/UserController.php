@@ -32,7 +32,7 @@ class UserController extends BaseController {
      */
     public function meAction() {
         $this->requireLogin();
-        return $this->jsonResponse($this->getCurrentUser());
+        return $this->json($this->getCurrentUser());
     }
 
     /**
@@ -56,7 +56,7 @@ class UserController extends BaseController {
             throw new BadRequestException('invalid credentials or user does not exist');
         }
 
-        return $this->jsonResponse($dbUser);
+        return $this->json($dbUser);
     }
 
     /**
@@ -70,7 +70,7 @@ class UserController extends BaseController {
         $this->requireLogin();
         $this->userService->logout();
 
-        return $this->jsonResponse(null, Response::HTTP_NO_CONTENT);
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -88,9 +88,9 @@ class UserController extends BaseController {
         $userId = $this->userService->register($user);
 
         if ($userId) {
-            return $this->jsonResponse($userId, Response::HTTP_CREATED);
+            return $this->json($userId, Response::HTTP_CREATED);
         }
 
-        return $this->jsonResponse(null, Response::HTTP_BAD_REQUEST);
+        return $this->json(null, Response::HTTP_BAD_REQUEST);
     }
 }

@@ -36,8 +36,8 @@ class FeedbackDto {
         $this->id = $feedback->getId();
         $this->feedback = $feedback->getFeedback();
 
-        if ($feedback->getCreatedTimestamp()) {
-            $this->createdTimestamp = $feedback->getCreatedTimestamp()->getTimestamp();
+        if ($feedback->getCreated()) {
+            $this->createdTimestamp = $feedback->getCreated()->getTimestamp();
         }
     }
 

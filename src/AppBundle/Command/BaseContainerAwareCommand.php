@@ -45,6 +45,13 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
     /**
      * @param string $msg
      */
+    protected function debug($msg = '') {
+        $this->output->writeln('[DEBUG] ' . $msg);
+    }
+
+    /**
+     * @param string $msg
+     */
     protected function error($msg) {
         $this->output->writeln('[ERROR] ' . $msg);
     }

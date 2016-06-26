@@ -45,7 +45,7 @@ class UserScoreControllerTest extends BaseWebTestCase {
 
         /* @var BaseCollection $responseCollection */
         $response = $this->apiRequest(Request::METHOD_GET, '/overwatch/scores/higher/someFakeId/30');
-        $responseCollection = AppSerializer::getInstance()->fromJson($response->getContent(), BaseCollection::class);
+        $responseCollection = $this->getEntityFromRequest($response, BaseCollection::class);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertEquals(0, $responseCollection->getTotalItems());
@@ -85,7 +85,7 @@ class UserScoreControllerTest extends BaseWebTestCase {
 
         /* @var BaseCollection $responseCollection */
         $response = $this->apiRequest(Request::METHOD_GET, '/overwatch/scores/lower/someFakeId/30');
-        $responseCollection = AppSerializer::getInstance()->fromJson($response->getContent(), BaseCollection::class);
+        $responseCollection = $this->getEntityFromRequest($response, BaseCollection::class);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertEquals(0, $responseCollection->getTotalItems());

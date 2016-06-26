@@ -45,3 +45,7 @@ services:
     feedback.feedback_service:
         class: FeedbackBundle\Service\FeedbackService
         parent: app.base_service
+
+    demo.demo_service:
+        class: DemoBundle\Service\DemoService
+        parent: app.base_service

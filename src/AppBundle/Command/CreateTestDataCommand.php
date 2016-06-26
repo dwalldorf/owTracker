@@ -2,8 +2,16 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Util\NumberUtil;
+use AppBundle\Util\RandomUtil;
 use AppBundle\Util\StopWatch;
+use DemoBundle\Document\Demo;
+use DemoBundle\Document\RoundEventKill;
+use DemoBundle\Document\MatchRound;
+use DemoBundle\Document\MatchInfo;
+use DemoBundle\Document\MatchPlayer;
+use DemoBundle\Document\MatchTeam;
+use DemoBundle\Document\RoundEvents;
+use DemoBundle\Service\DemoService;
 use FeedbackBundle\Document\Feedback;
 use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Document\Verdict;
@@ -36,6 +44,11 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private $feedbackService;
 
     /**
+     * @var DemoService
+     */
+    private $demoService;
+
+    /**
      * @var string
      */
     private $specificUser;
@@ -59,6 +72,16 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @var int
      */
     private $userAmount;
+
+    /**
+     * @var int
+     */
+    private $feedbackAmount;
+
+    /**
+     * @var int
+     */
+    private $demoAmount;
 
     /**
      * @var int
@@ -90,6 +113,16 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      */
     private $createdPowerUsers = 0;
 
+    /**
+     * @var int
+     */
+    private $createdDemos = 0;
+
+    /**
+     * @var int
+     */
+    private $createdDemosUniqueUsers = 0;
+
     const OPT_USER_NAME = 'user';
 
     const OPT_VERDICT_AMOUNT_NAME = 'verdicts';
@@ -100,6 +133,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     const OPT_USER_AMOUNT_DEFAULT = 20;
 
+    const OPT_FEEDBACK_AMOUNT_NAME = 'feedback';
+
+    const OPT_DEMOS_AMOUNT_NAME = 'demos';
+
     const OPT_POWER_USER = 'powerUser';
 
     protected function configure() {
@@ -108,7 +145,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 self::OPT_USER_NAME,
                 'u',
                 InputArgument::OPTIONAL,
-                'User\'s mongo id or email address'
+                'User\'s mongo id or email address - take a look at options when specifying user'
             )
             ->addOption(
                 self::OPT_USER_AMOUNT_NAME,
@@ -120,7 +157,19 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 self::OPT_VERDICT_AMOUNT_NAME,
                 'o',
                 InputArgument::OPTIONAL,
-                'Only if user specified - amount of overwatch verdicts to generate (20 if not set)'
+                'Only if user specified - amount of overwatch verdicts to generate (0 by default)'
+            )
+            ->addOption(
+                self::OPT_FEEDBACK_AMOUNT_NAME,
+                'f',
+                InputArgument::OPTIONAL,
+                'Only if user specified - amount of feedback entries to generate (0 by default)'
+            )
+            ->addOption(
+                self::OPT_DEMOS_AMOUNT_NAME,
+                'd',
+                InputArgument::OPTIONAL,
+                'Only if user specified - amount of demos to generate (0 by default)'
             )
             ->addOption(
                 self::OPT_POWER_USER,
@@ -139,15 +188,12 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
         $this->verdictAmount = $input->getOption(self::OPT_VERDICT_AMOUNT_NAME);
         $this->includePowerUsers = $input->getOption(self::OPT_POWER_USER);
+        $this->feedbackAmount = $input->getOption(self::OPT_FEEDBACK_AMOUNT_NAME);
+        $this->demoAmount = $input->getOption(self::OPT_DEMOS_AMOUNT_NAME);
 
         $this->userAmount = $input->getOption(self::OPT_USER_AMOUNT_NAME);
 
         if ($this->specificUser) {
-            if (!$this->verdictAmount) {
-                $this->verdictAmount = self::OPT_VERDICT_AMOUNT_DEFAULT;
-                $this->info(sprintf('amount of verdicts to generate not set. using default of %d', $this->verdictAmount));
-            }
-
             $user = $this->userService->findById($this->specificUser);
             if (!$user) {
                 $user = $this->userService->findByUsernameOrEmail($this->specificUser);
@@ -158,18 +204,28 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 die(1);
             }
 
-            if ($this->verbose) {
-                $this->info(
-                    sprintf(
-                        'creating %d verdicts for user with email %s and id %s',
-                        $this->verdictAmount,
-                        $user->getEmail(),
-                        $user->getId()
-                    )
-                );
+            if ($this->verdictAmount) {
+                if ($this->verbose) {
+                    $this->debug(sprintf('creating %d verdict(s) for user %s', $this->verdictAmount, $user->getEmail()));
+                }
+                $this->createVerdicts($this->verdictAmount, $user);
             }
 
-            $this->createVerdicts($this->verdictAmount, $user);
+            if ($this->feedbackAmount) {
+                if ($this->verbose) {
+                    $this->debug(sprintf('creating %d feedback entrie(s) for user %s', $this->feedbackAmount, $user->getUsername()));
+                }
+                while ($this->createdFeedback < $this->feedbackAmount) {
+                    $this->createFeedback($user);
+                }
+            }
+
+            if ($this->demoAmount) {
+                if ($this->verbose) {
+                    $this->debug(sprintf('creating %d demo(s) for %s', $this->demoAmount, $user->getEmail()));
+                }
+                $this->createDemos($this->demoAmount, $user);
+            }
         } else {
             if (!$this->userAmount) {
                 $this->userAmount = self::OPT_USER_AMOUNT_DEFAULT;
@@ -193,8 +249,9 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             sprintf(
                 'Finished: 
     %d users 
-    %d verdicts from %d unique users
-    %d feedback entries from %d unique users %s
+    %d verdicts of %d unique users
+    %d feedback entries of %d unique users
+    %d demos of %d unique user %s
 
     Runtime: %s seconds',
                 $this->createdUsers,
@@ -202,6 +259,8 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 $this->createdVerdictsUniqueUsers,
                 $this->createdFeedback,
                 $this->createdFeedbackUniqueUsers,
+                $this->createdDemos,
+                $this->createdDemosUniqueUsers,
                 $powerUsersInfo,
                 $sw->getRuntimeStringInS()
             )
@@ -212,6 +271,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $this->userService = $this->container->get(UserService::ID);
         $this->overwatchService = $this->container->get(OverwatchService::ID);
         $this->feedbackService = $this->container->get(FeedbackService::ID);
+        $this->demoService = $this->container->get(DemoService::ID);
     }
 
     /**
@@ -250,9 +310,9 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             }
 
             if ($this->verbose) {
-                $this->info(sprintf('created user %s', $user->getEmail()));
-                $this->info(sprintf('created %d verdicts', $amountOfOverwatches));
-                $this->info();
+                $this->debug(sprintf('created user %s', $user->getEmail()));
+                $this->debug(sprintf('created %d verdicts', $amountOfOverwatches));
+                $this->debug();
             }
 
             $this->createdUsers++;
@@ -266,8 +326,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      */
     private function createVerdicts($amount, User $user) {
         if ($this->verbose) {
-            $this->info();
-            $this->info('aim | vision | other | griefing | map');
+            $this->debug('aim | vision | other | griefing | map');
         }
 
         for ($i = 0; $i < $amount; $i++) {
@@ -275,7 +334,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->overwatchService->save($verdict);
 
             if ($this->verbose) {
-                $this->info(
+                $this->debug(
                     sprintf(
                         ' %s   |  %s  |   %s    |   %s       | %s',
                         $this->xIf($verdict->isAimAssist()),
@@ -290,7 +349,118 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             $this->createdVerdicts++;
             $verdict = null;
         }
+        if ($this->verbose) {
+            $this->debug();
+        }
         $this->createdVerdictsUniqueUsers++;
+    }
+
+    private function createDemos($amount, User $user) {
+        for ($demoCounter = 0; $demoCounter < $amount; $demoCounter++) {
+            $team1Rounds = null;
+            $team2Rounds = null;
+            $totalRounds = null;
+            $rounds = [];
+
+            if ($this->getRandomBool()) {
+                $team1Rounds = 16;
+                $team2Rounds = mt_rand(1, 14);
+            } else {
+                $team1Rounds = mt_rand(1, 14);
+                $team2Rounds = 16;
+            }
+            $totalRounds = $team1Rounds + $team2Rounds;
+
+            $team1 = $this->createTeam($user);
+            $team2 = $this->createTeam();
+
+            $matchInfo = new MatchInfo(
+                $this->getRandomMap(),
+                $team1,
+                $team2,
+                $team1Rounds,
+                $team2Rounds
+            );
+
+            /*
+             * round end scenarios (winner)
+             * - bomb plant and explosion (T)
+             * - all CT's eliminated (T)
+             * - all T's eliminated (CT)
+             * - bomb planted and defused (CT)
+             * - round time over without bomb plant (CT)
+             *
+             * we only end rounds with all players of one team killed
+             */
+            $roundCounter = 1;
+            while ($roundCounter < $totalRounds + 1) {
+                for ($team1RoundCounter = 0; $team1RoundCounter < $team1Rounds; $team1RoundCounter++) {
+                    $rounds[] = $this->createDemoRound($roundCounter, $team1, $team2);
+                    $roundCounter++;
+                }
+                for ($team2RoundCounter = 0; $team2RoundCounter < $team2Rounds; $team2RoundCounter++) {
+                    $rounds[] = $this->createDemoRound($roundCounter, $team2, $team1);
+                    $roundCounter++;
+                }
+            }
+            $demo = new Demo(null, $user->getId(), $matchInfo, $rounds);
+            $this->demoService->save($demo);
+
+            if ($this->verbose) {
+                $this->debug(
+                    sprintf(
+                        'demo: %s VS %s - %d:%d',
+                        $team1->getTeamName(),
+                        $team2->getTeamName(),
+                        $team1Rounds,
+                        $team2Rounds
+                    )
+                );
+            }
+
+            $this->createdDemos++;
+            $demo = null;
+        }
+        $this->createdDemosUniqueUsers++;
+    }
+
+    /**
+     * @param User|null $user
+     * @return MatchTeam
+     */
+    public static function createTeam(User $user = null) {
+        $teamName = null;
+        if ($user) {
+            $teamName = 'team_' . $user->getUsername();
+        } else {
+            $teamName = 'team_' . RandomUtil::getRandomString(5);
+        }
+
+        $players = [];
+        for ($i = 0; $i < 5; $i++) {
+            if ($i == 0 && $user) {
+                $players[] = new MatchPlayer($user->getId(), $user->getUsername());
+            } else {
+                $players[] = new MatchPlayer(RandomUtil::getRandomString(), 'testPlayer_' . RandomUtil::getRandomString(3));
+            }
+        }
+
+        return new MatchTeam($teamName, $players);
+    }
+
+    public static function createDemoRound($roundNumber, MatchTeam $winner, MatchTeam $loser) {
+        $kills = [];
+        $winnerTeamPlayersAlive = $winner->getPlayers();
+        $loserTeamPlayersAlive = $loser->getPlayers();
+
+        foreach ($loserTeamPlayersAlive as $victim) {
+            $killer = $winnerTeamPlayersAlive[mt_rand(0, count($winnerTeamPlayersAlive) - 1)];
+            $kills[] = new RoundEventKill(
+                $killer->getSteamId(), $victim->getSteamId(), null, RandomUtil::getRandomBoolWithProbability(0.3)
+            );
+        }
+
+        return new MatchRound($roundNumber, mt_rand(30, 110), new RoundEvents($kills));
     }
 
     /**
@@ -339,7 +509,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     private function getRandomFeedback(User $user) {
         $feedback = new Feedback();
         $feedback->setCreatedBy($user->getId());
-        $feedback->setCreatedTimestamp($this->getRandomDate());
+        $feedback->setCreated($this->getRandomDate());
 
         $feedbackHash = [
             'like'          => $this->getRandomBool(),

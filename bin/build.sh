@@ -2,6 +2,7 @@
 
 WORKING_DIR=/usr/share/nginx/owt
 ENVIRONMENT=dev
+SKIP=0
 API_PREFIX="/app_dev.php/api"
 
 cd ${WORKING_DIR}
@@ -11,6 +12,10 @@ do
 case $i in
     -e=*|--env=*)
     ENVIRONMENT="${i#*=}"
+    shift
+    ;;
+    -s=*|--skip-dependencies=*)
+    SKIP="${i#*=}"
     shift
     ;;
     *)
@@ -42,8 +47,13 @@ fi
 echo "setting API_PREFIX to $API_PREFIX"
 sed -i "/static API_PREFIX = /c\    static API_PREFIX = '$API_PREFIX';" ./web/app/app.config.ts
 
-npm install
-composer install
+if [ ${SKIP} == "0" ]
+then
+    npm install
+    composer install
+else
+    echo "skipping npm/composer dependencies"
+fi
 
 ./node_modules/ntypescript/bin/tsc --outDir web/app/dist
 
