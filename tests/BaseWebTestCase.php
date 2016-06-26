@@ -41,8 +41,9 @@ class BaseWebTestCase extends WebTestCase {
     protected function apiRequest($method, $uri, $content = null, $apiToken = null, $server = [], $parameters = [], $files = []) {
         if (!is_array($server)) {
             $server = [];
-            $server['CONTENT_TYPE'] = 'application/json';
         }
+        $server['CONTENT_TYPE'] = 'application/json';
+        $server['HTTP_ACCEPT'] = 'application/json';
 
         if ($apiToken) {
             $server['HTTP_API_TOKEN'] = $apiToken;
