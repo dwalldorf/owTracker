@@ -34,6 +34,10 @@ class DemoController extends BaseController {
      * @throws ServerErrorException
      */
     public function postAction() {
+        /*
+         * TODO: refactor to read from queue, keep form validation
+         */
+
         // for reference: https://jsfiddle.net/entek/37x25f13/
         $apiToken = $this->container->getParameter('demo_api_token');
         $this->validateApiToken($apiToken);
