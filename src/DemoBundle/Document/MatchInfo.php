@@ -3,6 +3,7 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\EmbeddedDocument
@@ -11,31 +12,42 @@ class MatchInfo {
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\String(nullable=false)
+     * @ODM\Index(order="asc")
+     *
+     * @Assert\NotBlank(message="map is mandatory")
      */
     private $map;
 
     /**
      * @var MatchTeam
      * @ODM\EmbedOne(targetDocument="MatchTeam")
+     *
+     * @Assert\NotBlank(message="team 1 is mandatory")
      */
     private $team1;
 
     /**
      * @var MatchTeam
      * @ODM\EmbedOne(targetDocument="MatchTeam")
+     *
+     * @Assert\NotBlank(message="team 2 is mandatory")
      */
     private $team2;
 
     /**
      * @var int
      * @ODM\Int(name="rounds_team1")
+     *
+     * @Assert\NotBlank(message="$totalRoundsTeam1 is mandatory")
      */
     private $totalRoundsTeam1;
 
     /**
      * @var int
      * @ODM\Int(name="rounds_team2")
+     *
+     * @Assert\NotBlank(message="$totalRoundsTeam2 is mandatory")
      */
     private $totalRoundsTeam2;
 

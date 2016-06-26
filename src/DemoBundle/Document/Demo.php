@@ -3,6 +3,7 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\Document(
@@ -10,7 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *     repositoryClass="DemoBundle\Repository\DemoRepository"
  * )
  */
-class DemoInfo {
+class Demo {
 
     /**
      * @var string
@@ -22,12 +23,16 @@ class DemoInfo {
      * @var string
      * @ODM\String(name="user_id", nullable=false)
      * @ODM\Index(order="asc")
+     *
+     * @Assert\NotBlank(message="userId is mandatory")
      */
     private $userId;
 
     /**
      * @var MatchInfo
      * @ODM\EmbedOne(name="info", targetDocument="MatchInfo")
+     * 
+     * @Assert\NotNull(message="matchInfo is mandatory")
      */
     private $matchInfo;
 
@@ -43,7 +48,7 @@ class DemoInfo {
      * @param MatchInfo $matchInfo
      * @param MatchRound[] $rounds
      */
-    public function __construct($id = null, $userId = null, MatchInfo $matchInfo = null, array $rounds = []) {
+    public function __construct($id = null, $userId = null, $matchInfo = null, array $rounds = []) {
         $this->id = $id;
         $this->userId = $userId;
         $this->matchInfo = $matchInfo;
@@ -88,7 +93,7 @@ class DemoInfo {
     /**
      * @param MatchInfo $matchInfo
      */
-    public function setMatchInfo($matchInfo) {
+    public function setMatchInfo($matchInfo = null) {
         $this->matchInfo = $matchInfo;
     }
 

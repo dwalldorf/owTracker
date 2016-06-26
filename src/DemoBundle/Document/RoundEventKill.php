@@ -3,6 +3,7 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\EmbeddedDocument
@@ -25,7 +26,7 @@ class RoundEventKill {
      * @var float
      * @ODM\Float(name="time")
      */
-    private $itmeInRound;
+    private $timeInRound;
 
     /**
      * @var bool
@@ -38,14 +39,10 @@ class RoundEventKill {
      * @param string $killedSteamId
      * @param bool $headshot
      */
-    public function __construct($killerSteamId = null, $killedSteamId = null, $headshot = false) {
-        /*
-         * TODO: add timeInRound
-         * by dwalldorf at 23:44 20.06.16
-         */
-
+    public function __construct($killerSteamId = null, $killedSteamId = null, $timeInRound = null, $headshot = false) {
         $this->killer = $killerSteamId;
         $this->killed = $killedSteamId;
+        $this->timeInRound = $timeInRound;
         $this->headshot = $headshot;
     }
 
@@ -82,6 +79,20 @@ class RoundEventKill {
      */
     public function setKilled($killed) {
         $this->killed = $killed;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTimeInRound() {
+        return $this->timeInRound;
+    }
+
+    /**
+     * @param float $timeInRound
+     */
+    public function setTimeInRound($timeInRound) {
+        $this->timeInRound = $timeInRound;
     }
 
     /**

@@ -2,8 +2,9 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Util\RandomUtil;
 use AppBundle\Util\StopWatch;
-use DemoBundle\Document\DemoInfo;
+use DemoBundle\Document\Demo;
 use DemoBundle\Document\RoundEventKill;
 use DemoBundle\Document\MatchRound;
 use DemoBundle\Document\MatchInfo;
@@ -402,7 +403,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                     $roundCounter++;
                 }
             }
-            $demo = new DemoInfo(null, $user->getId(), $matchInfo, $rounds);
+            $demo = new Demo(null, $user->getId(), $matchInfo, $rounds);
             $this->demoService->save($demo);
 
             if ($this->verbose) {
@@ -427,12 +428,12 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
      * @param User|null $user
      * @return MatchTeam
      */
-    private function createTeam(User $user = null) {
+    public static function createTeam(User $user = null) {
         $teamName = null;
         if ($user) {
             $teamName = 'team_' . $user->getUsername();
         } else {
-            $teamName = 'team_' . $this->getRandomString(5);
+            $teamName = 'team_' . RandomUtil::getRandomString(5);
         }
 
         $players = [];
@@ -440,21 +441,23 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             if ($i == 0 && $user) {
                 $players[] = new MatchPlayer($user->getId(), $user->getUsername());
             } else {
-                $players[] = new MatchPlayer($this->getRandomString(), 'testPlayer_' . $this->getRandomString(3));
+                $players[] = new MatchPlayer(RandomUtil::getRandomString(), 'testPlayer_' . RandomUtil::getRandomString(3));
             }
         }
 
         return new MatchTeam($teamName, $players);
     }
 
-    private function createDemoRound($roundNumber, MatchTeam $winner, MatchTeam $loser) {
+    public static function createDemoRound($roundNumber, MatchTeam $winner, MatchTeam $loser) {
         $kills = [];
         $winnerTeamPlayersAlive = $winner->getPlayers();
         $loserTeamPlayersAlive = $loser->getPlayers();
 
         foreach ($loserTeamPlayersAlive as $victim) {
             $killer = $winnerTeamPlayersAlive[mt_rand(0, count($winnerTeamPlayersAlive) - 1)];
-            $kills[] = new RoundEventKill($killer->getSteamId(), $victim->getSteamId(), $this->getRandomBoolWithProbability(0.3));
+            $kills[] = new RoundEventKill(
+                $killer->getSteamId(), $victim->getSteamId(), null, RandomUtil::getRandomBoolWithProbability(0.3)
+            );
         }
 
         return new MatchRound($roundNumber, mt_rand(30, 110), new RoundEvents($kills));

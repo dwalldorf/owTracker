@@ -3,11 +3,11 @@
 namespace DemoBundle\Repository;
 
 use AppBundle\Repository\BaseRepository;
-use DemoBundle\Document\DemoInfo;
+use DemoBundle\Document\Demo;
 
 class DemoRepository extends BaseRepository {
 
-    const ID = 'DemoBundle:DemoInfo';
+    const ID = 'DemoBundle:Demo';
 
     /**
      * @return \Doctrine\ODM\MongoDB\DocumentRepository
@@ -24,10 +24,10 @@ class DemoRepository extends BaseRepository {
     }
 
     /**
-     * @param DemoInfo $demo
-     * @return DemoInfo
+     * @param Demo $demo
+     * @return Demo
      */
-    public function save(DemoInfo $demo) {
+    public function save(Demo $demo) {
         $this->dm->persist($demo);
         $this->dm->flush();
 
@@ -36,7 +36,7 @@ class DemoRepository extends BaseRepository {
 
     /**
      * @param string $userId
-     * @return DemoInfo[]
+     * @return Demo[]
      */
     public function findByUserId($userId) {
         return $this->getRepository()->findBy(['user_id' => $userId]);

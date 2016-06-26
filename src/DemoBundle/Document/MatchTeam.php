@@ -3,6 +3,7 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\EmbeddedDocument()
@@ -12,12 +13,16 @@ class MatchTeam {
     /**
      * @var string
      * @ODM\String(name="name")
+     *
+     * @Assert\NotNull(message="team name is mandatory")
      */
     private $teamName;
 
     /**
      * @var MatchPlayer[]
      * @ODM\EmbedMany(targetDocument="MatchPlayer")
+     *
+     * @Assert\NotNull(message="team players is mandatory")
      */
     private $players;
 
