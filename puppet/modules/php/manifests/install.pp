@@ -1,14 +1,15 @@
 class php::install inherits php {
-    exec{ 'add_php_ppa':
-        command     => '/usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E5267A6C && /usr/bin/add-apt-repository ppa:ondrej/php && /usr/bin/apt-get update',
-        environment => ['LC_ALL=C.UTF-8'],
-        user        => root,
-        creates     => '/etc/apt/sources.list.d/ondrej-php-trusty.list'
+    apt::ppa{ 'ppa:ondrej/php': }
+    apt::key{ 'ppa:ondrej/php':
+        id  => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
     }
 
     package { 'php5.6-common':
         ensure  => latest,
-        require => Exec['add_php_ppa'],
+        require => [
+            Apt::Ppa['ppa:ondrej/php'],
+            Apt::Key['ppa:ondrej/php'],
+        ],
     }
     package{ 'php5.6-xml':
         ensure  => latest,

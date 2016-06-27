@@ -10,6 +10,14 @@ Vagrant.configure(2) do |config|
         v.cpus = 2
     end
 
+     config.vm.provision :shell do |shell|
+      shell.inline = "if ! [ -d /etc/puppet/modules/apt ];
+          then
+              mkdir -p /etc/puppet/modules;
+              puppet module install puppetlabs-apt
+          fi"
+    end
+
     config.vm.provision "puppet" do |puppet|
         puppet.hiera_config_path = "puppet/hiera.yaml"
         puppet.manifests_path = "puppet/manifests"
