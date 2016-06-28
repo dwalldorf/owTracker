@@ -59,5 +59,28 @@ class CronJobService extends BaseService {
      * @return CronJob[]
      */
     public function getRunningJobs() {
+        return $this->repository->getRunningJobs();
+    }
+
+    /**
+     * @param CronJob $job
+     * @return CronJob
+     */
+    public function setJobRunning(CronJob $job) {
+        $job->setRunning();
+        $this->repository->update($job);
+
+        return $job;
+    }
+
+    /**
+     * @param CronJob $job
+     * @return CronJob
+     */
+    public function setJobDone(CronJob $job) {
+        $job->setRunning(false);
+        $this->repository->update($job);
+
+        return $job;
     }
 }

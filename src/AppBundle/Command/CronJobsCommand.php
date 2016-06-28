@@ -49,6 +49,7 @@ class CronJobsCommand extends BaseContainerAwareCommand {
 
         foreach ($dueTasks as $cronJob) {
             $this->info(sprintf('starting task %s:', $cronJob->getName()));
+            $this->cronService->setJobRunning($cronJob);
 
             $application = new Application($this->kernel);
             $application->setAutoExit(false);
@@ -57,6 +58,8 @@ class CronJobsCommand extends BaseContainerAwareCommand {
             $output = new BufferedOutput();
 
             $application->run($input, $output);
+
+            $this->cronService->setJobDone($cronJob);
             $this->output->write($output->fetch());
 
             $this->info();

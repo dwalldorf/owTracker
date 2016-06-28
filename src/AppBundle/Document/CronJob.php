@@ -158,7 +158,7 @@ class CronJob {
      * @param boolean $running
      * @return $this
      */
-    public function setRunning($running) {
+    public function setRunning($running = true) {
         $this->running = $running;
         return $this;
     }

@@ -50,6 +50,17 @@ class CronJobRepository extends BaseRepository {
     }
 
     /**
+     * @return CronJob[]
+     */
+    public function getRunningJobs() {
+        return $this->getQueryBuilder()
+            ->field('running')->equals(true)
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
+
+    /**
      * @param CronJob $cronJob
      * @return CronJob
      * @throws ServerErrorException
@@ -59,6 +70,14 @@ class CronJobRepository extends BaseRepository {
             throw new ServerErrorException(sprintf('cronjob %s is configured twice', $cronJob->getName()));
         }
 
+        return $this->update($cronJob);
+    }
+
+    /**
+     * @param CronJob $cronJob
+     * @return CronJob
+     */
+    public function update(CronJob $cronJob) {
         $this->dm->persist($cronJob);
         $this->dm->flush();
         return $cronJob;
