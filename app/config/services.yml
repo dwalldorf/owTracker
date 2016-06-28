@@ -30,6 +30,9 @@ services:
     app.cache_service:
         class: AppBundle\Service\CacheService
         parent: app.base_service
+    app.cron_job_service:
+        class: AppBundle\Service\CronJobService
+        parent: app.base_service
 
     user.user_service:
         class: UserBundle\Service\UserService
