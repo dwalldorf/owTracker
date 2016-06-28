@@ -39,7 +39,7 @@ class owt::install inherits owt {
         group   => vagrant,
     }
 
-    file{ 'owt_log_dir':
+    file { 'owt_log_dir':
         path   => '/var/log/owt',
         ensure => directory,
         owner  => vagrant,

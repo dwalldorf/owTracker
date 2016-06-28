@@ -36,13 +36,6 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $this->info();
-        $this->info('deleting test data');
-        $this->deleteTestData();
-        $this->info('done');
-    }
-
-    private function deleteTestData() {
         $testUsers = $this->userService->getTestUsers();
         foreach ($testUsers as $testUser) {
             $this->overwatchService->deleteByUser($testUser);

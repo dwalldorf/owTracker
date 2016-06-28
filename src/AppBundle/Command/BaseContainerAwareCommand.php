@@ -49,7 +49,7 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
      * @param string $msg
      */
     protected function info($msg = '') {
-        if ($msg === '') {
+        if ($msg == '') {
             $this->output->writeln('');
         } else {
             $this->output->writeln('[INFO] ' . $msg);
