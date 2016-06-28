@@ -3,6 +3,7 @@
 namespace OverwatchBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
+use AppBundle\Util\StopWatch;
 use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Repository\OverwatchRepository;
@@ -45,9 +46,18 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
             ->setDescription('Calculates and sums user submitted verdicts');
     }
 
-    protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $start = microtime(true);
+    protected function initServices() {
+        $this->userService = $this->container->get(UserService::ID);
+        $this->overwatchService = $this->container->get(OverwatchService::ID);
+        $this->userScoreService = $this->container->get(UserScoreService::ID);
 
+        $this->overwatchRepository = $this->container
+            ->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository(OverwatchRepository::ID);
+    }
+
+    protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $periods = $this->userScoreService->getAvailablePeriods();
         $calculated = new \DateTime();
 
@@ -81,18 +91,5 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
                 $i++;
             }
         }
-
-        $output->writeln(sprintf('Calculated %d user scores in %f seconds', $this->processed, microtime(true) - $start));
-    }
-
-    protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->userScoreService = $this->container->get(UserScoreService::ID);
-
-        $this->overwatchRepository = $this->container
-            ->get('doctrine_mongodb')
-            ->getManager()
-            ->getRepository(OverwatchRepository::ID);
     }
 }

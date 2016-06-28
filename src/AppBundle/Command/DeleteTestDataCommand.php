@@ -36,6 +36,7 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
+        $this->info();
         $this->info('deleting test data');
         $this->deleteTestData();
         $this->info('done');

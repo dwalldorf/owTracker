@@ -181,9 +181,6 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $sw = new StopWatch();
-        $sw->start();
-
         $this->verbose = $input->getOption('verbose');
         $this->specificUser = $input->getOption(self::OPT_USER_NAME);
         $this->verdictAmount = $input->getOption(self::OPT_VERDICT_AMOUNT_NAME);
@@ -244,16 +241,13 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
             );
         }
 
-        $sw->stop();
         $this->info(
             sprintf(
                 'Finished: 
     %d users 
     %d verdicts of %d unique users
     %d feedback entries of %d unique users
-    %d demos of %d unique user %s
-
-    Runtime: %s seconds',
+    %d demos of %d unique user %s',
                 $this->createdUsers,
                 $this->createdVerdicts,
                 $this->createdVerdictsUniqueUsers,
@@ -261,8 +255,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
                 $this->createdFeedbackUniqueUsers,
                 $this->createdDemos,
                 $this->createdDemosUniqueUsers,
-                $powerUsersInfo,
-                $sw->getRuntimeStringInS()
+                $powerUsersInfo
             )
         );
     }

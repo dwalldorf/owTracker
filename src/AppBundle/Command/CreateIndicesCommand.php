@@ -14,15 +14,7 @@ class CreateIndicesCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $sw = new StopWatch();
-        $sw->start();
-
-        $this->info('creating mongo indices');
-
         $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
         $dm->getSchemaManager()->ensureIndexes();
-
-        $sw->stop();
-        $this->info('done in ' . $sw->getRuntimeStringInS());
     }
 }
