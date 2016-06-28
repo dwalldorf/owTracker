@@ -38,4 +38,19 @@ class owt::install inherits owt {
         owner   => vagrant,
         group   => vagrant,
     }
+
+    file { 'owt_log_dir':
+        path   => '/var/log/owt',
+        ensure => directory,
+        owner  => vagrant,
+        group  => vagrant,
+    }
+
+    file { 'owt_cron_log':
+        path    => '/var/log/owt/cron.log',
+        ensure  => present,
+        owner   => vagrant,
+        group   => vagrant,
+        require => File['owt_log_dir'],
+    }
 }

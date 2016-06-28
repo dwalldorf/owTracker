@@ -3,14 +3,12 @@
 namespace OverwatchBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
-use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Repository\OverwatchRepository;
 use OverwatchBundle\Service\OverwatchService;
 use OverwatchBundle\Service\UserScoreService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use UserBundle\Document\User;
 use UserBundle\Service\UserService;
 
 class ProcessUserScoresCommand extends BaseContainerAwareCommand {
@@ -45,9 +43,18 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
             ->setDescription('Calculates and sums user submitted verdicts');
     }
 
-    protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $start = microtime(true);
+    protected function initServices() {
+        $this->userService = $this->container->get(UserService::ID);
+        $this->overwatchService = $this->container->get(OverwatchService::ID);
+        $this->userScoreService = $this->container->get(UserScoreService::ID);
 
+        $this->overwatchRepository = $this->container
+            ->get('doctrine_mongodb')
+            ->getManager()
+            ->getRepository(OverwatchRepository::ID);
+    }
+
+    protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $periods = $this->userScoreService->getAvailablePeriods();
         $calculated = new \DateTime();
 
@@ -81,18 +88,5 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
                 $i++;
             }
         }
-
-        $output->writeln(sprintf('Calculated %d user scores in %f seconds', $this->processed, microtime(true) - $start));
-    }
-
-    protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->userScoreService = $this->container->get(UserScoreService::ID);
-
-        $this->overwatchRepository = $this->container
-            ->get('doctrine_mongodb')
-            ->getManager()
-            ->getRepository(OverwatchRepository::ID);
     }
 }

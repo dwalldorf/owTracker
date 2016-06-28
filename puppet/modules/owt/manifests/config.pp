@@ -14,4 +14,12 @@ class owt::config inherits owt {
         ensure  => symlink,
         require => File['web-lib-dir', 'node_modules_dir'],
     }
+
+    cron { 'owtCrons':
+        command => "${owtDir}/bin/console owt:cron >> /var/log/owt/cron.log",
+        user    => vagrant,
+        hour    => '*',
+        minute  => '*/2',
+        require => File['owt_cron_log'],
+    }
 }

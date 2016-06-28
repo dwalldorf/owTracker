@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Util\StopWatch;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,8 +29,17 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
         $this->container = $this->getContainer();
         $this->output = $output;
 
+        $this->info();
+        $this->info($this->getName() . ' starting');
+
+        $sw = new StopWatch();
+        $sw->start();
+
         $this->initServices();
         $this->executeCommand($input, $output);
+
+        $sw->stop();
+        $this->info($this->getName() . ' done in ' . $sw->getRuntimeStringInS());
     }
 
     protected function initServices() {
@@ -39,7 +49,11 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
      * @param string $msg
      */
     protected function info($msg = '') {
-        $this->output->writeln('[INFO] ' . $msg);
+        if ($msg == '') {
+            $this->output->writeln('');
+        } else {
+            $this->output->writeln('[INFO] ' . $msg);
+        }
     }
 
     /**

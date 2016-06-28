@@ -21,9 +21,7 @@ class InvalidateMemcacheAppDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $this->info('invalidating app data memcache');
         $this->cacheService->invalidate();
-        $this->info('done');
     }
 
     protected function initServices() {
