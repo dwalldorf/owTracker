@@ -37,6 +37,7 @@ class RoundEventKill {
     /**
      * @param string $killerSteamId
      * @param string $killedSteamId
+     * @param float $timeInRound
      * @param bool $headshot
      */
     public function __construct($killerSteamId = null, $killedSteamId = null, $timeInRound = null, $headshot = false) {

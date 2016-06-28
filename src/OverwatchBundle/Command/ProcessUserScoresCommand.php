@@ -3,15 +3,12 @@
 namespace OverwatchBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
-use AppBundle\Util\StopWatch;
-use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Document\UserScore;
 use OverwatchBundle\Repository\OverwatchRepository;
 use OverwatchBundle\Service\OverwatchService;
 use OverwatchBundle\Service\UserScoreService;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use UserBundle\Document\User;
 use UserBundle\Service\UserService;
 
 class ProcessUserScoresCommand extends BaseContainerAwareCommand {

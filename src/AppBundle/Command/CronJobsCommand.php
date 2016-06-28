@@ -3,7 +3,6 @@
 namespace AppBundle\Command;
 
 use AppBundle\Service\CronJobService;
-use AppBundle\Util\StopWatch;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,7 +45,6 @@ class CronJobsCommand extends BaseContainerAwareCommand {
         }
 
         $dueTasks = $this->cronService->getDueJobs();
-
         foreach ($dueTasks as $cronJob) {
             $this->info(sprintf('starting task %s:', $cronJob->getName()));
             $this->cronService->setJobRunning($cronJob);

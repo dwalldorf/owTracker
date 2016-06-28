@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Util\StopWatch;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

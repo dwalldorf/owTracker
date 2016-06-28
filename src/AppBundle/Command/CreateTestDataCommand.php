@@ -3,7 +3,6 @@
 namespace AppBundle\Command;
 
 use AppBundle\Util\RandomUtil;
-use AppBundle\Util\StopWatch;
 use DemoBundle\Document\Demo;
 use DemoBundle\Document\RoundEventKill;
 use DemoBundle\Document\MatchRound;
@@ -210,7 +209,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
             if ($this->feedbackAmount) {
                 if ($this->verbose) {
-                    $this->debug(sprintf('creating %d feedback entrie(s) for user %s', $this->feedbackAmount, $user->getUsername()));
+                    $this->debug(sprintf('creating %d feedback entries for user %s', $this->feedbackAmount, $user->getUsername()));
                 }
                 while ($this->createdFeedback < $this->feedbackAmount) {
                     $this->createFeedback($user);
