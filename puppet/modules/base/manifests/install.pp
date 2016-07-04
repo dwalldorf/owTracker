@@ -27,6 +27,12 @@ class base::install inherits base {
     package { 'curl':
         ensure => installed,
     }
+    package{ 'wget':
+        ensure => latest,
+    }
+    package{ 'tar':
+        ensure => latest,
+    }
     package { 'unzip':
         ensure => latest,
     }

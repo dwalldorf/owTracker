@@ -15,10 +15,10 @@ class php::install inherits php {
         ensure  => latest,
         require => Package['php5.6-common'],
     }
-    # package{ 'php5.6-dom':
-    #     ensure  => latest,
-    #     require => Package['php5.6-xml'],
-    # }
+    package{ 'php-stomp':
+        ensure  => latest,
+        require => Package['php5.6-common'],
+    }
     package { 'php5.6-cgi':
         ensure  => latest,
         require => Package['php5.6-common'],
@@ -36,14 +36,21 @@ class php::install inherits php {
     package{ 'php5.6-zip':
         ensure  => latest,
         require => Package['php5.6-common'],
-        notify  => Service['php5.6-fpm'],
+    }
+    package{ 'php5.6-bcmath':
+        ensure  => latest,
+        require => Package['php5.6-common'],
+    }
+    package{ 'php5.6-mbstring':
+        ensure  => latest,
+        require => Package['php5.6-common'],
     }
     package { 'memcached':
         ensure => latest,
     }
     package { 'php-memcache':
         ensure  => latest,
-        require => Package['memcached', 'php5.6-common'],
+        require => Package['php5.6-common'],
         notify  => Service['php5.6-fpm'],
     }
     package{ 'php-xcache':
