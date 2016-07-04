@@ -70,7 +70,7 @@ class DemoUploadController extends BaseController {
         $finalFilename = $path . '/' . $file->getClientOriginalName();
 
         if (is_file($finalFilename)) {
-            if (filesize($finalFilename) == filesize($file->getPath())) {
+            if (filesize($finalFilename) == $file->getSize()) {
                 return false;
             }
 
@@ -78,6 +78,7 @@ class DemoUploadController extends BaseController {
             while (is_dir($path . '/' . $i)) {
                 $i++;
             }
+
             $path .= '/' . $i;
         }
 
