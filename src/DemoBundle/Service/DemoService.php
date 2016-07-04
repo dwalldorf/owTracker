@@ -47,6 +47,10 @@ class DemoService extends BaseService {
         return $this->demoRepository->findByUserId($userId);
     }
 
+    /**
+     * @param DemoFile $demoFile
+     * @return DemoFile
+     */
     public function saveDemoFile(DemoFile $demoFile) {
         return $this->demoFileRepository->save($demoFile);
     }
