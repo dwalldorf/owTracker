@@ -1,6 +1,6 @@
 class owt::install inherits owt {
-    $activemqDir = "/usr/share/activemq"
     $activemqVersion = "5.13.3"
+    $activemqDir = "/usr/share/activemq"
 
     exec { 'install_node5x':
         command => 'curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -',
