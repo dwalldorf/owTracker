@@ -15,11 +15,15 @@ class AppKernel extends Kernel {
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Lsw\MemcacheBundle\LswMemcacheBundle(),
+            new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle(),
+
             new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),
             new OverwatchBundle\OverwatchBundle(),
             new AdminStatsBundle\AdminStatsBundle(),
             new FeedbackBundle\FeedbackBundle(),
+            new DemoBundle\DemoBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
@@ -27,7 +31,6 @@ class AppKernel extends Kernel {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle();
         }
 
         return $bundles;

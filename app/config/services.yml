@@ -6,16 +6,16 @@ services:
     memcache:
         class: Memcache
         calls:
-            - [ addServers, [ %memcache.servers% ]]
+            - [ addServers, [ "%memcache.servers%" ]]
     session.memcache:
         class: Memcache
         arguments:
-            persistent_id: %session_memcache_prefix%
+            persistent_id: "%session_memcache_prefix%"
         calls:
-            - [ addServer, [ %session_memcache_host%, %session_memcache_port% ]]
+            - [ addServer, [ "%session_memcache_host%", "%session_memcache_port%" ]]
     session.handler.memcache:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler
-        arguments: ["@session.memcache", { prefix: %session_memcache_prefix%, expiretime: %session_memcache_expire% }]
+        arguments: ["@session.memcache", { prefix: "%session_memcache_prefix%", expiretime: "%session_memcache_expire%" }]
 
     app.exception_listener:
         class: AppBundle\Exception\ApiExceptionListener
@@ -29,6 +29,9 @@ services:
             - [setContainer, ["@service_container"]]
     app.cache_service:
         class: AppBundle\Service\CacheService
+        parent: app.base_service
+    app.cron_job_service:
+        class: AppBundle\Service\CronJobService
         parent: app.base_service
 
     user.user_service:
@@ -44,4 +47,8 @@ services:
 
     feedback.feedback_service:
         class: FeedbackBundle\Service\FeedbackService
+        parent: app.base_service
+
+    demo.demo_service:
+        class: DemoBundle\Service\DemoService
         parent: app.base_service

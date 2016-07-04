@@ -34,8 +34,11 @@ class FeedbackDto {
     public function __construct(User $user, Feedback $feedback) {
         $this->createdBy = $user;
         $this->id = $feedback->getId();
-        $this->createdTimestamp = $feedback->getCreatedTimestamp()->getTimestamp();
         $this->feedback = $feedback->getFeedback();
+
+        if ($feedback->getCreated()) {
+            $this->createdTimestamp = $feedback->getCreated()->getTimestamp();
+        }
     }
 
     /**

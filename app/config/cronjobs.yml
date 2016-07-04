@@ -1,0 +1,5 @@
+parameters:
+    cronjobs:
+        processUserScores:
+            command: owt:processUserScores
+            interval: 10

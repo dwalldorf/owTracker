@@ -70,6 +70,6 @@ class AdminStatsController extends BaseController {
             'feedbackLast30d' => format($this->feedbackService->getFeedbackCountByTime($d30d)),
         ];
 
-        return $this->jsonResponse($data);
+        return $this->json($data);
     }
 }

@@ -3,6 +3,7 @@ Vagrant.configure(2) do |config|
     config.vm.hostname = "localhost"
     config.vm.box_check_update = true
     config.vm.network "forwarded_port", guest: 80, host: 8080
+    config.vm.network "forwarded_port", guest: 15672, host: 15672
     config.vm.synced_folder ".", "/usr/share/nginx/owt"
 
     config.vm.provider "virtualbox" do |v|
@@ -11,11 +12,13 @@ Vagrant.configure(2) do |config|
     end
 
     config.vm.provision :shell do |shell|
-      shell.inline = "if ! [ -d /etc/puppet/modules/apt ];
-          then
-              mkdir -p /etc/puppet/modules;
-              puppet module install puppetlabs-apt
-          fi"
+        shell.inline = "
+        if ! [ -d /etc/puppet/modules/apt ];
+        then
+            mkdir -p /etc/puppet/modules;
+            puppet module install puppetlabs-apt
+        fi
+        "
     end
 
     config.vm.provision "puppet" do |puppet|

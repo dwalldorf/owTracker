@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Exception\ServerErrorException;
 use AppBundle\Service\IGetService;
 use AppBundle\Util\AppSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -69,20 +70,6 @@ abstract class BaseController extends Controller implements IGetService {
     }
 
     /**
-     * @param $content
-     * @param int $status
-     * @return Response
-     */
-    protected final function jsonResponse($content, $status = 200) {
-        $jsonContent = AppSerializer::getInstance()->toJson($content);
-
-        $response = $this->response($jsonContent, $status);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    }
-
-    /**
      * @param $targetEntity
      * @return object
      */
@@ -139,13 +126,33 @@ abstract class BaseController extends Controller implements IGetService {
     }
 
     /**
+     * @param string $apiToken
+     * @return string
+     * @throws NotAuthorizedException
+     * @throws ServerErrorException
+     */
+    protected final function validateApiToken($apiToken) {
+        if (!$apiToken) {
+            throw new ServerErrorException('cannot call validateApiToken without passing the valid token.');
+        }
+
+        $requestApiToken = $this->request->headers->get('api-token');
+
+        if ($apiToken !== $requestApiToken) {
+            throw new NotAuthorizedException();
+        }
+
+        return $apiToken;
+    }
+
+    /**
      * @return User|null
      */
     protected final function getCurrentUser() {
         if (!$this->isLoggedIn()) {
             return null;
         }
-        return $this->session->get('user');
+        return $this->userService->getSecureUserCopy($this->session->get('user'));
     }
 
     /**

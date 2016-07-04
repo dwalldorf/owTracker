@@ -12,19 +12,19 @@ class ApiExceptionListener {
      * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event) {
-        $ex = $event->getException();
+        $exception = $event->getException();
 
-        if ($ex instanceof ApiBaseException) {
+        if ($exception instanceof ApiBaseException) {
             $response = new Response();
 
-            $httpStatus = $ex->getHttpStatusCode();
+            $httpStatus = $exception->getHttpStatusCode();
             $content = [];
 
-            if ($ex->getMessage()) {
-                $content ['reason'] = $ex->getMessage();
+            if ($exception->getMessage()) {
+                $content ['reason'] = $exception->getMessage();
             }
-            if ($ex->getErrors()) {
-                $content['errors'] = $ex->getErrors();
+            if ($exception->getErrors()) {
+                $content['errors'] = $exception->getErrors();
             }
 
             if (count($content) > 0) {

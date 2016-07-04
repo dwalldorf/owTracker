@@ -42,7 +42,7 @@ class FeedbackController extends BaseController {
         $dtoArray = $this->feedbackService->toDto($dbArray);
 
         $feedbackCollection->setItems($dtoArray);
-        return $this->jsonResponse($feedbackCollection);
+        return $this->json($feedbackCollection);
     }
 
     /**
@@ -55,7 +55,7 @@ class FeedbackController extends BaseController {
      */
     public function getByIdAction() {
         $this->requireAdmin();
-        return $this->jsonResponse('implement me');
+        return $this->json('implement me');
     }
 
     /**
@@ -65,17 +65,17 @@ class FeedbackController extends BaseController {
      * @return Response
      * @throws NotLoggedInException
      */
-    public function postAction() {
+    public function submitAction() {
         $this->requireLogin();
         $user = $this->getCurrentUser();
 
         /* @var $feedback Feedback */
         $feedback = $this->getEntityFromRequest(Feedback::class);
         $feedback->setCreatedBy($user->getId());
-        $feedback->setCreatedTimestamp(new \DateTime());
+        $feedback->setCreated(new \DateTime());
 
-        $this->feedbackService->save($feedback);
+        $dbFeedback = $this->feedbackService->save($feedback);
 
-        return $this->jsonResponse(null, Response::HTTP_NO_CONTENT);
+        return $this->json($dbFeedback, Response::HTTP_CREATED);
     }
 }

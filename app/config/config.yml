@@ -31,17 +31,17 @@ framework:
 doctrine_mongodb:
     connections:
         default:
-            server: %mongo_server%
+            server: "%mongo_server%"
             options: {}
-    default_database: %mongo_default_database%
+    default_database: "%mongo_database%"
     document_managers:
         default:
             auto_mapping: true
             metadata_cache_driver:
                 type: memcache
                 class: Doctrine\Common\Cache\MemcacheCache
-                host: %session_memcache_host%
-                port: %session_memcache_port%
+                host: "%session_memcache_host%"
+                port: "%session_memcache_port%"
                 instance_class: Memcache
 
 lsw_memcache:
@@ -50,7 +50,30 @@ lsw_memcache:
     pools:
         default:
             servers:
-              - { host: %session_memcache_host%, tcp_port: %session_memcache_port% }
+                - { host: "%session_memcache_host%", tcp_port: "%session_memcache_port%" }
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     'localhost'
+            port:     5672
+            user:     'guest'
+            password: 'guest'
+            vhost:    '/'
+            lazy:     true
+            connection_timeout: 3
+            read_write_timeout: 3
+    producers:
+        demo_upload:
+            connection: default
+            exchange_options: { name: 'demo-upload', type: direct }
+            queue_options:    { name: 'demo-upload' }
+    consumers:
+        demo_info_upload:
+            connection: default
+            exchange_options: { name: 'demo-info-upload', type: direct }
+            queue_options:    { name: 'demo-info-upload' }
+            callback:         demo.demo_service
 
 swiftmailer:
     transport: "%mailer_transport%"

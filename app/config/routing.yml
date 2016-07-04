@@ -13,3 +13,6 @@ admin_stats:
 feedback:
     resource: "@FeedbackBundle/Controller/"
     type:     annotation
+demo:
+    resource: "@DemoBundle/Controller/"
+    type:     annotation

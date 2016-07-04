@@ -15,7 +15,5 @@ class CreateIndicesCommand extends BaseContainerAwareCommand {
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
         $dm->getSchemaManager()->ensureIndexes();
-
-        $this->output->writeln('[END] mongo indices created.');
     }
 }

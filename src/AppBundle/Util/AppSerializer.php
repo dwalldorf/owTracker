@@ -23,7 +23,7 @@ class AppSerializer {
     /**
      * AppSerializer constructor.
      */
-    public function __construct() {
+    private function __construct() {
         $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
     }
 

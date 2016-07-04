@@ -12,7 +12,7 @@ parameters:
     secret: jUZofDIm3TfGJuppgCBYD5USPvLn0BGivsO2
 
     mongo_server: mongodb://localhost:27017
-    mongo_default_database: overwatch
+    mongo_database: owt
 
     memcache.servers:
         - { host: 127.0.0.1, port: 11211 }
@@ -21,3 +21,8 @@ parameters:
     session_memcache_port: 11211
     session_memcache_prefix: sess
     session_memcache_expire: 3600
+
+    demo_api_token: v5tyin3vzs36onc5r2euovn7kmfib8j7ec5wz9ry1u5qiiv9la395rgqev9p4swi52e4b63d194jr0tcaxmfo262yfs28pkdrzi36lg7ulrmlkyvhkb6nh9mx2o6r9jj
+
+imports:
+    - { resource: cronjobs.yml }

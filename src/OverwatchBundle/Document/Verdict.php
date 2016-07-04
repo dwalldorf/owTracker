@@ -6,7 +6,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\Document(
- *     db="owt",
  *     collection="verdicts",
  *     repositoryClass="OverwatchBundle\Repository\OverwatchRepository"
  * )
@@ -34,7 +33,7 @@ class Verdict {
     private $creationDate;
 
     /**
-     * @ODM\Date(name="verdict_date" ,nullable=false)
+     * @ODM\Date(name="verdict_date", nullable=false)
      * @var \DateTime
      */
     private $overwatchDate;

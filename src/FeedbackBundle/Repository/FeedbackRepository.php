@@ -70,7 +70,7 @@ class FeedbackRepository extends BaseRepository {
         $qb = $this->getQueryBuilder();
 
         if ($from != null) {
-            $qb->field('createdTimestamp')->gte($from);
+            $qb->field('created')->gte($from);
         }
 
         return $qb->getQuery()

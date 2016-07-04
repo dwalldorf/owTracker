@@ -35,7 +35,7 @@ export class UserService {
     /**
      * @returns {EventEmitter}
      */
-    getCurrentUser() {
+    getCurrentUser(preventRedirectToLogin = false) {
         var eventEmitter = new EventEmitter(),
             cachedUser   = this._cacheService.get(CacheIdentifiers.CACHE_ID_CURRENT_USER);
 
@@ -47,7 +47,7 @@ export class UserService {
             eventEmitter.subscribe(user => {
                 this.currentUser = user;
                 this._cacheService.cache(CacheIdentifiers.CACHE_ID_CURRENT_USER, this.currentUser, 600);
-            }, () => this.handleNotLoggedin());
+            }, () => this.handleNotLoggedin(preventRedirectToLogin));
         }
         return eventEmitter;
     }
@@ -83,8 +83,11 @@ export class UserService {
         return this._httpService.makeRequest(HttpService.METHOD_POST, this.LOGOUT_URI, null);
     }
 
-    private handleNotLoggedin() {
+    private handleNotLoggedin(preventRedirectToLogin = false) {
         this._appLoadingService.resetAll();
-        this._router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
+
+        if(!preventRedirectToLogin) {
+            this._router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
+        }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Command\BaseContainerAwareCommand;
 use FeedbackBundle\Service\FeedbackService;
 use OverwatchBundle\Service\OverwatchService;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,6 +29,12 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
         $this->setName('owt:clearTestData');
     }
 
+    protected function initServices() {
+        $this->userService = $this->container->get(UserService::ID);
+        $this->overwatchService = $this->container->get(OverwatchService::ID);
+        $this->feedbackService = $this->container->get(FeedbackService::ID);
+    }
+
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $testUsers = $this->userService->getTestUsers();
         foreach ($testUsers as $testUser) {
@@ -38,11 +43,5 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
 
             $this->userService->deleteUser($testUser);
         }
-    }
-
-    protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->feedbackService = $this->container->get(FeedbackService::ID);
     }
 }

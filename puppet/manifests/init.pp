@@ -4,10 +4,15 @@ $parserDir = "/opt/demo-parser"
 exec { 'apt-update':
     command => '/usr/bin/apt-get update'
 }
-Exec['apt-update'] -> Package <| |>
+
+Apt::Ppa <| |> ->
+Apt::Key <| |> ->
+Exec['apt-update'] ->
+Package <| |>
 
 include apt
 include base
+
 include nginx
 include mongo
 include php
