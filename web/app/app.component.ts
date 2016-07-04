@@ -22,6 +22,8 @@ import {AdminStatsService} from "./admin/service/admin-stat.service";
 import {NavigationComponent} from "./core/navigation.component";
 import {NavigationService} from "./core/service/navigation.service";
 import {AdminFeedbackService} from "./admin/service/admin-feedback.service";
+import {DemoUploadComponent} from "./demoupload/demo-upload.component";
+import {DemoUploadService} from "./demoupload/service/demo-upload.service";
 
 enableProdMode();
 
@@ -66,6 +68,7 @@ enableProdMode();
         NavigationComponent,
         VerdictDialogComponent,
         FeedbackDialogComponent,
+        DemoUploadComponent,
         AdminComponent,
     ],
     providers: [
@@ -78,6 +81,7 @@ enableProdMode();
         UserService,
         VerdictService,
         FeedbackService,
+        DemoUploadService,
 
         AdminComponent,
         AdminFeedbackService,
@@ -108,7 +112,6 @@ export class AppComponent {
         this._userService = userService;
     }
 
-    //noinspection JSUnusedGlobalSymbols
     ngOnInit() {
         this._appLoadingService.setLoading('app');
         this._userService.getCurrentUser().subscribe(
