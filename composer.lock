@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "296e22e83a3502ee2d2d34c26a6cfd50",
-    "content-hash": "e22466d63d8d1004fc2547347f10bdcd",
+    "hash": "f2f87d32c49793d5c5c708614a36d749",
+    "content-hash": "b96b65078df29fd2162f749244165013",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -863,17 +863,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMongoDBBundle.git",
-                "reference": "6b8c376fe002611bffce19418b82c8fd228e3928"
+                "reference": "e98a08a0c7ba495ef2436fffea1c225da1d0ac18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/6b8c376fe002611bffce19418b82c8fd228e3928",
-                "reference": "6b8c376fe002611bffce19418b82c8fd228e3928",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/e98a08a0c7ba495ef2436fffea1c225da1d0ac18",
+                "reference": "e98a08a0c7ba495ef2436fffea1c225da1d0ac18",
                 "shasum": ""
             },
             "require": {
-                "doctrine/mongodb-odm": "^1.0",
-                "php": "^5.5 || ^7.0",
+                "doctrine/mongodb-odm": "^1.1",
+                "php": "^5.6 || ^7.0",
                 "psr/log": "^1.0",
                 "symfony/config": "^2.7 || ^3.0",
                 "symfony/console": "^2.7 || ^3.0",
@@ -927,7 +927,7 @@
                 "persistence",
                 "symfony"
             ],
-            "time": "2016-06-21 19:24:06"
+            "time": "2016-06-30 12:19:21"
         },
         {
             "name": "doctrine/orm",
@@ -1108,17 +1108,17 @@
         },
         {
             "name": "leaseweb/memcache-bundle",
-            "version": "v2.1.8",
+            "version": "v2.1.10",
             "target-dir": "Lsw/MemcacheBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LeaseWeb/LswMemcacheBundle.git",
-                "reference": "b3cd78e6fa5b1f8505bb90d92219eeb0cd441dd9"
+                "reference": "e695603af5f19960851b4aeb6376fdd184fa667f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LeaseWeb/LswMemcacheBundle/zipball/b3cd78e6fa5b1f8505bb90d92219eeb0cd441dd9",
-                "reference": "b3cd78e6fa5b1f8505bb90d92219eeb0cd441dd9",
+                "url": "https://api.github.com/repos/LeaseWeb/LswMemcacheBundle/zipball/e695603af5f19960851b4aeb6376fdd184fa667f",
+                "reference": "e695603af5f19960851b4aeb6376fdd184fa667f",
                 "shasum": ""
             },
             "require": {
@@ -1158,7 +1158,7 @@
                 "memcached",
                 "session"
             ],
-            "time": "2016-01-30 23:17:45"
+            "time": "2016-06-24 08:37:03"
         },
         {
             "name": "monolog/monolog",
@@ -1285,6 +1285,141 @@
                 "random"
             ],
             "time": "2016-04-03 06:00:07"
+        },
+        {
+            "name": "php-amqplib/php-amqplib",
+            "version": "v2.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "fa2f0d4410a11008cb36b379177291be7ee9e4f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/fa2f0d4410a11008cb36b379177291be7ee9e4f6",
+                "reference": "fa2f0d4410a11008cb36b379177291be7ee9e4f6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "scrutinizer/ocular": "^1.1",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2016-04-11 14:30:01"
+        },
+        {
+            "name": "php-amqplib/rabbitmq-bundle",
+            "version": "v1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-amqplib/RabbitMqBundle.git",
+                "reference": "8c6f74b545b8162b24ef951b567e9c7d581ee512"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-amqplib/RabbitMqBundle/zipball/8c6f74b545b8162b24ef951b567e9c7d581ee512",
+                "reference": "8c6f74b545b8162b24ef951b567e9c7d581ee512",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "php-amqplib/php-amqplib": "~2.6",
+                "psr/log": "~1.0",
+                "symfony/config": "~2.3 || ~3.0",
+                "symfony/console": "~2.3 || ~3.0",
+                "symfony/dependency-injection": "~2.3 || ~3.0",
+                "symfony/event-dispatcher": "~2.3 || ~3.0",
+                "symfony/yaml": "~2.3 || ~3.0"
+            },
+            "replace": {
+                "oldsound/rabbitmq-bundle": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8 || ~5.0",
+                "symfony/debug": "~2.3 || ~3.0",
+                "symfony/serializer": "~2.3 || ~3.0"
+            },
+            "suggest": {
+                "symfony/framework-bundle": "To use this lib as a full Symfony Bundle and to use the profiler data collector"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "OldSound\\RabbitMqBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla"
+                }
+            ],
+            "description": "Integrates php-amqplib with Symfony2|3 and RabbitMq. Formerly oldsound/rabbitmq-bundle.",
+            "keywords": [
+                "AMQP",
+                "Symfony2",
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2016-05-31 11:36:12"
         },
         {
             "name": "psr/cache",
@@ -1710,16 +1845,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.6",
+            "version": "v5.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "ffe306d09c1f2bad721237f63b2169d1b78253d0"
+                "reference": "a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ffe306d09c1f2bad721237f63b2169d1b78253d0",
-                "reference": "ffe306d09c1f2bad721237f63b2169d1b78253d0",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a",
+                "reference": "a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a",
                 "shasum": ""
             },
             "require": {
@@ -1758,7 +1893,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-04-25 20:50:31"
+            "time": "2016-06-23 16:11:33"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2322,16 +2457,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "6e1b1497276f8477e9d89b1b6398cf7c7dcebd7d"
+                "reference": "2e98c829524e505a9561ac9e54fa715e8b79905e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/6e1b1497276f8477e9d89b1b6398cf7c7dcebd7d",
-                "reference": "6e1b1497276f8477e9d89b1b6398cf7c7dcebd7d",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/2e98c829524e505a9561ac9e54fa715e8b79905e",
+                "reference": "2e98c829524e505a9561ac9e54fa715e8b79905e",
                 "shasum": ""
             },
             "require": {
@@ -2403,7 +2538,7 @@
                 "doctrine/dbal": "~2.4",
                 "doctrine/doctrine-bundle": "~1.4",
                 "doctrine/orm": "~2.4,>=2.4.5",
-                "egulias/email-validator": "~1.2",
+                "egulias/email-validator": "~1.2,>=1.2.1",
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection-docblock": "^3.0",
@@ -2453,7 +2588,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-06-15 05:59:11"
+            "time": "2016-06-30 17:16:26"
         },
         {
             "name": "twig/twig",
@@ -3523,16 +3658,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "f5e7cdc9b5cd3f7d9b0228692cd6ec5736c3b074"
+                "reference": "eeb3bf9a195df7552fdda46f4724a9442d157413"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/f5e7cdc9b5cd3f7d9b0228692cd6ec5736c3b074",
-                "reference": "f5e7cdc9b5cd3f7d9b0228692cd6ec5736c3b074",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/eeb3bf9a195df7552fdda46f4724a9442d157413",
+                "reference": "eeb3bf9a195df7552fdda46f4724a9442d157413",
                 "shasum": ""
             },
             "require": {
@@ -3574,7 +3709,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2016-04-12 18:27:47"
+            "time": "2016-06-29 05:42:25"
         },
         {
             "name": "webmozart/assert",
