@@ -3,3 +3,6 @@ parameters:
         processUserScores:
             command: owt:processUserScores
             interval: 10
+        readDemoInfo:
+            command: owt:readDemoInfo -l 50
+            interval: 2
