@@ -46,14 +46,16 @@ class DemoUploadController extends BaseController {
         foreach ($this->request->files->get('file') as $file) {
             $file = $this->moveFile($file);
 
-            $demoFile = new DemoFile();
-            $demoFile->setUserId($this->getCurrentUser()->getId());
-            $demoFile->setFile($file->getPathname());
+            if ($file) {
+                $demoFile = new DemoFile();
+                $demoFile->setUserId($this->getCurrentUser()->getId());
+                $demoFile->setFile($file->getPathname());
 
-            $this->demoService->saveDemoFile($demoFile);
-            $this->demoService->publishDemoFile($demoFile);
+                $this->demoService->saveDemoFile($demoFile);
+                $this->demoService->publishDemoFile($demoFile);
 
-            $demos[] = $demoFile;
+                $demos[] = $demoFile;
+            }
         }
 
         return $this->json($demos, 201);
@@ -61,18 +63,21 @@ class DemoUploadController extends BaseController {
 
     /**
      * @param UploadedFile $file
-     * @return File
+     * @return File|false
      */
     private function moveFile(UploadedFile $file) {
         $path = self::DEMO_BASE_PATH . '/' . $this->getCurrentUser()->getId();
         $finalFilename = $path . '/' . $file->getClientOriginalName();
 
         if (is_file($finalFilename)) {
+            if (filesize($finalFilename) == filesize($file->getPath())) {
+                return false;
+            }
+
             $i = 0;
             while (is_dir($path . '/' . $i)) {
                 $i++;
             }
-
             $path .= '/' . $i;
         }
 
