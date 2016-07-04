@@ -1,4 +1,7 @@
 class owt::install inherits owt {
+    $activemqDir = "/usr/share/activemq"
+    $activemqVersion = "5.13.3"
+
     exec { 'install_node5x':
         command => 'curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -',
         user    => root,
@@ -20,6 +23,10 @@ class owt::install inherits owt {
         command => '/usr/bin/gem install sass',
         require => Package['ruby'],
         creates => '/usr/local/bin/sass',
+    }
+
+    package{ 'rabbitmq-server':
+        ensure => latest,
     }
 
     exec { 'install_composer':
@@ -52,5 +59,12 @@ class owt::install inherits owt {
         owner   => vagrant,
         group   => vagrant,
         require => File['owt_log_dir'],
+    }
+
+    file { 'owt_data_dir':
+        path    => "${owtDir}/var/data",
+        ensure  => directory,
+        owner   => vagrant,
+        group   => vagrant,
     }
 }
