@@ -4,7 +4,10 @@ namespace DemoBundle\Service;
 
 use AppBundle\Exception\InvalidArgumentException;
 use AppBundle\Service\BaseService;
+use AppBundle\Util\AppSerializer;
 use DemoBundle\Document\Demo;
+use DemoBundle\Document\DemoFile;
+use DemoBundle\Repository\DemoFileRepository;
 use DemoBundle\Repository\DemoRepository;
 
 class DemoService extends BaseService {
@@ -14,10 +17,16 @@ class DemoService extends BaseService {
     /**
      * @var DemoRepository
      */
-    private $repository;
+    private $demoRepository;
+
+    /**
+     * @var DemoFileRepository
+     */
+    private $demoFileRepository;
 
     protected function init() {
-        $this->repository = $this->getRepository(DemoRepository::ID);
+        $this->demoRepository = $this->getRepository(DemoRepository::ID);
+        $this->demoFileRepository = $this->getRepository(DemoFileRepository::ID);
     }
 
     /**
@@ -27,7 +36,7 @@ class DemoService extends BaseService {
      * @throws InvalidArgumentException
      */
     public function save(Demo $demo) {
-        return $this->repository->save($demo);
+        return $this->demoRepository->save($demo);
     }
 
     /**
@@ -35,6 +44,27 @@ class DemoService extends BaseService {
      * @return Demo[]
      */
     public function getByUser($userId) {
-        return $this->repository->findByUserId($userId);
+        return $this->demoRepository->findByUserId($userId);
+    }
+
+    public function saveDemoFile(DemoFile $demoFile) {
+        return $this->demoFileRepository->save($demoFile);
+    }
+
+    /**
+     * @param DemoFile $demoFile
+     * @return DemoFile
+     */
+    public function publishDemoFile(DemoFile $demoFile) {
+        $demoFile->setQueued();
+
+        /* @var \OldSound\RabbitMqBundle\RabbitMq\Producer $producer */
+        $producer = $this->container->get('old_sound_rabbit_mq.demo_upload_producer');
+        $producer->setContentType('application/json');
+
+        $message = AppSerializer::getInstance()->toJson($demoFile);
+        $producer->publish($message);
+
+        return $this->saveDemoFile($demoFile);
     }
 }
