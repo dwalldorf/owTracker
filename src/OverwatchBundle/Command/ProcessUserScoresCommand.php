@@ -44,9 +44,9 @@ class ProcessUserScoresCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->userScoreService = $this->container->get(UserScoreService::ID);
+        $this->userService = $this->getService(UserService::ID);
+        $this->overwatchService = $this->getService(OverwatchService::ID);
+        $this->userScoreService = $this->getService(UserScoreService::ID);
 
         $this->overwatchRepository = $this->container
             ->get('doctrine_mongodb')

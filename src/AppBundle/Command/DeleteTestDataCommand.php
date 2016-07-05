@@ -30,9 +30,9 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->feedbackService = $this->container->get(FeedbackService::ID);
+        $this->userService = $this->getService(UserService::ID);
+        $this->overwatchService = $this->getService(OverwatchService::ID);
+        $this->feedbackService = $this->getService(FeedbackService::ID);
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {

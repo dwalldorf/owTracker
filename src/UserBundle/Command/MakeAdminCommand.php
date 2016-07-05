@@ -25,7 +25,7 @@ class MakeAdminCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
+        $this->userService = $this->getService(UserService::ID);
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
