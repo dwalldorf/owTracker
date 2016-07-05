@@ -42,6 +42,9 @@ class DeleteTestDataCommand extends BaseContainerAwareCommand {
             $this->feedbackService->deleteByUser($testUser);
 
             $this->userService->deleteUser($testUser);
+            /*
+             * TODO: delete demoFiles & demos
+             */
         }
     }
 }

@@ -28,7 +28,7 @@ class CronJobsCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->kernel = $this->getService('kernel');
+        $this->kernel = $this->container->get('kernel');
         $this->cronService = $this->getService(CronJobService::ID);
     }
 
