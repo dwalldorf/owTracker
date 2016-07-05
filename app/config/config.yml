@@ -68,11 +68,15 @@ old_sound_rabbit_mq:
             connection: default
             exchange_options: { name: 'demo-upload', type: direct }
             queue_options:    { name: 'demo-upload' }
+        demo_info_upload:
+            connection: default
+            exchange_options: { name: 'demo_info_upload', type: direct }
+            queue_options:    { name: 'demo_info_upload' }
     consumers:
         demo_info_upload:
             connection: default
-            exchange_options: { name: 'demo-info-upload', type: direct }
-            queue_options:    { name: 'demo-info-upload' }
+            exchange_options: { name: 'demo_info_upload', type: direct }
+            queue_options:    { name: 'demo_info_upload' }
             callback:         demo.demo_service
 
 swiftmailer:
