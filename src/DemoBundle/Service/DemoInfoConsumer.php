@@ -22,7 +22,6 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
      * @return mixed
      */
     public function execute(AMQPMessage $msg) {
-        var_dump($msg);
-        return true;
+        return false;
     }
 }

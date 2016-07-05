@@ -77,7 +77,8 @@ old_sound_rabbit_mq:
             connection: default
             exchange_options: { name: 'demo_info_upload', type: direct }
             queue_options:    { name: 'demo_info_upload' }
-            callback:         demo.demo_service
+            callback:         demo.demo_info_consumer
+            idle_timeout:     10
 
 swiftmailer:
     transport: "%mailer_transport%"
