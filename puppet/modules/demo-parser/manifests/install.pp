@@ -3,21 +3,33 @@ class demo-parser::install inherits demo-parser {
         ensure => latest,
     }
 
-    file { 'demo_parser_dir':
+    file { 'demoparser_dir':
         path   => "$parserDir",
         ensure => directory,
         owner  => vagrant,
         group  => vagrant,
     }
 
-    exec { 'clone_demo_parser':
+    exec { 'clone_demoparser':
         command => "git clone https://github.com/stegmannc/csgo-demoparser ${$parserDir}",
         creates => "${parserDir}/.git",
         path    => '/usr/bin',
         user    => vagrant,
         require => [
             Package['git'],
-            File['demo_parser_dir'],
+            File['demoparser_dir'],
         ],
+    }
+
+    exec { 'build_demoparser':
+        command     => 'go install',
+        creates     => "${praserDir}/csgo-demoparser",
+        path        => '/usr/bin',
+        environment => [
+            'GOPATH=/usr/share/go',
+        ],
+        cwd         => $parserDir,
+        user        => vagrant,
+        require     => Exec['clone_demoparser'],
     }
 }
