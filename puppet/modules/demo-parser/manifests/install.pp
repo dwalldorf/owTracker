@@ -3,19 +3,21 @@ class demo-parser::install inherits demo-parser {
         ensure => latest,
     }
 
-    file { 'demo-parser-dir':
+    file { 'demo_parser_dir':
         path   => "$parserDir",
         ensure => directory,
         owner  => vagrant,
         group  => vagrant,
     }
 
-    # exec { 'clone-demo-parser':
-    #     command => 'git clone https://github.com/stegmannc/csgo-demoparser .',
-    #     cwd     => $parserDir,
-    #     path    => '/usr/bin',
-    #     user    => vagrant,
-    #     require => [File['demo-parser-dir'], Package['git']],
-    #     unless  => "test -f $parserDir/.git"
-    # }
+    exec { 'clone_demo_parser':
+        command => "git clone https://github.com/stegmannc/csgo-demoparser ${$parserDir}",
+        creates => "${parserDir}/.git",
+        path    => '/usr/bin',
+        user    => vagrant,
+        require => [
+            Package['git'],
+            File['demo_parser_dir'],
+        ],
+    }
 }
