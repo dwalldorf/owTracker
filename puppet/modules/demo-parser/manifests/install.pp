@@ -1,6 +1,7 @@
 class demo-parser::install inherits demo-parser {
     package { 'golang':
-        ensure => latest,
+        ensure  => latest,
+        require => File['demoparser_dir', 'go_home', 'go_home_bin', 'go_home_pkg', 'go_home_src'],
     }
 
     file { 'demoparser_dir':
@@ -10,26 +11,36 @@ class demo-parser::install inherits demo-parser {
         group  => vagrant,
     }
 
-    exec { 'clone_demoparser':
-        command => "git clone https://github.com/stegmannc/csgo-demoparser ${$parserDir}",
-        creates => "${parserDir}/.git",
-        path    => '/usr/bin',
-        user    => vagrant,
-        require => [
-            Package['git'],
-            File['demoparser_dir'],
-        ],
+    file { 'go_home':
+        path    => '/home/vagrant/go',
+        ensure  => directory,
+        owner   => vagrant,
+        group   => vagrant,
+    }
+    file { 'go_home_bin':
+        path    => '/home/vagrant/go/bin',
+        ensure  => directory,
+        owner   => vagrant,
+        group   => vagrant,
+    }
+    file { 'go_home_pkg':
+        path    => '/home/vagrant/go/pkg',
+        ensure  => directory,
+        owner   => vagrant,
+        group   => vagrant,
+    }
+    file { 'go_home_src':
+        path    => '/home/vagrant/go/src',
+        ensure  => directory,
+        owner   => vagrant,
+        group   => vagrant,
     }
 
-    exec { 'build_demoparser':
-        command     => 'go install',
-        creates     => "${praserDir}/csgo-demoparser",
-        path        => '/usr/bin',
-        environment => [
-            'GOPATH=/usr/share/go',
-        ],
+    exec { 'install_demoparser':
+        command     => 'go get -u github.com/stegmannc/csgo-demoparser',
+        path        => ['/usr/bin', '/home/vagrant/go/bin'],
         cwd         => $parserDir,
         user        => vagrant,
-        require     => Exec['clone_demoparser'],
+        require     => [Package['golang'], Exec['chsh_vagrant']],
     }
 }
