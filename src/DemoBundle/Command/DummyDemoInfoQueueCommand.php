@@ -10,11 +10,14 @@ use DemoBundle\Service\DemoService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use UserBundle\Document\User;
 use UserBundle\Service\UserService;
 
 class DummyDemoInfoQueueCommand extends BaseContainerAwareCommand {
 
     const OPT_USER_NAME = 'user';
+
+    const OPT_AMOUNT_NAME = 'amount';
 
     /**
      * @var UserService
@@ -38,6 +41,13 @@ class DummyDemoInfoQueueCommand extends BaseContainerAwareCommand {
                 'u',
                 InputArgument::OPTIONAL,
                 'username or id'
+            )
+            ->addOption(
+                self::OPT_AMOUNT_NAME,
+                'a',
+                InputArgument::OPTIONAL,
+                'amount of demos to create',
+                1
             );
     }
 
@@ -47,9 +57,9 @@ class DummyDemoInfoQueueCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $serializer = AppSerializer::getInstance();
         $this->verbose = $input->getOption('verbose');
         $inputUser = $input->getOption(self::OPT_USER_NAME);
+        $amount = $input->getOption(self::OPT_AMOUNT_NAME);
 
         if (!$inputUser) {
             $this->error('user required');
@@ -66,8 +76,20 @@ class DummyDemoInfoQueueCommand extends BaseContainerAwareCommand {
             die(1);
         }
 
+        $this->info(sprintf('creating %d demo(s)', $amount));
+        for ($i = 0; $i < $amount; $i++) {
+            $this->createDemo($user);
+        }
+    }
+
+    /**
+     * @param User $user
+     */
+    private function createDemo(User $user) {
+        $serializer = AppSerializer::getInstance();
+
         // create demo file for integrity
-        $demoFile = new DemoFile('someFile', $user->getId());
+        $demoFile = new DemoFile('someFile', $user->getId(), null, false, true);
         $this->demoService->saveDemoFile($demoFile);
 
         if ($this->verbose) {
