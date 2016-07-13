@@ -4,5 +4,5 @@ parameters:
             command: owt:processUserScores
             interval: 10
         readDemoInfo:
-            command: rabbitmq:demo_info_upload -l 1
+            command: rabbitmq:consumer demo_info_upload -m 50
             interval: 2
