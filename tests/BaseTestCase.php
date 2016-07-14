@@ -53,7 +53,12 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase {
     protected function init() {
     }
 
-    protected function mockService() {
+    /**
+     * @param string $serviceId
+     * @param \PHPUnit_Framework_MockObject_MockObject $mockService
+     */
+    protected function mockService($serviceId, $mockService) {
+        $this->_container->set($serviceId, $mockService);
     }
 
     /**
