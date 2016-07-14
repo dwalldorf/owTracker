@@ -6,8 +6,8 @@ class nginx::config inherits nginx {
         owner   => 'root',
         group   => 'root',
         mode    => 0644,
-        notify  => Service['nginx'],
         require => Package['nginx'],
+        notify  => Service['nginx'],
     }
 
     file { 'nginx_default':
@@ -18,8 +18,8 @@ class nginx::config inherits nginx {
     file { 'nginx_default_enabled':
         path    => '/etc/nginx/sites-enabled/default',
         ensure  => absent,
-        notify  => Service['nginx'],
         require => Package['nginx'],
+        notify  => Service['nginx'],
     }
 
     file { 'nginx_owt':
@@ -29,14 +29,14 @@ class nginx::config inherits nginx {
         owner   => 'root',
         group   => 'root',
         mode    => 0644,
-        notify  => Service['nginx'],
         require => Package['nginx'],
+        notify  => Service['nginx'],
     }
     file { 'nginx_owt_enabled':
         path    => '/etc/nginx/sites-enabled/owt.localhost',
         ensure  => link,
         target  => '/etc/nginx/sites-available/owt.localhost',
-        notify  => Service['nginx'],
         require => File['nginx_owt'],
+        notify  => Service['nginx'],
     }
 }

@@ -23,8 +23,8 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        handler_id:     session.handler.memcache
-    fragments:       ~
+        handler_id: session.handler.memcache
+    fragments: ~
     http_method_override: true
     assets: ~
 
@@ -68,12 +68,17 @@ old_sound_rabbit_mq:
             connection: default
             exchange_options: { name: 'demo-upload', type: direct }
             queue_options:    { name: 'demo-upload' }
+        demo_info_upload: # for testing / inserting dummy messages only
+            connection: default
+            exchange_options: { name: 'demo_info_upload', type: direct }
+            queue_options:    { name: 'demo_info_upload' }
     consumers:
         demo_info_upload:
             connection: default
-            exchange_options: { name: 'demo-info-upload', type: direct }
-            queue_options:    { name: 'demo-info-upload' }
-            callback:         demo.demo_service
+            exchange_options: { name: 'demo_info_upload', type: direct }
+            queue_options:    { name: 'demo_info_upload' }
+            callback:         demo.demo_info_consumer
+            idle_timeout:     100
 
 swiftmailer:
     transport: "%mailer_transport%"

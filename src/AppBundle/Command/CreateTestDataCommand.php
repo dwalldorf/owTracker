@@ -3,17 +3,8 @@
 namespace AppBundle\Command;
 
 use AppBundle\Util\RandomUtil;
-use DemoBundle\Document\Demo;
-use DemoBundle\Document\RoundEventKill;
-use DemoBundle\Document\MatchRound;
-use DemoBundle\Document\MatchInfo;
-use DemoBundle\Document\MatchPlayer;
-use DemoBundle\Document\MatchTeam;
-use DemoBundle\Document\RoundEvents;
 use DemoBundle\Service\DemoService;
-use FeedbackBundle\Document\Feedback;
 use FeedbackBundle\Service\FeedbackService;
-use OverwatchBundle\Document\Verdict;
 use OverwatchBundle\Service\OverwatchService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -260,10 +251,10 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->userService = $this->container->get(UserService::ID);
-        $this->overwatchService = $this->container->get(OverwatchService::ID);
-        $this->feedbackService = $this->container->get(FeedbackService::ID);
-        $this->demoService = $this->container->get(DemoService::ID);
+        $this->userService = $this->getService(UserService::ID);
+        $this->overwatchService = $this->getService(OverwatchService::ID);
+        $this->feedbackService = $this->getService(FeedbackService::ID);
+        $this->demoService = $this->getService(DemoService::ID);
     }
 
     /**
@@ -277,27 +268,27 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         }
 
         for ($i = 0; $i < $this->userAmount; $i++) {
-            $username = 'owtTestUser_' . $this->getRandomString();
-            $email = $username . '@' . $this->getRandomString(5) . '.com';
+            $username = 'owtTestUser_' . RandomUtil::getRandomString();
+            $email = $username . '@' . RandomUtil::getRandomString(5) . '.com';
 
             $user = new User();
             $user->setUsername($username);
             $user->setEmail($email);
-            $user->setPassword($this->getRandomString());
-            $user->setRegistered($this->getRandomDate()->getTimestamp());
+            $user->setPassword(RandomUtil::getRandomString());
+            $user->setRegistered(RandomUtil::getRandomDate()->getTimestamp());
 
             $this->userService->register($user);
 
             if ($powerUsersToCreate > 0 && $this->createdPowerUsers < $powerUsersToCreate) {
                 $amountOfOverwatches = mt_rand(1000, 5000);
-            } else if ($this->getRandomBoolWithProbability(20)) {
+            } else if (RandomUtil::getRandomBoolWithProbability(20)) {
                 $amountOfOverwatches = mt_rand(40, 100);
             } else {
                 $amountOfOverwatches = mt_rand(0, 20);
             }
             $this->createVerdicts($amountOfOverwatches, $user);
 
-            if ($this->getRandomBoolWithProbability(0.2)) {
+            if (RandomUtil::getRandomBoolWithProbability(0.2)) {
                 $this->createFeedback($user);
             }
 
@@ -322,7 +313,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         }
 
         for ($i = 0; $i < $amount; $i++) {
-            $verdict = $this->getRandomVerdict($user);
+            $verdict = RandomUtil::getRandomVerdict($user);
             $this->overwatchService->save($verdict);
 
             if ($this->verbose) {
@@ -349,63 +340,17 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
 
     private function createDemos($amount, User $user) {
         for ($demoCounter = 0; $demoCounter < $amount; $demoCounter++) {
-            $team1Rounds = null;
-            $team2Rounds = null;
-            $totalRounds = null;
-            $rounds = [];
-
-            if ($this->getRandomBool()) {
-                $team1Rounds = 16;
-                $team2Rounds = mt_rand(1, 14);
-            } else {
-                $team1Rounds = mt_rand(1, 14);
-                $team2Rounds = 16;
-            }
-            $totalRounds = $team1Rounds + $team2Rounds;
-
-            $team1 = $this->createTeam($user);
-            $team2 = $this->createTeam();
-
-            $matchInfo = new MatchInfo(
-                $this->getRandomMap(),
-                $team1,
-                $team2,
-                $team1Rounds,
-                $team2Rounds
-            );
-
-            /*
-             * round end scenarios (winner)
-             * - bomb plant and explosion (T)
-             * - all CT's eliminated (T)
-             * - all T's eliminated (CT)
-             * - bomb planted and defused (CT)
-             * - round time over without bomb plant (CT)
-             *
-             * we only end rounds with all players of one team killed
-             */
-            $roundCounter = 1;
-            while ($roundCounter < $totalRounds + 1) {
-                for ($team1RoundCounter = 0; $team1RoundCounter < $team1Rounds; $team1RoundCounter++) {
-                    $rounds[] = $this->createDemoRound($roundCounter, $team1, $team2);
-                    $roundCounter++;
-                }
-                for ($team2RoundCounter = 0; $team2RoundCounter < $team2Rounds; $team2RoundCounter++) {
-                    $rounds[] = $this->createDemoRound($roundCounter, $team2, $team1);
-                    $roundCounter++;
-                }
-            }
-            $demo = new Demo(null, $user->getId(), $matchInfo, $rounds);
+            $demo = RandomUtil::getRandomDemo($user);
             $this->demoService->save($demo);
 
             if ($this->verbose) {
                 $this->debug(
                     sprintf(
                         'demo: %s VS %s - %d:%d',
-                        $team1->getTeamName(),
-                        $team2->getTeamName(),
-                        $team1Rounds,
-                        $team2Rounds
+                        $demo->getMatchInfo()->getTeam1()->getTeamName(),
+                        $demo->getMatchInfo()->getTeam2()->getTeamName(),
+                        $demo->getMatchInfo()->getTotalRoundsTeam1(),
+                        $demo->getMatchInfo()->getTotalRoundsTeam2()
                     )
                 );
             }
@@ -416,77 +361,19 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         $this->createdDemosUniqueUsers++;
     }
 
-    /**
-     * @param User|null $user
-     * @return MatchTeam
-     */
-    public static function createTeam(User $user = null) {
-        $teamName = null;
-        if ($user) {
-            $teamName = 'team_' . $user->getUsername();
-        } else {
-            $teamName = 'team_' . RandomUtil::getRandomString(5);
-        }
-
-        $players = [];
-        for ($i = 0; $i < 5; $i++) {
-            if ($i == 0 && $user) {
-                $players[] = new MatchPlayer($user->getId(), $user->getUsername());
-            } else {
-                $players[] = new MatchPlayer(RandomUtil::getRandomString(), 'testPlayer_' . RandomUtil::getRandomString(3));
-            }
-        }
-
-        return new MatchTeam($teamName, $players);
-    }
-
-    public static function createDemoRound($roundNumber, MatchTeam $winner, MatchTeam $loser) {
-        $kills = [];
-        $winnerTeamPlayersAlive = $winner->getPlayers();
-        $loserTeamPlayersAlive = $loser->getPlayers();
-
-        foreach ($loserTeamPlayersAlive as $victim) {
-            $killer = $winnerTeamPlayersAlive[mt_rand(0, count($winnerTeamPlayersAlive) - 1)];
-            $kills[] = new RoundEventKill(
-                $killer->getSteamId(), $victim->getSteamId(), null, RandomUtil::getRandomBoolWithProbability(0.3)
-            );
-        }
-
-        return new MatchRound($roundNumber, mt_rand(30, 110), new RoundEvents($kills));
-    }
-
-    /**
-     * @param User $user
-     * @return Verdict
-     */
-    private function getRandomVerdict(User $user) {
-        $verdict = new Verdict();
-        $verdict->setUserId($user->getId());
-        $verdict->setMap($this->getRandomMap());
-        $verdict->setAimAssist($this->getRandomBool());
-        $verdict->setVisionAssist($this->getRandomBool());
-        $verdict->setOtherAssist($this->getRandomBool());
-        $verdict->setGriefing($this->getRandomBool());
-
-        $date = $this->getRandomDate();
-        $verdict->setCreationDate($date);
-        $verdict->setOverwatchDate($date);
-
-        return $verdict;
-    }
 
     /**
      * @param User $user
      */
     private function createFeedback(User $user) {
-        $feedback1 = $this->getRandomFeedback($user);
+        $feedback1 = RandomUtil::getRandomFeedback($user);
         $this->feedbackService->save($feedback1);
 
         $this->createdFeedback++;
         $this->createdFeedbackUniqueUsers++;
 
-        while ($this->getRandomBool()) {
-            $anotherFeedback = $this->getRandomFeedback($user);
+        while (RandomUtil::getRandomBool()) {
+            $anotherFeedback = RandomUtil::getRandomFeedback($user);
             $this->feedbackService->save($anotherFeedback);
             $this->createdFeedback++;
 
@@ -494,82 +381,7 @@ class CreateTestDataCommand extends BaseContainerAwareCommand {
         }
     }
 
-    /**
-     * @param User $user
-     * @return Feedback
-     */
-    private function getRandomFeedback(User $user) {
-        $feedback = new Feedback();
-        $feedback->setCreatedBy($user->getId());
-        $feedback->setCreated($this->getRandomDate());
 
-        $feedbackHash = [
-            'like'          => $this->getRandomBool(),
-            'fixplease'     => $this->getRandomString(mt_rand(200, 2000), true),
-            'featureplease' => $this->getRandomString(mt_rand(200, 2000), true),
-            'freetext'      => $this->getRandomString(mt_rand(200, 2000), true),
-        ];
-        $feedback->setFeedback($feedbackHash);
-
-        return $feedback;
-    }
-
-    /**
-     * @param int $length
-     * @param bool $withWhitespaces
-     * @return string
-     */
-    private function getRandomString($length = 10, $withWhitespaces = false) {
-        $allowedCharacters = '0123456789abcdefghijklmnopqrstuvwxyz';
-        if ($withWhitespaces) {
-            $allowedCharacters .= '        ';
-        }
-
-        $charactersLength = strlen($allowedCharacters);
-        $randomString = '';
-
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $allowedCharacters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    private function getRandomDate() {
-        $from = strtotime('-60 days');
-        $to = time();
-
-        $random = new \DateTime();
-        $random->setTimestamp(mt_rand($from, $to));
-        return $random;
-    }
-
-    /**
-     * @return bool
-     */
-    private function getRandomBool() {
-        return $this->getRandomBoolWithProbability(0.5);
-    }
-
-    /**
-     * @param float $probability
-     * @return bool
-     */
-    private function getRandomBoolWithProbability($probability) {
-        return mt_rand(1, self::PROBABILITY_LENGTH) <= $probability * self::PROBABILITY_LENGTH;
-    }
-
-    /**
-     * @return array
-     */
-    private function getRandomMap() {
-        $mapPool = $this->overwatchService->getMapPool();
-        $max = count($mapPool) - 1;
-
-        return $mapPool[mt_rand(0, $max)];
-    }
 
     /**
      * @param bool $bool

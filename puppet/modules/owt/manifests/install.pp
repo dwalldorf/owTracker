@@ -4,6 +4,7 @@ class owt::install inherits owt {
 
     exec { 'install_node5x':
         command => 'curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -',
+        creates => '/etc/apt/sources.list.d/nodesource.list',
         user    => root,
         path    => '/usr/bin',
         require => File['create_node_modules_dir']

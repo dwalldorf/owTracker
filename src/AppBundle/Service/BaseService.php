@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use UserBundle\Document\User;
 
-abstract class BaseService implements ContainerAwareInterface, IGetService, IGetRepository {
+abstract class BaseService implements ContainerAwareInterface {
 
     /**
      * @var ContainerInterface
