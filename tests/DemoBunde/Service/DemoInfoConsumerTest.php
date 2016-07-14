@@ -24,17 +24,23 @@ class DemoInfoConsumerTest extends BaseTestCase {
     }
 
     /**
-     * @return User
-     */
-    private function createUser() {
-        return new User('123abc', 'testUser_DemoInfoConsumerTest', 'owtTestUser_DemoInfoConsumerTest', 'password');
-    }
-
-    /**
      * @return DemoInfoConsumer
      */
     private function getConsumer() {
         return $this->get(DemoInfoConsumer::ID);
+    }
+
+    /**
+     * @param mixed $body
+     * @return AMQPMessage
+     */
+    private function getAMQPMessage($body) {
+        return new AMQPMessage(AppSerializer::getInstance()->toJson($body));
+    }
+
+    private function getDemo() {
+        $user = new User('123abc', 'testUser_DemoInfoConsumerTest', 'owtTestUser_DemoInfoConsumerTest', 'password');
+        return RandomUtil::getRandomDemo($user);
     }
 
     /**
@@ -52,25 +58,16 @@ class DemoInfoConsumerTest extends BaseTestCase {
     }
 
     /**
-     * @param mixed $body
-     * @return AMQPMessage
-     */
-    private function getAMQPMessage($body) {
-        return new AMQPMessage(AppSerializer::getInstance()->toJson($body));
-    }
-
-    /**
      * @test
      */
     public function validDemo() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
+        $demo = $this->getDemo();
 
         $userServiceMock = $this->getUserServiceMock();
         $userServiceMock->expects($this->once())
             ->method('findById')
-            ->with($user->getId())
-            ->willReturn($user);
+            ->with($demo->getUserId())
+            ->willReturn(new User());
         $demoServiceMock = $this->getDemoServiceMock();
         $demoServiceMock->expects($this->once())
             ->method('save');
@@ -85,13 +82,12 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoUserNotFound() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
+        $demo = $this->getDemo();
 
         $userServiceMock = $this->getUserServiceMock();
         $userServiceMock->expects($this->once())
             ->method('findById')
-            ->with($user->getId())
+            ->with($demo->getUserId())
             ->willReturn(null);
         $demoServiceMock = $this->getDemoServiceMock();
         $demoServiceMock->expects($this->never())
@@ -107,8 +103,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoWithoutUserId() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
+        $demo = $this->getDemo();
         $demo->setUserId(null);
 
         $userServiceMock = $this->getUserServiceMock();
@@ -129,9 +124,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoWithoutMap() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
-
+        $demo = $this->getDemo();
         $matchInfo = $demo->getMatchInfo();
         $matchInfo->setMap(null);
         $demo->setMatchInfo($matchInfo);
@@ -153,9 +146,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoWithoutTeam() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
-
+        $demo = $this->getDemo();
         $matchInfo = $demo->getMatchInfo();
         $matchInfo->setTeam1(new MatchTeam());
         $demo->setMatchInfo($matchInfo);
@@ -177,9 +168,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoPlayerWithoutSteamId() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
-
+        $demo = $this->getDemo();
         $matchInfo = $demo->getMatchInfo();
         $team1 = $matchInfo->getTeam1();
         $players = $team1->getPlayers();
@@ -205,9 +194,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoPlayerWithoutName() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
-
+        $demo = $this->getDemo();
         $matchInfo = $demo->getMatchInfo();
         $team1 = $matchInfo->getTeam1();
         $players = $team1->getPlayers();
@@ -233,9 +220,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoRoundWithoutNumber() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
-
+        $demo = $this->getDemo();
         $rounds = $demo->getRounds();
         $rounds[2]->setRoundNumber(null);
         $demo->setRounds($rounds);
@@ -257,9 +242,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
      * @test
      */
     public function demoRoundWithoutDuration() {
-        $user = $this->createUser();
-        $demo = RandomUtil::getRandomDemo($user);
-
+        $demo = $this->getDemo();
         $rounds = $demo->getRounds();
         $rounds[7]->setRoundDuration(null);
         $demo->setRounds($rounds);
