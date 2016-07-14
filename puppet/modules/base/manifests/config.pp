@@ -30,6 +30,7 @@ class base::config inherits base {
         path    => '/usr/bin',
         user    => root,
         require => Package['zsh'],
+        unless => 'sudo -Hiu vagrant env | /bin/grep SHELL=/bin/zsh',
     }
 
     file { 'bash_profile_root':
@@ -63,5 +64,6 @@ class base::config inherits base {
         path    => '/usr/bin',
         user    => root,
         require => Package['zsh'],
+        unless => 'sudo -Hiu root env | /bin/grep SHELL=/bin/zsh',
     }
 }

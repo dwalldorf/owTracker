@@ -19,7 +19,7 @@ class InitCronJobsCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->cronJobService = $this->container->get(CronJobService::ID);
+        $this->cronJobService = $this->getService(CronJobService::ID);
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {

@@ -25,6 +25,6 @@ class InvalidateMemcacheAppDataCommand extends BaseContainerAwareCommand {
     }
 
     protected function initServices() {
-        $this->cacheService = $this->container->get(CacheService::ID);
+        $this->cacheService = $this->getService(CacheService::ID);
     }
 }

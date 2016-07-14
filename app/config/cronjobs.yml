@@ -3,3 +3,6 @@ parameters:
         processUserScores:
             command: owt:processUserScores
             interval: 10
+        readDemoInfo:
+            command: rabbitmq:consumer demo_info_upload -m 50
+            interval: 2

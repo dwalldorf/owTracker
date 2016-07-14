@@ -46,6 +46,14 @@ abstract class BaseContainerAwareCommand extends ContainerAwareCommand {
     }
 
     /**
+     * @param string $name
+     * @return object
+     */
+    protected function getService($name) {
+        return $this->container->get($name);
+    }
+
+    /**
      * @param string $msg
      */
     protected function info($msg = '') {

@@ -13,7 +13,7 @@ class CreateIndicesCommand extends BaseContainerAwareCommand {
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
-        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $dm = $this->getService('doctrine.odm.mongodb.document_manager');
         $dm->getSchemaManager()->ensureIndexes();
     }
 }
