@@ -23,8 +23,8 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        handler_id:     session.handler.memcache
-    fragments:       ~
+        handler_id: session.handler.memcache
+    fragments: ~
     http_method_override: true
     assets: ~
 
