@@ -8,16 +8,25 @@ use DemoBundle\Document\Demo;
 use DemoBundle\Form\DemoType;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use UserBundle\Service\UserService;
 
 class DemoInfoConsumer extends BaseService implements ConsumerInterface {
+
+    const ID = 'demo.demo_info_consumer';
 
     /**
      * @var DemoService
      */
     private $demoService;
 
+    /**
+     * @var UserService
+     */
+    private $userService;
+
     protected function init() {
         $this->demoService = $this->getService(DemoService::ID);
+        $this->userService = $this->getService(UserService::ID);
     }
 
     protected function createForm($type, $data = null, array $options = []) {
@@ -37,10 +46,17 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
         $form->submit($demoArray);
 
         if ($form->isValid()) {
+            $user = $this->userService->findById($demo->getUserId());
+            if (!$user) {
+                // remove from queue and throw away
+                return true;
+            }
+
             $this->demoService->save($demo);
             return true;
         }
 
-        return false;
+        // do something with it - maybe write to an error queue
+        return true;
     }
 }
