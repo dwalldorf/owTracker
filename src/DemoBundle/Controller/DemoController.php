@@ -21,7 +21,7 @@ class DemoController extends BaseController {
     }
 
     /**
-     * @Route("/api/matches")
+     * @Route("/api/demos")
      * @Method("GET")
      * @return Response
      *
