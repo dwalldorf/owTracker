@@ -32,6 +32,8 @@ class AppKernel extends Kernel {
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
+        Kint::$theme = 'solarized-dark';
+
         return $bundles;
     }
 
