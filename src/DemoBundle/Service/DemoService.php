@@ -9,6 +9,7 @@ use DemoBundle\Document\Demo;
 use DemoBundle\Document\DemoFile;
 use DemoBundle\Repository\DemoFileRepository;
 use DemoBundle\Repository\DemoRepository;
+use UserBundle\Document\User;
 
 class DemoService extends BaseService {
 
@@ -40,11 +41,13 @@ class DemoService extends BaseService {
     }
 
     /**
-     * @param string $userId
+     * @param User $user
+     * @param int $limit
+     * @param int $offset
      * @return Demo[]
      */
-    public function getByUser($userId) {
-        return $this->demoRepository->findByUserId($userId);
+    public function getByUser(User $user, $limit, $offset) {
+        return $this->demoRepository->findByUserId($user->getId(), $limit, $offset);
     }
 
     /**
