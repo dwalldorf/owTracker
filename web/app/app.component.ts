@@ -24,6 +24,8 @@ import {NavigationService} from "./core/service/navigation.service";
 import {AdminFeedbackService} from "./admin/service/admin-feedback.service";
 import {DemoUploadComponent} from "./demoupload/demo-upload.component";
 import {DemoUploadService} from "./demoupload/service/demo-upload.service";
+import {DemosComponent} from "./demos/demos.component";
+import {DemoService} from "./demos/service/demo.service";
 
 enableProdMode();
 
@@ -49,6 +51,11 @@ enableProdMode();
         component: ScoreboardComponent,
     },
     {
+        path: '/demos',
+        name: AppConfig.ROUTE_NAME_DEMOS,
+        component: DemosComponent,
+    },
+    {
         path: '/admin/...',
         component: AdminComponent,
     },
@@ -68,6 +75,7 @@ enableProdMode();
         NavigationComponent,
         VerdictDialogComponent,
         FeedbackDialogComponent,
+        DemosComponent,
         DemoUploadComponent,
         AdminComponent,
     ],
@@ -81,6 +89,7 @@ enableProdMode();
         UserService,
         VerdictService,
         FeedbackService,
+        DemoService,
         DemoUploadService,
 
         AdminComponent,

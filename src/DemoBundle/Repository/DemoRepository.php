@@ -41,13 +41,15 @@ class DemoRepository extends BaseRepository {
      * @return array
      */
     public function findByUserId($userId, $limit, $offset) {
-        return $this->getQueryBuilder()
-            ->select('id', 'matchInfo.team1', 'matchInfo.team2', 'matchInfo')
+        $res = $this->getQueryBuilder()
+            ->select('id', 'user_id', 'matchInfo.team1', 'matchInfo.team2', 'matchInfo')
             ->field('user_id')->equals($userId)
             ->limit($limit)
             ->skip($offset)
             ->getQuery()
             ->execute()
             ->toArray();
+
+        return array_values($res);
     }
 }

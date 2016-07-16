@@ -3,6 +3,7 @@
 namespace DemoBundle\Controller;
 
 use AppBundle\Controller\BaseController;
+use AppBundle\DTO\BaseCollection;
 use DemoBundle\Service\DemoService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -21,19 +22,23 @@ class DemoController extends BaseController {
     }
 
     /**
-     * @Route("/api/demos")
+     * @Route("/api/demos/{userId}")
      * @Method("GET")
-     * @return Response
      *
+     * @param string $userId
+     * @return Response
      * @throws NotLoggedInException
      */
-    public function getAllAction() {
+    public function getAllAction($userId) {
         $this->requireLogin();
 
         $limit = $this->getRequestParamAsInt('limit', 20);
         $offset = $this->getRequestParamAsInt('offset', 0);
+        $demos = $this->demoService->getByUser($userId, $limit + 1, $offset);
 
-        $res = $this->demoService->getByUser($this->getCurrentUser(), $limit, $offset);
-        return $this->json($res);
+        $demoCollection = new BaseCollection();
+        $demoCollection->setItems($demos, $limit);
+
+        return $this->json($demoCollection);
     }
 }

@@ -41,13 +41,13 @@ class DemoService extends BaseService {
     }
 
     /**
-     * @param User $user
+     * @param string $userId
      * @param int $limit
      * @param int $offset
      * @return Demo[]
      */
-    public function getByUser(User $user, $limit, $offset) {
-        return $this->demoRepository->findByUserId($user->getId(), $limit, $offset);
+    public function getByUser($userId, $limit, $offset) {
+        return $this->demoRepository->findByUserId($userId, $limit, $offset);
     }
 
     /**
