@@ -1,5 +1,6 @@
 <div class="demos-container">
-    <div class="panel panel-default">
+    <div *ngIf="showList"
+         class="panel panel-default">
 
         <div class="panel-heading">
             <div class="row">
@@ -28,7 +29,11 @@
 
                         <tbody>
                         <tr *ngFor="let demo of demos.items">
-                            <td>{{demo.matchInfo.map}}</td>
+                            <td>
+                                <a (click)="showDetail()">
+                                    {{demo.matchInfo.map}}
+                                </a>
+                            </td>
                             <td>{{demo.matchInfo.team1.teamName}}</td>
                             <td>{{demo.matchInfo.team2.teamName}}</td>
                             <td>{{demo.matchInfo.totalRoundsTeam1}}</td>
@@ -48,5 +53,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div *ngIf="showDemoDetail"
+         class="panel panel-default">
+        <demo-detail></demo-detail>
     </div>
 </div>

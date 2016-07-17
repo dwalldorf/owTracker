@@ -24,8 +24,9 @@ import {NavigationService} from "./core/service/navigation.service";
 import {AdminFeedbackService} from "./admin/service/admin-feedback.service";
 import {DemoUploadComponent} from "./demoupload/demo-upload.component";
 import {DemoUploadService} from "./demoupload/service/demo-upload.service";
-import {DemosComponent} from "./demos/demos.component";
 import {DemoService} from "./demos/service/demo.service";
+import {DemoListComponent} from "./demos/demo.list.component";
+import {DemoDetailComponent} from "./demos/demo.detail.component";
 
 enableProdMode();
 
@@ -53,7 +54,7 @@ enableProdMode();
     {
         path: '/demos',
         name: AppConfig.ROUTE_NAME_DEMOS,
-        component: DemosComponent,
+        component: DemoListComponent,
     },
     {
         path: '/admin/...',
@@ -75,7 +76,8 @@ enableProdMode();
         NavigationComponent,
         VerdictDialogComponent,
         FeedbackDialogComponent,
-        DemosComponent,
+        DemoListComponent,
+        DemoDetailComponent,
         DemoUploadComponent,
         AdminComponent,
     ],

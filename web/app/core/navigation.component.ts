@@ -27,6 +27,7 @@ export class NavigationComponent {
         this.navigationElements = [
             new NavigationElement('', 'Dashboard', '/dashboard', AppConfig.ROUTE_NAME_DASHBOARD, 'glyphicon glyphicon-home'),
             new NavigationElement('Scoreboard', 'Scoreboard', '/scores', AppConfig.ROUTE_NAME_SCOREBOARD),
+            new NavigationElement('My demos', 'Demos', '/demos', AppConfig.ROUTE_NAME_DEMOS),
         ];
 
         this._userService.getCurrentUser()

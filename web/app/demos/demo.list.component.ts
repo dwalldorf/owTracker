@@ -8,7 +8,7 @@ import {Demo} from "./model/demo";
 @Component({
     templateUrl: 'app/demos/views/demos.html',
 })
-export class DemosComponent {
+export class DemoListComponent {
 
     private LOADING_STATUS = AppConfig.ROUTE_NAME_DEMOS;
 
@@ -19,6 +19,10 @@ export class DemosComponent {
     private demos: ItemCollection<Demo>;
 
     private restFinished = false;
+
+    private showList = true;
+
+    private showDemoDetail = false;
 
     constructor(appLoadingService: AppLoadingService, demoService: DemoService) {
         this._appLoadingService = appLoadingService;
@@ -37,5 +41,9 @@ export class DemosComponent {
                 this.restFinished = true;
             }
         );
+    }
+
+    showDetail(){
+        
     }
 }
