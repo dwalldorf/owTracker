@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dfb54299588fe74180b07624a620d3eb",
-    "content-hash": "6e428843692b58126aa6daf1079be70b",
+    "hash": "bd41e95025d11da9ea3f0285f69017bd",
+    "content-hash": "93d23dcb2d03a7de9c254b214417545b",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1159,6 +1159,39 @@
                 "session"
             ],
             "time": "2016-06-24 08:37:03"
+        },
+        {
+            "name": "lightopenid/lightopenid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mewp/lightopenid.git",
+                "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mewp/lightopenid/zipball/9d42dc24e4dd34121c98a6491bc3ef7933a68a19",
+                "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "./"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://code.google.com/p/lightopenid/",
+            "keywords": [
+                "OpenId"
+            ],
+            "time": "2013-10-27 16:25:49"
         },
         {
             "name": "monolog/monolog",
@@ -3477,7 +3510,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/mongodb-odm-bundle": 20
+        "doctrine/mongodb-odm-bundle": 20,
+        "lightopenid/lightopenid": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
