@@ -10,6 +10,8 @@ export class AppConfig {
 
     static ROUTE_NAME_SCOREBOARD = 'Scoreboard';
 
+    static ROUTE_NAME_DEMOS = 'Demos';
+
     static ROUTE_NAME_ADMIN = 'Admin';
     static ROUTE_NAME_ADMIN_DASHBOARD = 'AdminDashboard';
     static ROUTE_NAME_ADMIN_FEEDBACK = 'AdminFeedback';
