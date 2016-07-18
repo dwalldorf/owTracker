@@ -57,6 +57,11 @@ enableProdMode();
         component: DemoListComponent,
     },
     {
+        path: '/demo/:id',
+        name: AppConfig.ROUTE_NAME_DEMO_DETAILS,
+        component: DemoDetailComponent,
+    },
+    {
         path: '/admin/...',
         component: AdminComponent,
     },

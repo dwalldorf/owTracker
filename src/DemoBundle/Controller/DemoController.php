@@ -22,7 +22,7 @@ class DemoController extends BaseController {
     }
 
     /**
-     * @Route("/api/demos/{userId}")
+     * @Route("/api/demos/user/{userId}")
      * @Method("GET")
      *
      * @param string $userId
@@ -40,5 +40,20 @@ class DemoController extends BaseController {
         $demoCollection->setItems($demos, $limit);
 
         return $this->json($demoCollection);
+    }
+
+    /**
+     * @Route("/api/demos/{id}")
+     * @Method("GET")
+     *
+     * @param string $id
+     * @return Response
+     * @throws NotLoggedInException
+     */
+    public function getByIdAction($id) {
+        $this->requireLogin();
+
+        $demo = $this->demoService->getById($id);
+        return $this->json($demo);
     }
 }

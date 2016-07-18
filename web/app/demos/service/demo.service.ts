@@ -24,7 +24,7 @@ export class DemoService {
         var eventEmitter = new EventEmitter();
         this._userService.getCurrentUser().subscribe(
             user => {
-                this._httpService.makeRequest(HttpService.METHOD_GET, this.DEMOS_URI + '/' + user.id)
+                this._httpService.makeRequest(HttpService.METHOD_GET, '/demos/user/' + user.id)
                     .subscribe(
                         res => {
                             eventEmitter.emit(res);
@@ -32,6 +32,17 @@ export class DemoService {
                     );
             }
         );
+        return eventEmitter;
+    }
+
+    getDemo(id: string) {
+        var eventEmitter = new EventEmitter();
+        this._httpService.makeRequest(HttpService.METHOD_GET, '/demos/' + id)
+            .subscribe(
+                res => {
+                    eventEmitter.emit(res);
+                }
+            );
         return eventEmitter;
     }
 }

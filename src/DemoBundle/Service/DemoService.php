@@ -51,6 +51,14 @@ class DemoService extends BaseService {
     }
 
     /**
+     * @param string $id
+     * @return Demo
+     */
+    public function getById($id) {
+        return $this->demoRepository->findById($id);
+    }
+
+    /**
      * @param DemoFile $demoFile
      * @return DemoFile
      */
