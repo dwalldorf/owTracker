@@ -4,59 +4,64 @@ class php::install inherits php {
         id  => '14AA40EC0831756756D7F66C4F4EA0AAE5267A6C',
     }
 
-    package { 'php5.6-common':
+
+    package { 'php7.0-common':
         ensure  => latest,
         require => [
             Apt::Ppa['ppa:ondrej/php'],
             Apt::Key['ppa:ondrej/php'],
         ],
     }
-    package{ 'php5.6-xml':
+    package{ 'php7.0-xml':
         ensure  => latest,
-        require => Package['php5.6-common'],
+        require => Package['php7.0-common'],
     }
     package{ 'php-stomp':
         ensure  => latest,
-        require => Package['php5.6-common'],
+        require => Package['php7.0-common'],
     }
-    package { 'php5.6-cgi':
+    package { 'php7.0-cgi':
         ensure  => latest,
-        require => Package['php5.6-common'],
-        notify  => Service['php5.6-fpm'],
+        require => Package['php7.0-common'],
+        notify  => Service['php7.0-fpm'],
     }
-    package { 'php5.6-fpm':
+    package { 'php7.0-fpm':
         ensure  => latest,
-        require => Package['php5.6-common'],
+        require => Package['php7.0-common'],
     }
-    package { 'php5.6-intl':
+    package { 'php7.0-intl':
         ensure  => latest,
-        require => Package['php5.6-common'],
-        notify  => Service['php5.6-fpm'],
+        require => Package['php7.0-common'],
+        notify  => Service['php7.0-fpm'],
     }
-    package{ 'php5.6-zip':
+    package{ 'php7.0-zip':
         ensure  => latest,
-        require => Package['php5.6-common'],
+        require => Package['php7.0-common'],
     }
-    package{ 'php5.6-bcmath':
+    package{ 'php7.0-bcmath':
         ensure  => latest,
-        require => Package['php5.6-common'],
+        require => Package['php7.0-common'],
     }
-    package{ 'php5.6-mbstring':
+    package{ 'php7.0-mbstring':
         ensure  => latest,
-        require => Package['php5.6-common'],
+        require => Package['php7.0-common'],
+    }
+    package { 'php-pear':
+        ensure  => latest,
+        require => Package['php7.0-common'],
     }
     package { 'memcached':
         ensure => latest,
     }
     package { 'php-memcache':
         ensure  => latest,
-        require => Package['php5.6-common'],
-        notify  => Service['php5.6-fpm'],
+        require => Package['php7.0-common'],
+        notify  => Service['php7.0-fpm'],
     }
     package{ 'php-xcache':
         ensure  => latest,
-        require => Package['php5.6-common'],
-        notify  => Service['php5.6-fpm'],
+        require => Package['php7.0-common'],
+        notify  => Service['php7.0-fpm'],
     }
 
     exec { 'install_phpunit':
