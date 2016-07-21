@@ -50,7 +50,7 @@ class base::install inherits base {
         cwd     => '/home/vagrant/.my-zsh',
         path    => ['/usr/bin', '/bin'],
         user    => vagrant,
-        require => Exec['install_my-zsh_vagrant'],
+        require => Package['git'],
     }
 
     exec { 'install_my-zsh_root':
@@ -66,6 +66,6 @@ class base::install inherits base {
         cwd     => '/root/.my-zsh',
         path    => ['/usr/bin', '/bin'],
         user    => root,
-        require => Exec['install_my-zsh_root'],
+        require => Package['git'],
     }
 }
