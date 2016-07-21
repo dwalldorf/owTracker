@@ -20,26 +20,26 @@ class DemoFile {
 
     /**
      * @var string
-     * @ODM\String(name="user_id", nullable=false)
+     * @ODM\Field(type="string", name="user_id", nullable=false)
      * @ODM\Index(order="asc")
      */
     private $userId;
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\Field(type="string")
      */
     private $file;
 
     /**
      * @var bool
-     * @ODM\Bool
+     * @ODM\Field(type="boolean")
      */
     private $queued = false;
 
     /**
      * @var bool
-     * @ODM\Bool
+     * @ODM\Field(type="boolean")
      */
     private $processed = false;
 
