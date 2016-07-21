@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bd41e95025d11da9ea3f0285f69017bd",
-    "content-hash": "93d23dcb2d03a7de9c254b214417545b",
+    "hash": "563f83eae068e0476821a1c13a42a9f3",
+    "content-hash": "fff868695c45614e465ad9ce3715b367",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1006,6 +1006,58 @@
             "time": "2016-01-05 21:34:58"
         },
         {
+            "name": "hybridauth/hybridauth",
+            "version": "v2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hybridauth/hybridauth.git",
+                "reference": "45e52d12dccc00d4de25dc534961ab46204a15cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hybridauth/hybridauth/zipball/45e52d12dccc00d4de25dc534961ab46204a15cf",
+                "reference": "45e52d12dccc00d4de25dc534961ab46204a15cf",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Hybrid": "hybridauth/"
+                },
+                "classmap": [
+                    "hybridauth/Hybrid"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "(MIT or GPL-3.0+)"
+            ],
+            "authors": [
+                {
+                    "name": "Miled",
+                    "email": "hybridauth@gmail.com"
+                }
+            ],
+            "description": "Open source social sign on PHP library.",
+            "homepage": "http://hybridauth.sourceforge.net",
+            "keywords": [
+                "OpenId",
+                "facebook",
+                "google",
+                "hybridauth",
+                "login",
+                "oauth",
+                "social",
+                "twitter",
+                "yahoo"
+            ],
+            "time": "2016-01-12 12:19:25"
+        },
+        {
             "name": "incenteev/composer-parameter-handler",
             "version": "v2.1.2",
             "source": {
@@ -1159,39 +1211,6 @@
                 "session"
             ],
             "time": "2016-06-24 08:37:03"
-        },
-        {
-            "name": "lightopenid/lightopenid",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Mewp/lightopenid.git",
-                "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Mewp/lightopenid/zipball/9d42dc24e4dd34121c98a6491bc3ef7933a68a19",
-                "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "./"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "homepage": "http://code.google.com/p/lightopenid/",
-            "keywords": [
-                "OpenId"
-            ],
-            "time": "2013-10-27 16:25:49"
         },
         {
             "name": "monolog/monolog",
@@ -3510,8 +3529,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "doctrine/mongodb-odm-bundle": 20,
-        "lightopenid/lightopenid": 20
+        "doctrine/mongodb-odm-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

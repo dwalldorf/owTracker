@@ -37,7 +37,7 @@ class UserController extends BaseController {
 
     /**
      * @Route("/api/user/login")
-     * @Method({"POST"})
+     * @Method("POST")
      *
      * @return Response
      * @throws BadRequestException
@@ -75,7 +75,7 @@ class UserController extends BaseController {
 
     /**
      * @Route("/api/users")
-     * @Method({"POST"})
+     * @Method("POST")
      *
      * @return Response
      * @throws RegisterUserException
@@ -92,5 +92,35 @@ class UserController extends BaseController {
         }
 
         return $this->json(null, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/api/login/steam")
+     * @Method("GET")
+     *
+     * @return Response
+     * @throws NotLoggedInException
+     */
+    public function loginSteamUserAction() {
+        $apiKey = $this->container->getParameter('steam_api_key');
+
+        $config = [
+            'base_url' => 'localhost:8080',
+
+            'providers' => [
+                'Steam'  => [
+                    'enabled' => true,
+                    'keys'    => ['apiKey' => $apiKey],
+                ],
+                'OpenID' => [
+                    'enabled' => true,
+                ],
+            ],
+        ];
+        $hybridAuth = new \Hybrid_Auth($config);
+        $adapter = $hybridAuth->authenticate('Steam');
+        $b = $adapter->getAccessToken();
+
+        return $this->json('implement mee');
     }
 }

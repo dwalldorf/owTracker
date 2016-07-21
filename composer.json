@@ -32,7 +32,7 @@
         "doctrine/mongodb-odm-bundle": "dev-master",
         "leaseweb/memcache-bundle": "^2.1",
         "php-amqplib/rabbitmq-bundle": "^1.10",
-        "lightopenid/lightopenid": "dev-master",
+        "hybridauth/hybridauth": "^2.6",
         "raveren/kint": "^1.0"
     },
     "require-dev": {
