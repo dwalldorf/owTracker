@@ -12,25 +12,25 @@ class RoundEventKill {
 
     /**
      * @var string
-     * @ODM\String(nullable=false)
+     * @ODM\Field(type="string", nullable=false)
      */
     private $killer;
 
     /**
      * @var string
-     * @ODM\String(nullable=false)
+     * @ODM\Field(type="string", nullable=false)
      */
     private $killed;
 
     /**
      * @var float
-     * @ODM\Float(name="time")
+     * @ODM\Field(type="float", name="time")
      */
     private $timeInRound;
 
     /**
      * @var bool
-     * @ODM\Boolean(nullable=false)
+     * @ODM\Field(type="boolean", nullable=false)
      */
     private $headshot;
 

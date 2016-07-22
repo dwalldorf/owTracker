@@ -19,7 +19,7 @@ class Verdict {
     private $id;
 
     /**
-     * @ODM\String(name="user_id", nullable=false)
+     * @ODM\Field(type="string", name="user_id", nullable=false)
      * @ODM\Index
      * @var string
      */
@@ -39,31 +39,31 @@ class Verdict {
     private $overwatchDate;
 
     /**
-     * @ODM\String(nullable=false)
+     * @ODM\Field(type="string", nullable=false)
      * @var string
      */
     private $map;
 
     /**
-     * @ODM\Bool(name="aim", nullable=false)
+     * @ODM\Field(type="boolean", name="aim", nullable=false)
      * @var bool
      */
     private $aimAssist = false;
 
     /**
-     * @ODM\Bool(name="vision", nullable=false)
+     * @ODM\Field(type="boolean", name="vision", nullable=false)
      * @var bool
      */
     private $visionAssist = false;
 
     /**
-     * @ODM\Bool(name="other", nullable=false)
+     * @ODM\Field(type="boolean", name="other", nullable=false)
      * @var bool
      */
     private $otherAssist = false;
 
     /**
-     * @ODM\Bool(nullable=false)
+     * @ODM\Field(type="boolean", nullable=false)
      * @var bool
      */
     private $griefing = false;

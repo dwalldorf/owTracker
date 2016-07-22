@@ -19,33 +19,33 @@ class User {
     protected $id;
 
     /**
-     * @ODM\String
+     * @ODM\Field(type="string")
      * @ODM\Index(unique=true)
      * @var string
      */
     protected $username;
 
     /**
-     * @ODM\String(nullable=false)
+     * @ODM\Field(type="string", nullable=false)
      * @ODM\Index(unique=true, order="asc")
      * @var string
      */
     protected $email;
 
     /**
-     * @ODM\String
+     * @ODM\Field(type="string")
      * @var string
      */
     protected $password;
 
     /**
-     * @ODM\Int(nullable=false)
+     * @ODM\Field(type="int", nullable=false)
      * @var int
      */
     private $registered;
 
     /**
-     * @ODM\Bool
+     * @ODM\Field(type="boolean")
      * @var bool
      */
     private $isAdmin = false;
