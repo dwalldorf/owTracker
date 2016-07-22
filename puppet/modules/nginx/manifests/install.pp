@@ -7,6 +7,6 @@ class nginx::install inherits nginx {
     }
     package{ 'apache2':
         ensure  => purged,
-        require => Package['php5.6-common', 'php5.6-cgi', 'php5.6-fpm', 'php5.6-intl'],
+        require => Package['php7.0-common', 'php7.0-cgi', 'php7.0-fpm', 'php7.0-intl'],
     }
 }

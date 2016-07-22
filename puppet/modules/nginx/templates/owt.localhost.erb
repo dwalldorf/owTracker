@@ -17,7 +17,7 @@ server {
         fastcgi_param  SCRIPT_FILENAME  $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
         fastcgi_index index.php;
-        fastcgi_pass unix:/var/run/php/php5.6-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
     }
 
     error_log /var/log/nginx/owt_error.log;

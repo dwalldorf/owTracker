@@ -12,7 +12,7 @@ class MatchRound {
 
     /**
      * @var int
-     * @ODM\Int(name="round", nullable=false)
+     * @ODM\Field(type="int", name="round", nullable=false)
      *
      * @Assert\NotBlank(message="roundNumber for round is mandatory")
      */
@@ -20,7 +20,7 @@ class MatchRound {
 
     /**
      * @var float
-     * @ODM\Float(name="duration")
+     * @ODM\Field(type="float", name="duration")
      *
      * @Assert\NotBlank(message="roundDuration for round is mandatory")
      */
