@@ -11,25 +11,25 @@ class RoundEventBombDefuse {
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\Field(type="string")
      */
     private $player;
 
     /**
      * @var float
-     * @ODM\Float(name="time")
+     * @ODM\Field(type="float", name="time")
      */
     private $timeInRound;
 
     /**
      * @var float
-     * @ODM\Float(name="time_left")
+     * @ODM\Field(type="float", name="time_left")
      */
     private $timeLeft;
 
     /**
      * @var bool
-     * @ODM\Bool(name="defuser")
+     * @ODM\Field(type="boolean", name="defuser")
      */
     private $withDefuseKit;
 

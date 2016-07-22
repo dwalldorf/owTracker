@@ -11,13 +11,13 @@ class RoundEventBombPlant {
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\Field(type="string")
      */
     private $player;
 
     /**
      * @var float
-     * @ODM\Float(name="time")
+     * @ODM\Field(type="float", name="time")
      */
     private $timeInRound;
 

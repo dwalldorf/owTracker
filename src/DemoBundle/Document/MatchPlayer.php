@@ -12,7 +12,7 @@ class MatchPlayer {
 
     /**
      * @var string
-     * @ODM\String(name="steam_id", nullable=false)
+     * @ODM\Field(type="string", name="steam_id", nullable=false)
      *
      * @Assert\NotBlank(message="steamId for player is mandatory")
      */
@@ -20,7 +20,7 @@ class MatchPlayer {
 
     /**
      * @var string
-     * @ODM\String(nullable=false)
+     * @ODM\Field(type="string", nullable=false)
      *
      * @Assert\NotBlank(message="name for player is mandatory")
      */

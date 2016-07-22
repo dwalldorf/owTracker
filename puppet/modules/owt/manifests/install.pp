@@ -32,7 +32,7 @@ class owt::install inherits owt {
 
     exec { 'install_composer':
         command     => 'curl -sS https://getcomposer.org/installer | /usr/bin/php && sudo mv /tmp/composer.phar /usr/local/bin/composer',
-        require     => Package['curl', 'php5.6-common', 'git'],
+        require     => Package['curl', 'php7.0-common', 'git'],
         environment =>'HOME=/home/vagrant',
         user        => vagrant,
         creates     =>'/usr/local/bin/composer',

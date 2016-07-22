@@ -26,7 +26,7 @@ class Feedback {
 
     /**
      * @var string
-     * @ODM\String(name="created_by", nullable=false)
+     * @ODM\Field(type="string", name="created_by", nullable=false)
      */
     private $createdBy;
 
@@ -43,13 +43,13 @@ class Feedback {
     private $feedback;
 
     /**
-     * @ODM\String
+     * @ODM\Field(type="string")
      * @var string
      */
     private $status = self::STATUS_NEW;
 
     /**
-     * @ODM\Bool
+     * @ODM\Field(type="boolean")
      * @ODM\Index
      * @var bool
      */

@@ -20,7 +20,7 @@ class CronJob {
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\Field(type="string")
      *
      * @ODM\Index(unique=true)
      */
@@ -28,31 +28,31 @@ class CronJob {
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\Field(type="string")
      */
     private $command;
 
     /**
      * @var int
-     * @ODM\Int
+     * @ODM\Field(type="int")
      */
     private $interval;
 
     /**
      * @var bool
-     * @ODM\Boolean
+     * @ODM\Field(type="boolean")
      */
     private $running = false;
 
     /**
      * @var int
-     * @ODM\Int
+     * @ODM\Field(type="int")
      */
     private $started = 0;
 
     /**
      * @var int
-     * @ODM\Int(name="last_run")
+     * @ODM\Field(type="int", name="last_run")
      */
     private $lastRun = 0;
 

@@ -32,8 +32,8 @@
         "doctrine/mongodb-odm-bundle": "dev-master",
         "leaseweb/memcache-bundle": "^2.1",
         "php-amqplib/rabbitmq-bundle": "^1.10",
-        "hybridauth/hybridauth": "^2.6",
-        "raveren/kint": "^1.0"
+        "raveren/kint": "^1.0",
+        "alcaeus/mongo-php-adapter": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -42,7 +42,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.6"
+            "php": "7.0"
         }
     },
     "extra": {

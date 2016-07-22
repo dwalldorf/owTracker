@@ -12,7 +12,7 @@ class DemoControllerTest extends BaseWebTestCase {
      * @test
      */
     public function getAllRequiresLogin() {
-        $response = $this->apiRequest(Request::METHOD_GET, '/demos');
+        $response = $this->apiRequest(Request::METHOD_GET, '/demos/someFakeid');
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 }

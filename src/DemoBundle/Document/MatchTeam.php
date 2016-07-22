@@ -12,7 +12,7 @@ class MatchTeam {
 
     /**
      * @var string
-     * @ODM\String(name="name")
+     * @ODM\Field(type="string", name="name")
      *
      * @Assert\NotNull(message="team name is mandatory")
      */
