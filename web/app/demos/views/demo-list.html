@@ -28,7 +28,11 @@
 
                         <tbody>
                         <tr *ngFor="let demo of demos.items">
-                            <td>{{demo.matchInfo.map}}</td>
+                            <td>
+                                <a (click)="showDetail(demo.id)">
+                                    {{demo.matchInfo.map}}
+                                </a>
+                            </td>
                             <td>{{demo.matchInfo.team1.teamName}}</td>
                             <td>{{demo.matchInfo.team2.teamName}}</td>
                             <td>{{demo.matchInfo.totalRoundsTeam1}}</td>

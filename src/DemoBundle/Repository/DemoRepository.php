@@ -35,6 +35,14 @@ class DemoRepository extends BaseRepository {
     }
 
     /**
+     * @param string $id
+     * @return Demo
+     */
+    public function findById($id) {
+        return $this->find($id);
+    }
+
+    /**
      * @param string $userId
      * @param int $limit
      * @param int $offset
