@@ -27,6 +27,7 @@ import {DemoUploadService} from "./demoupload/service/demo-upload.service";
 import {DemoService} from "./demos/service/demo.service";
 import {DemoListComponent} from "./demos/demo.list.component";
 import {DemoDetailComponent} from "./demos/demo.detail.component";
+import {UserSettingsDialogComponent} from "./user/usersettings-dialog.component";
 
 enableProdMode();
 
@@ -81,6 +82,7 @@ enableProdMode();
         NavigationComponent,
         VerdictDialogComponent,
         FeedbackDialogComponent,
+        UserSettingsDialogComponent,
         DemoListComponent,
         DemoDetailComponent,
         DemoUploadComponent,

@@ -31,6 +31,13 @@
         padding: 4px 12px 6px 12px;
     }
 
+    .btn-primary {
+        @include linearGradient(#3d817a, #235c43);
+        &:hover {
+            @include linearGradient(lighten(#3d817a, 3%), lighten(#235c43, 3%));
+        }
+    }
+
     button, input, select, textarea {
         @include notOutline();
         &:active, &:hover, &:focus {
