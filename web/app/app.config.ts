@@ -1,6 +1,6 @@
 export class AppConfig {
 
-    static API_PREFIX = '/app_dev.php/api';
+    static API_PREFIX = '/api';
 
     static ROUTE_NAME_REGISTER = 'Register';
 

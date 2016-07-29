@@ -32,7 +32,7 @@ export class NavigationComponent {
 
         this._userService.getCurrentUser()
             .subscribe(user => {
-                if (user.isAdmin) {
+                if (user.userSettings.isAdmin) {
                     this.navigationElements.push(new NavigationElement('Admin', 'Admin', '/admin/dashboard', AppConfig.ROUTE_NAME_ADMIN));
                 }
             });

@@ -1,3 +1,4 @@
+import {UserSettings} from "./userSettings";
 export class User {
 
     public id: string;
@@ -5,6 +6,6 @@ export class User {
     public email: string;
     public password: string;
     public registered: number;
-    public isAdmin: boolean = false;
+    public userSettings: UserSettings;
 
 }

@@ -45,10 +45,10 @@ class User {
     private $registered;
 
     /**
-     * @ODM\Field(type="boolean")
-     * @var bool
+     * @var UserSettings
+     * @ODM\EmbedOne(name="settings", targetDocument="UserSettings")
      */
-    private $isAdmin = false;
+    private $userSettings;
 
     /**
      * User constructor.
@@ -57,15 +57,15 @@ class User {
      * @param string $email
      * @param string $password
      * @param int $registered
-     * @param bool $isAdmin
      */
-    public function __construct($id = null, $username = null, $email = null, $password = null, $registered = null, $isAdmin = false) {
+    public function __construct($id = null, $username = null, $email = null, $password = null, $registered = null) {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->registered = $registered;
-        $this->isAdmin = $isAdmin;
+
+        $this->userSettings = new UserSettings();
     }
 
     /**
@@ -138,17 +138,21 @@ class User {
         $this->registered = $registered;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isIsAdmin() {
-        return $this->isAdmin;
+    public function isAdmin() {
+
     }
 
     /**
-     * @param boolean $isAdmin
+     * @return UserSettings
      */
-    public function setIsAdmin($isAdmin) {
-        $this->isAdmin = $isAdmin;
+    public function getUserSettings() {
+        return $this->userSettings;
+    }
+
+    /**
+     * @param UserSettings $userSettings
+     */
+    public function setUserSettings($userSettings) {
+        $this->userSettings = $userSettings;
     }
 }
