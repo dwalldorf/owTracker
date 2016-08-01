@@ -138,10 +138,6 @@ class User {
         $this->registered = $registered;
     }
 
-    public function isAdmin() {
-
-    }
-
     /**
      * @return UserSettings
      */
