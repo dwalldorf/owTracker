@@ -83,10 +83,17 @@ export class UserService {
         return this._httpService.makeRequest(HttpService.METHOD_POST, this.LOGOUT_URI, null);
     }
 
+    /**
+     * @returns {EventEmitter}
+     */
+    updateSettings(user: User) {
+        return this._httpService.makeRequest(HttpService.METHOD_PUT, this.USERS_URI + '/' + user.id, user);
+    }
+
     private handleNotLoggedin(preventRedirectToLogin = false) {
         this._appLoadingService.resetAll();
 
-        if(!preventRedirectToLogin) {
+        if (!preventRedirectToLogin) {
             this._router.navigate([ AppConfig.ROUTE_NAME_LOGIN ]);
         }
     }

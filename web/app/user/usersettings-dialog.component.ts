@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {FlashService} from "../core/service/flash.service";
-import {FlashMessage} from "../core/model/flash.message";
 import {AppLoadingService} from "../core/service/apploading.service";
 import {UserService} from "./service/user.service";
 import {User} from "./model/user";
+import {FlashMessage} from "../core/model/flash.message";
 
 declare var jQuery: any;
 @Component({
@@ -24,32 +24,36 @@ export class UserSettingsDialogComponent {
         this._appLoadingService = appLoadingService;
         this._flashService = flashService;
         this._userService = userService;
-
-        this.user = new User();
     }
 
     ngOnInit() {
         this._userService.getCurrentUser().subscribe(user => {
+            this._appLoadingService.finishedLoading(this.STATUS_ID);
             this.user = user;
-        });
-    }
 
-    submit() {
-        this._appLoadingService.setLoading(this.STATUS_ID);
-        // this.feedbackService.submitFeedback(this.feedback)
-        //     .subscribe(() => {
-        //         this.appLoadingService.finishedLoading(this.STATUS_ID);
-        //         this.resetDialog();
-        //         this.flashService.addMessage(new FlashMessage('Your feedback was submitted!', FlashMessage.SUCCESS));
-        //     });
+            if (this.user.userSettings.followSteamIds.length == 0) {
+                this.user.userSettings.followSteamIds = [ '' ]
+            }
+        });
     }
 
     showDialog() {
         jQuery('#usersettings-dialog').modal('show');
     }
 
-    save() {
+    addSteamId() {
+        this.user.userSettings.followSteamIds.push('');
+    }
 
+    save() {
+        console.log('save');
+        console.log(this.user);
+        this._appLoadingService.setLoading(this.STATUS_ID);
+        // this._userService.updateSettings(this.user).subscribe(() => {
+        //     this.resetDialog();
+        //     this._appLoadingService.finishedLoading(this.STATUS_ID);
+        //     this._flashService.addMessage(new FlashMessage('User settings updated', FlashMessage.SUCCESS));
+        // });
     }
 
     resetDialog() {

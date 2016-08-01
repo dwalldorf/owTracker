@@ -1,4 +1,5 @@
 import {UserSettings} from "./userSettings";
+
 export class User {
 
     public id: string;

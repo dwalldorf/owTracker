@@ -2,7 +2,8 @@
         (click)="showDialog()">
 </button>
 
-<div class="modal fade"
+<div *ngIf="user != nulL"
+     class="modal fade"
      id="usersettings-dialog"
      role="dialog">
 
@@ -31,6 +32,39 @@
                                    class="form-control"
                                    [disabled]="true"
                                    [(ngModel)]="user.username"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"
+                               class="control-label col-xs-3">Email:</label>
+                        <div class="col-xs-8">
+                            <input id="email"
+                                   type="email"
+                                   class="form-control"
+                                   [(ngModel)]="user.email"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="follow-steam-id-0"
+                               class="control-label col-xs-3">Follow Steam IDs:</label>
+                        <div class="col-xs-8">
+                            <div class="row"
+                                 *ngFor="let steamId of user.userSettings.followSteamIds; let i = index">
+                                <div class="col-xs-10">
+                                    <input type="text"
+                                           id="follow-steam-id-{{i}}"
+                                           class="form-control"
+                                           [(ngModel)]="user.userSettings.followSteamIds[i]">
+                                </div>
+                                <div *ngIf="i == 0"
+                                     class="col-xs-2">
+                                    <button type="button"
+                                            class="btn glyphicon glyphicon-plus"
+                                            (click)="addSteamId()"></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
