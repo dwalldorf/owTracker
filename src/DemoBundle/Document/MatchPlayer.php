@@ -19,6 +19,14 @@ class MatchPlayer {
     private $steamId;
 
     /**
+     * @var int
+     * @ODM\Field(type="int", name="user_id")
+     *
+     * @Assert\NotBlank(message="userId for player is mandatory")
+     */
+    private $userId;
+
+    /**
      * @var string
      * @ODM\Field(type="string", nullable=false)
      *
@@ -28,10 +36,13 @@ class MatchPlayer {
 
     /**
      * @param $steamId
-     * @param $name
+     * @param null $userId
+     * @param $name string
      */
-    public function __construct($steamId = null, $name = null) {
+    public function __construct($steamId = null, $userId = null, $name = null) {
         $this->steamId = $steamId;
+        $this->userId = $userId;
+        $this->networkId = $networkId;
         $this->name = $name;
     }
 
@@ -47,6 +58,20 @@ class MatchPlayer {
      */
     public function setSteamId($steamId) {
         $this->steamId = $steamId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId() {
+        return $this->userId;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId) {
+        $this->userId = $userId;
     }
 
     /**
