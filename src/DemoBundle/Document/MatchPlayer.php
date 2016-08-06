@@ -47,42 +47,42 @@ class MatchPlayer {
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getSteamId() {
         return $this->steamId;
     }
 
     /**
-     * @param null $steamId
+     * @param string $steamId
      */
     public function setSteamId($steamId) {
         $this->steamId = $steamId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserId() {
         return $this->userId;
     }
 
     /**
-     * @param mixed $userId
+     * @param string $userId
      */
     public function setUserId($userId) {
         $this->userId = $userId;
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @param null $name
+     * @param string $name
      */
     public function setName($name) {
         $this->name = $name;
