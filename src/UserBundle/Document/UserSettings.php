@@ -10,8 +10,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class UserSettings {
 
     /**
-     * @ODM\Field(name="follow_steam_ids", type="collection")
-     * @var array
+     * @ODM\EmbedMany(name="follow_steam_ids", targetDocument="FollowSteamId")
+     * @var FollowSteamId[]
      */
     private $followSteamIds = [];
 

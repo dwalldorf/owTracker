@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Document\User;
+use UserBundle\Exception\NotAuthorizedException;
 use UserBundle\Exception\NotLoggedInException;
 use UserBundle\Exception\RegisterUserException;
 use UserBundle\Service\UserService;
@@ -79,8 +80,6 @@ class UserController extends BaseController {
      *
      * @return Response
      * @throws RegisterUserException
-     *
-     * @internal $user User
      */
     public function registerAction() {
         /* @var $user User */
@@ -92,5 +91,28 @@ class UserController extends BaseController {
         }
 
         return $this->json(null, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/api/users/{id}")
+     * @Method("PUT")
+     *
+     * @return Response
+     * @throws NotLoggedInException
+     * @throws NotAuthorizedException
+     */
+    public function updateAction() {
+        $this->requireLogin();
+
+        /* @var $user User */
+        $user = $this->getEntityFromRequest(User::class);
+        $user->setPassword(null); // password change to be implemented
+
+        if ($user->getId() != $this->getCurrentUser()->getId()) {
+            throw new NotAuthorizedException();
+        }
+
+        $this->userService->update($user);
+        return $this->json($this->userService->getSecureUserCopy($user));
     }
 }

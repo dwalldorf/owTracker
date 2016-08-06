@@ -3,6 +3,7 @@ import {FlashService} from "../core/service/flash.service";
 import {AppLoadingService} from "../core/service/apploading.service";
 import {UserService} from "./service/user.service";
 import {User} from "./model/user";
+import {FollowSteamId} from "./model/followSteamId";
 import {FlashMessage} from "../core/model/flash.message";
 
 declare var jQuery: any;
@@ -26,34 +27,32 @@ export class UserSettingsDialogComponent {
         this._userService = userService;
     }
 
-    ngOnInit() {
+    showDialog() {
+        jQuery('#usersettings-dialog').modal('show');
+
         this._userService.getCurrentUser().subscribe(user => {
             this._appLoadingService.finishedLoading(this.STATUS_ID);
             this.user = user;
 
             if (this.user.userSettings.followSteamIds.length == 0) {
-                this.user.userSettings.followSteamIds = [ '' ]
+                this.user.userSettings.followSteamIds = [ new FollowSteamId() ]
             }
         });
     }
 
-    showDialog() {
-        jQuery('#usersettings-dialog').modal('show');
-    }
-
     addSteamId() {
-        this.user.userSettings.followSteamIds.push('');
+        this.user.userSettings.followSteamIds.push(new FollowSteamId());
     }
 
     save() {
         console.log('save');
         console.log(this.user);
         this._appLoadingService.setLoading(this.STATUS_ID);
-        // this._userService.updateSettings(this.user).subscribe(() => {
-        //     this.resetDialog();
-        //     this._appLoadingService.finishedLoading(this.STATUS_ID);
-        //     this._flashService.addMessage(new FlashMessage('User settings updated', FlashMessage.SUCCESS));
-        // });
+        this._userService.updateSettings(this.user).subscribe(() => {
+            this.resetDialog();
+            this._appLoadingService.finishedLoading(this.STATUS_ID);
+            this._flashService.addMessage(new FlashMessage('User settings updated', FlashMessage.SUCCESS));
+        });
     }
 
     resetDialog() {
