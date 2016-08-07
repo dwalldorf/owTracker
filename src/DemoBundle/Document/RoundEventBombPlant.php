@@ -2,12 +2,15 @@
 
 namespace DemoBundle\Document;
 
+use DemoBundle\Document\Traits\TRoundEventWithUser;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\EmbeddedDocument
  */
-class RoundEventBombPlant {
+class RoundEventBombPlant extends RoundEvent {
+
+    use TRoundEventWithUser;
 
     /**
      * @var string

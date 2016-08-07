@@ -42,7 +42,6 @@ class MatchPlayer {
     public function __construct($steamId = null, $userId = null, $name = null) {
         $this->steamId = $steamId;
         $this->userId = $userId;
-        $this->networkId = $networkId;
         $this->name = $name;
     }
 
@@ -55,9 +54,11 @@ class MatchPlayer {
 
     /**
      * @param string $steamId
+     * @return $this
      */
     public function setSteamId($steamId) {
         $this->steamId = $steamId;
+        return $this;
     }
 
     /**
@@ -69,9 +70,11 @@ class MatchPlayer {
 
     /**
      * @param string $userId
+     * @return $this
      */
     public function setUserId($userId) {
         $this->userId = $userId;
+        return $this;
     }
 
     /**
@@ -83,8 +86,10 @@ class MatchPlayer {
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name) {
         $this->name = $name;
+        return $this;
     }
 }
