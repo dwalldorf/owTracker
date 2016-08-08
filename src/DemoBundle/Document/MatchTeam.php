@@ -19,6 +19,12 @@ class MatchTeam {
     private $teamName;
 
     /**
+     * @var int
+     * @ODM\Field(type="int", name="n")
+     */
+    private $teamNumber;
+
+    /**
      * @var MatchPlayer[]
      * @ODM\EmbedMany(targetDocument="MatchPlayer")
      *
@@ -30,8 +36,9 @@ class MatchTeam {
      * @param string $teamName
      * @param array $players
      */
-    public function __construct($teamName = null, array $players = []) {
+    public function __construct($teamName = null, $teamNumber = null, array $players = []) {
         $this->teamName = $teamName;
+        $this->teamNumber = $teamNumber;
         $this->players = $players;
     }
 
@@ -47,6 +54,20 @@ class MatchTeam {
      */
     public function setTeamName($teamName) {
         $this->teamName = $teamName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeamNumber() {
+        return $this->teamNumber;
+    }
+
+    /**
+     * @param int $teamNumber
+     */
+    public function setTeamNumber($teamNumber) {
+        $this->teamNumber = $teamNumber;
     }
 
     /**

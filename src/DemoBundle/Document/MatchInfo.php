@@ -20,6 +20,12 @@ class MatchInfo {
     private $map;
 
     /**
+     * @var string
+     * @ODM\Field(type="string", name="server_name")
+     */
+    private $serverName;
+
+    /**
      * @var MatchTeam
      * @ODM\EmbedOne(targetDocument="MatchTeam")
      *

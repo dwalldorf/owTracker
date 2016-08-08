@@ -45,7 +45,12 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
         $form = $this->container->get('form.factory')->create(DemoType::class, $demo);
         $form->submit($demoArray);
 
+        /*
+         * TODO: read demo from db, get user and check from there
+         * by dwalldorf at 19:01 08.08.16
+         */
         if ($form->isValid()) {
+            /*
             $user = $this->userService->findById($demo->getUserId());
             if (!$user) {
                 // remove from queue and throw away
@@ -54,6 +59,7 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
 
             $this->demoService->save($demo);
             return true;
+            */
         }
 
         // do something with it - maybe write to an error queue

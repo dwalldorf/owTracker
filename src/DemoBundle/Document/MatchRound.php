@@ -27,21 +27,16 @@ class MatchRound {
     private $roundDuration;
 
     /**
+     * @var int
+     * @ODM\Field(type="int")
+     */
+    private $winner;
+
+    /**
      * @var RoundEvents
      * @ODM\EmbedOne(name="events", targetDocument="RoundEvents")
      */
     private $roundEvents;
-
-    /**
-     * @param int $roundNumber
-     * @param float $roundDuration
-     * @param RoundEvents $roundEvents
-     */
-    public function __construct($roundNumber = null, $roundDuration = null, $roundEvents = null) {
-        $this->roundNumber = $roundNumber;
-        $this->roundDuration = $roundDuration;
-        $this->roundEvents = $roundEvents;
-    }
 
     /**
      * @return int
@@ -52,9 +47,11 @@ class MatchRound {
 
     /**
      * @param int $roundNumber
+     * @return $this
      */
     public function setRoundNumber($roundNumber) {
         $this->roundNumber = $roundNumber;
+        return $this;
     }
 
     /**
@@ -66,9 +63,27 @@ class MatchRound {
 
     /**
      * @param float $roundDuration
+     * @return $this
      */
     public function setRoundDuration($roundDuration) {
         $this->roundDuration = $roundDuration;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWinner() {
+        return $this->winner;
+    }
+
+    /**
+     * @param int $winner
+     * @return $this
+     */
+    public function setWinner($winner) {
+        $this->winner = $winner;
+        return $this;
     }
 
     /**
@@ -80,8 +95,10 @@ class MatchRound {
 
     /**
      * @param RoundEvents $roundEvents
+     * @return $this
      */
     public function setRoundEvents($roundEvents) {
         $this->roundEvents = $roundEvents;
+        return $this;
     }
 }
