@@ -2,24 +2,23 @@
 
 namespace DemoBundle\Document;
 
+use DemoBundle\Document\Traits\TRoundEventWithTimeInRound;
+use DemoBundle\Document\Traits\TRoundEventWithUser;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\EmbeddedDocument
  */
-class RoundEventBombPlant {
+class RoundEventBombPlant extends RoundEvent {
+
+    use TRoundEventWithUser;
+    use TRoundEventWithTimeInRound;
 
     /**
      * @var string
-     * @ODM\String
+     * @ODM\Field(type="string")
      */
     private $player;
-
-    /**
-     * @var float
-     * @ODM\Float(name="time")
-     */
-    private $timeInRound;
 
     /**
      * @param string $playerSteamId
@@ -42,19 +41,5 @@ class RoundEventBombPlant {
      */
     public function setPlayer($player) {
         $this->player = $player;
-    }
-
-    /**
-     * @return float
-     */
-    public function getTimeInRound() {
-        return $this->timeInRound;
-    }
-
-    /**
-     * @param float $timeInRound
-     */
-    public function setTimeInRound($timeInRound) {
-        $this->timeInRound = $timeInRound;
     }
 }

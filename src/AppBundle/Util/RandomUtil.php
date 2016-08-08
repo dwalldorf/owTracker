@@ -39,6 +39,25 @@ class RandomUtil {
     }
 
     /**
+     * @param int $min
+     * @param int $max
+     * @param array $notIn
+     * @return int
+     */
+    public static function getRandomInt($min = 0, $max = 1000, $notIn = null) {
+        $random = mt_rand($min, $max);
+
+        if ((!$notIn || count($notIn) == 0) || !in_array($random, $notIn)) {
+            return $random;
+        }
+
+        while (in_array($random, $notIn)) {
+            $random = mt_rand($min, $max);
+        }
+        return $random;
+    }
+
+    /**
      * @return \DateTime
      */
     public static function getRandomDate() {
@@ -134,8 +153,9 @@ class RandomUtil {
         }
         $totalRounds = $team1Rounds + $team2Rounds;
 
-        $team1 = self::getRandomTeam($user);
-        $team2 = self::getRandomTeam();
+        $teams = self::getRandomTeams($user);
+        $team1 = $teams[0];
+        $team2 = $teams[1];
 
         $matchInfo = new MatchInfo(
             self::getRandomMap(),
@@ -153,7 +173,7 @@ class RandomUtil {
          * - bomb planted and defused (CT)
          * - round time over without bomb plant (CT)
          *
-         * we only end rounds with all players of one team killed
+         * we only end rounds with all players of one team killed - someone should refactor this
          */
         $roundCounter = 1;
         while ($roundCounter < $totalRounds + 1) {
@@ -170,27 +190,44 @@ class RandomUtil {
     }
 
     /**
-     * @param User|null $user
-     * @return MatchTeam
+     * @param User $user
+     * @return MatchTeam[]
      */
-    public static function getRandomTeam(User $user = null) {
-        $teamName = null;
-        if ($user) {
-            $teamName = 'team_' . $user->getUsername();
-        } else {
-            $teamName = 'team_' . self::getRandomString(5);
-        }
+    public static function getRandomTeams(User $user) {
+        $userIds = [];
+        $teams = [];
 
-        $players = [];
-        for ($i = 0; $i < 5; $i++) {
-            if ($i == 0 && $user) {
-                $players[] = new MatchPlayer($user->getId(), $user->getUsername());
+        for ($teamsCreated = 0; $teamsCreated < 2; $teamsCreated++) {
+            $teamName = null;
+            if ($teamsCreated == 0) {
+                $teamName = 'team_' . $user->getUsername();
             } else {
-                $players[] = new MatchPlayer(self::getRandomString(), 'testPlayer_' . self::getRandomString(3));
+                $teamName = 'team_' . self::getRandomString(5);
             }
+
+            $players = [];
+            for ($teamPlayersCreated = 0; $teamPlayersCreated < 5; $teamPlayersCreated++) {
+                $userId = self::getRandomInt(0, 200, $userIds);
+                $userIds[] = $userId;
+
+                if ($teamPlayersCreated == 0 && $teamsCreated == 0) {
+                    $players[] = new MatchPlayer(
+                        $user->getId(),
+                        $userId,
+                        $user->getUsername()
+                    );
+                } else {
+                    $players[] = new MatchPlayer(
+                        self::getRandomString(),
+                        $userId,
+                        'testPlayer_' . self::getRandomString(3)
+                    );
+                }
+            }
+            $teams[] = new MatchTeam($teamName, $players);
         }
 
-        return new MatchTeam($teamName, $players);
+        return $teams;
     }
 
     /**

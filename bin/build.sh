@@ -57,6 +57,7 @@ fi
 
 ./node_modules/ntypescript/bin/tsc --outDir web/app/dist
 
+rm -rf ./var/cache/test
 rm -rf ./var/cache/${ENVIRONMENT}
 ./bin/console cache:warmup --env=${ENVIRONMENT}
 

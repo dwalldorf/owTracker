@@ -180,8 +180,8 @@ class UserService extends BaseService {
         $copy->setId($user->getId());
         $copy->setUsername($user->getUsername());
         $copy->setEmail($user->getEmail());
-        $copy->setIsAdmin($user->isIsAdmin());
         $copy->setRegistered($user->getRegistered());
+        $copy->setUserSettings($user->getUserSettings());
 
         return $copy;
     }

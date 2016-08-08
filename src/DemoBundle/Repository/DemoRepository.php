@@ -35,10 +35,29 @@ class DemoRepository extends BaseRepository {
     }
 
     /**
-     * @param string $userId
-     * @return Demo[]
+     * @param string $id
+     * @return Demo
      */
-    public function findByUserId($userId) {
-        return $this->getRepository()->findBy(['user_id' => $userId]);
+    public function findById($id) {
+        return $this->find($id);
+    }
+
+    /**
+     * @param string $userId
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
+    public function findByUserId($userId, $limit, $offset) {
+        $res = $this->getQueryBuilder()
+            ->select('id', 'user_id', 'matchInfo.team1', 'matchInfo.team2', 'matchInfo')
+            ->field('user_id')->equals($userId)
+            ->limit($limit)
+            ->skip($offset)
+            ->getQuery()
+            ->execute()
+            ->toArray();
+
+        return array_values($res);
     }
 }

@@ -51,7 +51,7 @@ class DemoUploadController extends BaseController {
                 $demoFile->setUserId($this->getCurrentUser()->getId());
                 $demoFile->setFile($file->getPathname());
 
-                $this->demoService->saveDemoFile($demoFile);
+                $demoFile = $this->demoService->saveDemoFile($demoFile);
                 $this->demoService->publishDemoFile($demoFile);
 
                 $demos[] = $demoFile;

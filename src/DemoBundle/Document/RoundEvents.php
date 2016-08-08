@@ -22,17 +22,17 @@ class RoundEvents {
     private $bombPlant;
 
     /**
-     * @var RoundEventBombDefuse
-     * @ODM\EmbedOne(name="defuse", targetDocument="RoundEventBombDefuse")
+     * @var RoundEventBombDefused
+     * @ODM\EmbedOne(name="defuse", targetDocument="RoundEventBombDefused")
      */
     private $bombDefuse;
 
     /**
      * @param RoundEventKill[] $kills
      * @param RoundEventBombPlant $bombPlant
-     * @param RoundEventBombDefuse $bombDefuse
+     * @param RoundEventBombDefused $bombDefuse
      */
-    public function __construct(array $kills = [], RoundEventBombPlant $bombPlant = null, RoundEventBombDefuse $bombDefuse = null) {
+    public function __construct(array $kills = [], RoundEventBombPlant $bombPlant = null, RoundEventBombDefused $bombDefuse = null) {
         $this->kills = $kills;
         $this->bombPlant = $bombPlant;
         $this->bombDefuse = $bombDefuse;
@@ -67,16 +67,16 @@ class RoundEvents {
     }
 
     /**
-     * @return RoundEventBombDefuse
+     * @return RoundEventBombDefused
      */
     public function getBombDefuse() {
         return $this->bombDefuse;
     }
 
     /**
-     * @param RoundEventBombDefuse $bombDefuse
+     * @param RoundEventBombDefused $bombDefuse
      */
-    public function setBombDefuse(RoundEventBombDefuse $bombDefuse) {
+    public function setBombDefuse(RoundEventBombDefused $bombDefuse) {
         $this->bombDefuse = $bombDefuse;
     }
 }

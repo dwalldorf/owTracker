@@ -3,7 +3,7 @@
 namespace DemoBundle\Form;
 
 use AppBundle\Form\BaseType;
-use DemoBundle\Document\RoundEventBombDefuse;
+use DemoBundle\Document\RoundEventBombDefused;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,6 +24,6 @@ class RoundEventBombDefuseType extends BaseType {
      * @param OptionsResolver $resolver
      */
     function configure(OptionsResolver $resolver) {
-        $resolver->setDefault('data_class', RoundEventBombDefuse::class);
+        $resolver->setDefault('data_class', RoundEventBombDefused::class);
     }
 }

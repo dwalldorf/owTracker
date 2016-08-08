@@ -21,7 +21,7 @@ class Demo {
 
     /**
      * @var string
-     * @ODM\String(name="user_id", nullable=false)
+     * @ODM\Field(type="string", name="user_id", nullable=false)
      * @ODM\Index(order="asc")
      *
      * @Assert\NotBlank(message="userId is mandatory")

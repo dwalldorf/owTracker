@@ -12,12 +12,18 @@ class MatchInfo {
 
     /**
      * @var string
-     * @ODM\String(nullable=false)
+     * @ODM\Field(type="string", nullable=false)
      * @ODM\Index(order="asc")
      *
      * @Assert\NotBlank(message="map is mandatory")
      */
     private $map;
+
+    /**
+     * @var string
+     * @ODM\Field(type="string", name="server_name")
+     */
+    private $serverName;
 
     /**
      * @var MatchTeam
@@ -37,7 +43,7 @@ class MatchInfo {
 
     /**
      * @var int
-     * @ODM\Int(name="rounds_team1")
+     * @ODM\Field(type="int", name="rounds_team1")
      *
      * @Assert\NotBlank(message="$totalRoundsTeam1 is mandatory")
      */
@@ -45,7 +51,7 @@ class MatchInfo {
 
     /**
      * @var int
-     * @ODM\Int(name="rounds_team2")
+     * @ODM\Field(type="int", name="rounds_team2")
      *
      * @Assert\NotBlank(message="$totalRoundsTeam2 is mandatory")
      */

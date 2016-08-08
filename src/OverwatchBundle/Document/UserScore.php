@@ -19,14 +19,14 @@ class UserScore {
     private $id;
 
     /**
-     * @ODM\Int(nullable=false)
+     * @ODM\Field(type="int", nullable=false)
      * @ODM\Index(order="asc")
      * @var int
      */
     private $period;
 
     /**
-     * @ODM\String(name="user_id", nullable=false)
+     * @ODM\Field(type="string", name="user_id", nullable=false)
      * @var string
      */
     private $userId;
@@ -38,14 +38,14 @@ class UserScore {
     private $calculated;
 
     /**
-     * @ODM\Int(nullable=false)
+     * @ODM\Field(type="int", nullable=false)
      * @ODM\Index(order="asc")
      * @var int
      */
     private $position;
 
     /**
-     * @ODM\Int(nullable=false)
+     * @ODM\Field(type="int", nullable=false)
      * @var int
      */
     private $verdicts = 0;

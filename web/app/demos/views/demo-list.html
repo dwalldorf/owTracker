@@ -1,0 +1,56 @@
+<div class="demos-container">
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <div class="row">
+                <!-- title -->
+                <div class="col-xs-6">
+                    <h2>Demos</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div *ngIf="restFinished"
+                 class="row">
+                <div class="demos_list_container">
+
+                    <table class="table table-condensed table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Map</th>
+                            <th>Team 1</th>
+                            <th>Team 2</th>
+                            <th>Rounds T1</th>
+                            <th>Rounds T2</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr *ngFor="let demo of demos.items">
+                            <td>
+                                <a (click)="showDetail(demo.id)">
+                                    {{demo.matchInfo.map}}
+                                </a>
+                            </td>
+                            <td>{{demo.matchInfo.team1.teamName}}</td>
+                            <td>{{demo.matchInfo.team2.teamName}}</td>
+                            <td>{{demo.matchInfo.totalRoundsTeam1}}</td>
+                            <td>{{demo.matchInfo.totalRoundsTeam2}}</td>
+                        </tr>
+                        <tr *ngIf="demos.hasMore"
+                            class="table-has-more text-center">
+                            <td colspan="3">
+                                <a (click)="loadMore()"
+                                   title="Load more"
+                                   class="has-more-link">
+                                    Load more
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
