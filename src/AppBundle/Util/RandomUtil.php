@@ -224,7 +224,7 @@ class RandomUtil {
                     );
                 }
             }
-            $teams[] = new MatchTeam($teamName, $players);
+            $teams[] = new MatchTeam($teamName, $teamsCreated, $players);
         }
 
         return $teams;
@@ -250,7 +250,11 @@ class RandomUtil {
                 $killer->getSteamId(), $victim->getSteamId(), null, self::getRandomBoolWithProbability(0.3)
             );
         }
+        $round = new MatchRound();
+        $round->setRoundNumber($roundNumber)
+            ->setRoundDuration(mt_rand(30, 110))
+            ->setRoundEvents(new RoundEvents($kills));
 
-        return new MatchRound($roundNumber, mt_rand(30, 110), new RoundEvents($kills));
+        return $round;
     }
 }
