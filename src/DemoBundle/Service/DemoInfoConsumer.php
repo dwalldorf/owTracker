@@ -49,20 +49,15 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
          * TODO: read demo from db, get user and check from there
          * by dwalldorf at 19:01 08.08.16
          */
-        if ($form->isValid()) {
-            /*
-            $user = $this->userService->findById($demo->getUserId());
-            if (!$user) {
-                // remove from queue and throw away
-                return true;
-            }
-
-            $this->demoService->save($demo);
+        /*
+        $user = $this->userService->findById($demo->getUserId());
+        if (!$user) {
+            // remove from queue and throw away
             return true;
-            */
         }
+        */
 
-        // do something with it - maybe write to an error queue
+        $this->demoService->save($demo);
         return true;
     }
 }
