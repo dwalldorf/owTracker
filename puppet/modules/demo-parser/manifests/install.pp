@@ -39,6 +39,7 @@ class demo-parser::install inherits demo-parser {
     exec { 'install_demoparser':
         command     => 'go get -u github.com/stegmannc/csgo-demoparser',
         path        => ['/usr/bin', '/home/vagrant/go/bin'],
+        environment => 'GOPATH=/home/vagrant/go',
         cwd         => $parserDir,
         user        => vagrant,
         require     => [Package['golang'], Exec['chsh_vagrant']],
