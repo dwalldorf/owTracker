@@ -5,7 +5,6 @@ namespace DemoBundle\Service;
 use AppBundle\Service\BaseService;
 use AppBundle\Util\AppSerializer;
 use DemoBundle\Document\Demo;
-use DemoBundle\Form\DemoType;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use UserBundle\Service\UserService;
@@ -38,26 +37,18 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
      * @return mixed
      */
     public function execute(AMQPMessage $msg) {
-        $demo = new Demo();
-        $demoArray = AppSerializer::getInstance()->toArray($msg->getBody());
+        /* @var $demo Demo */
+        $demo = AppSerializer::getInstance()->fromJson($msg->getBody(), Demo::class);
+        $demoFile = $this->demoService->getDemoFileById($demo->getId());
 
-        /* @var $form \Symfony\Component\Form\Form */
-        $form = $this->container->get('form.factory')->create(DemoType::class, $demo);
-        $form->submit($demoArray);
-
-        /*
-         * TODO: read demo from db, get user and check from there
-         * by dwalldorf at 19:01 08.08.16
-         */
-        /*
-        $user = $this->userService->findById($demo->getUserId());
-        if (!$user) {
-            // remove from queue and throw away
+        if (!$demoFile) {
+            // should never happen he said
             return true;
         }
-        */
-
         $this->demoService->save($demo);
+
+        $demoFile->setProcessed(true);
+        $this->demoService->saveDemoFile($demoFile);
         return true;
     }
 }

@@ -21,10 +21,16 @@ class AppSerializer {
     private $serializer;
 
     /**
+     * @var \JsonMapper
+     */
+    private $jsonMapper;
+
+    /**
      * AppSerializer constructor.
      */
     private function __construct() {
         $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+        $this->jsonMapper = new \JsonMapper();
     }
 
     public static function getInstance() {
@@ -50,11 +56,12 @@ class AppSerializer {
 
     /**
      * @param $json
-     * @param string $target
+     * @param object $target
      * @return object
      */
     public function fromJson($json, $target) {
-        return $this->serializer->deserialize($json, $target, self::FORMAT);
+        $json = json_decode($json);
+        return $this->jsonMapper->map($json, new $target());
     }
 
     /**

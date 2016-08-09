@@ -68,7 +68,7 @@ abstract class BaseController extends Controller {
     }
 
     /**
-     * @param $targetEntity
+     * @param object $targetEntity
      * @return object
      */
     protected function getEntityFromRequest($targetEntity) {

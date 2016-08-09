@@ -66,6 +66,11 @@ class DemoService extends BaseService {
         return $this->demoFileRepository->save($demoFile);
     }
 
+    
+    public function getDemoFileById($id) {
+        return $this->demoFileRepository->getById($id);    
+    }
+
     /**
      * @param DemoFile $demoFile
      * @return DemoFile
