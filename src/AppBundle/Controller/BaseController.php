@@ -118,7 +118,7 @@ abstract class BaseController extends Controller {
         $this->requireLogin();
         $user = $this->getCurrentUser();
 
-        if (!$user->isIsAdmin()) {
+        if (!$user->getUserSettings()->isAdmin()) {
             throw new NotAuthorizedException();
         }
     }

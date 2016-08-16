@@ -246,9 +246,9 @@ class RandomUtil {
          */
         foreach ($loserTeamPlayersAlive as $victim) {
             $killer = $winnerTeamPlayersAlive[mt_rand(0, count($winnerTeamPlayersAlive) - 1)];
-            $kills[] = new RoundEventKill(
-                $killer->getSteamId(), $victim->getSteamId(), null, self::getRandomBoolWithProbability(0.3)
-            );
+//            $kills[] = new RoundEventKill(
+//                $killer->getSteamId(), $victim->getSteamId(), null, self::getRandomBoolWithProbability(0.3)
+//            );
         }
         $round = new MatchRound();
         $round->setRoundNumber($roundNumber)

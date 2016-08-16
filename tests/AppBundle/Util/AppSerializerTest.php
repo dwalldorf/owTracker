@@ -18,7 +18,7 @@ class AppSerializerTest extends \PHPUnit_Framework_TestCase {
 
         $testObj = new User($id, $username, $email, null, $registered);
         $expectedJson = sprintf(
-            '{"id":"%s","username":"%s","email":"%s","password":null,"registered":%d,"isAdmin":false}',
+            '{"id":"%s","username":"%s","email":"%s","password":null,"registered":%d,"admin":null,"userSettings":{"followSteamIds":[],"admin":false}}',
             $id,
             $username,
             $email,

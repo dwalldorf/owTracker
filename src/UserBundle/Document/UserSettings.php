@@ -38,7 +38,7 @@ class UserSettings {
     /**
      * @return boolean
      */
-    public function isIsAdmin() {
+    public function isAdmin() {
         return $this->isAdmin;
     }
 

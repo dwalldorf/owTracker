@@ -33,8 +33,8 @@ class MatchRound {
     private $winner;
 
     /**
-     * @var RoundEvents
-     * @ODM\EmbedOne(name="events", targetDocument="RoundEvents")
+     * @var array
+     * @ODM\Field(type="hash", name="events")
      */
     private $roundEvents;
 
@@ -87,14 +87,14 @@ class MatchRound {
     }
 
     /**
-     * @return RoundEvents
+     * @return array
      */
     public function getRoundEvents() {
         return $this->roundEvents;
     }
 
     /**
-     * @param RoundEvents $roundEvents
+     * @param array $roundEvents
      * @return $this
      */
     public function setRoundEvents($roundEvents) {
