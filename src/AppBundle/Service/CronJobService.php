@@ -26,7 +26,18 @@ class CronJobService extends BaseService {
         $jobsToCreate = $this->container->getParameter('cronjobs');
 
         foreach ($jobsToCreate as $name => $jobToCreate) {
-            $job = new CronJob(null, $name, $jobToCreate['command'], $jobToCreate['interval']);
+            $job = new CronJob();
+            $job->setName($name)
+                ->setCommand($jobToCreate['command'])
+                ->setInterval($jobToCreate['interval']);
+
+            if (array_key_exists('arguments', $jobToCreate)) {
+                $job->setArguments($jobToCreate['arguments']);
+            }
+            if (array_key_exists('options', $jobToCreate)) {
+                $job->setOptions($jobToCreate['options']);
+            }
+
             $this->repository->save($job);
         }
 
