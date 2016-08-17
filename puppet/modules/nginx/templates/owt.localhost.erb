@@ -18,6 +18,7 @@ server {
         fastcgi_param DOCUMENT_ROOT $realpath_root;
         fastcgi_index index.php;
         fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_read_timeout 600;
     }
 
     error_log /var/log/nginx/owt_error.log;
