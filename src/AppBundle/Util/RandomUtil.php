@@ -185,7 +185,11 @@ class RandomUtil {
                 $roundCounter++;
             }
         }
-        return new Demo(null, $user->getId(), $matchInfo, $rounds);
+        $demo = new Demo();
+        $demo->setUserId($user->getId())
+            ->setMatchInfo($matchInfo)
+            ->setRounds($rounds);
+        return $demo;
     }
 
     /**

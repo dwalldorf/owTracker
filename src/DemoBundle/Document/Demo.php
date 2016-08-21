@@ -26,6 +26,12 @@ class Demo {
     private $userId;
 
     /**
+     * @var bool
+     * @ODM\Field(type="boolean")
+     */
+    private $analyzed = false;
+
+    /**
      * @var MatchInfo
      * @ODM\EmbedOne(name="info", targetDocument="MatchInfo")
      */
@@ -59,9 +65,11 @@ class Demo {
 
     /**
      * @param string $id
+     * @return $this
      */
     public function setId($id) {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -73,9 +81,27 @@ class Demo {
 
     /**
      * @param string $userId
+     * @return $this
      */
     public function setUserId($userId) {
         $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAnalyzed() {
+        return $this->analyzed;
+    }
+
+    /**
+     * @param boolean $analyzed
+     * @return $this
+     */
+    public function setAnalyzed($analyzed) {
+        $this->analyzed = $analyzed;
+        return $this;
     }
 
     /**
@@ -87,9 +113,11 @@ class Demo {
 
     /**
      * @param MatchInfo $matchInfo
+     * @return $this
      */
     public function setMatchInfo($matchInfo = null) {
         $this->matchInfo = $matchInfo;
+        return $this;
     }
 
     /**
@@ -101,8 +129,10 @@ class Demo {
 
     /**
      * @param MatchRound[] $rounds
+     * @return $this
      */
     public function setRounds(array $rounds) {
         $this->rounds = $rounds;
+        return $this;
     }
 }

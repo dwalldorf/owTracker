@@ -3,7 +3,6 @@
 namespace DemoBundle\Service;
 
 use AppBundle\Service\BaseService;
-use AppBundle\Util\AppSerializer;
 use DemoBundle\Document\Demo;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -48,6 +47,6 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
 
         $demoFile->setProcessed(true);
         $this->demoService->saveDemoFile($demoFile);
-        return false;
+        return true;
     }
 }
