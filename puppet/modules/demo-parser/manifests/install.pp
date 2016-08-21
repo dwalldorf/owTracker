@@ -34,6 +34,6 @@ class demo-parser::install inherits demo-parser {
         path        => ['/bin', '/usr/bin', '/home/vagrant/go/bin'],
         environment => 'GOPATH=/home/vagrant/go',
         user        => vagrant,
-        require     => [Package['golang'], Exec['chsh_vagrant']],
+        require     => [Package['golang', 'git', 'sed'], Exec['chsh_vagrant']],
     }
 }
