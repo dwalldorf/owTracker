@@ -28,15 +28,10 @@ class MatchPlayer {
     private $name;
 
     /**
-     * @param $steamId
-     * @param null $userId
-     * @param $name string
+     * @var int
+     * @ODM\Field(type="int")
      */
-    public function __construct($steamId = null, $userId = null, $name = null) {
-        $this->steamId = $steamId;
-        $this->userId = $userId;
-        $this->name = $name;
-    }
+    private $team;
 
     /**
      * @return string
@@ -83,6 +78,22 @@ class MatchPlayer {
      */
     public function setName($name) {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeam() {
+        return $this->team;
+    }
+
+    /**
+     * @param int $team
+     * @return $this
+     */
+    public function setTeam($team) {
+        $this->team = $team;
         return $this;
     }
 }

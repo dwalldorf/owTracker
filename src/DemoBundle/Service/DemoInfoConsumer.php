@@ -43,10 +43,15 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
             // should never happen he said
             return true;
         }
+        $demo->setUserId($demoFile->getUserId());
         $this->demoService->save($demo);
 
+        unlink($demoFile->getFile());
         $demoFile->setProcessed(true);
+        $demoFile->setFile(null);
+
         $this->demoService->saveDemoFile($demoFile);
+
         return true;
     }
 }

@@ -197,6 +197,12 @@ class RandomUtil {
      * @return MatchTeam[]
      */
     public static function getRandomTeams(User $user) {
+
+        /*
+         * TODO: get rid of "teams"
+         * by dwalldorf at 20:19 21.08.16
+         */
+
         $userIds = [];
         $teams = [];
 
@@ -214,17 +220,19 @@ class RandomUtil {
                 $userIds[] = $userId;
 
                 if ($teamPlayersCreated == 0 && $teamsCreated == 0) {
-                    $players[] = new MatchPlayer(
-                        $user->getId(),
-                        $userId,
-                        $user->getUsername()
-                    );
+                    $player = new MatchPlayer();
+                    $player->setSteamId($user->getId())
+                        ->setUserId($userId)
+                        ->setName($user->getUsername())
+                        ->setTeam($teamsCreated);
+                    $players[] = $player;
                 } else {
-                    $players[] = new MatchPlayer(
-                        self::getRandomString(),
-                        $userId,
-                        'testPlayer_' . self::getRandomString(3)
-                    );
+                    $player = new MatchPlayer();
+                    $player->setSteamId(self::getRandomString())
+                        ->setUserId($userId)
+                        ->setName('testPlayer_' . self::getRandomString(3))
+                        ->setTeam($teamsCreated);
+                    $players[] = $player;
                 }
             }
             $teams[] = new MatchTeam($teamName, $teamsCreated, $players);

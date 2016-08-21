@@ -38,23 +38,16 @@ class Demo {
     private $matchInfo;
 
     /**
+     * @var MatchPlayer[]
+     * @ODM\EmbedMany(targetDocument="MatchPlayer")
+     */
+    private $players;
+
+    /**
      * @var MatchRound[]
      * @ODM\EmbedMany(name="rounds", targetDocument="MatchRound")
      */
     private $rounds;
-
-    /**
-     * @param string $id
-     * @param string $userId
-     * @param MatchInfo $matchInfo
-     * @param MatchRound[] $rounds
-     */
-    public function __construct($id = null, $userId = null, $matchInfo = null, array $rounds = []) {
-        $this->id = $id;
-        $this->userId = $userId;
-        $this->matchInfo = $matchInfo;
-        $this->rounds = $rounds;
-    }
 
     /**
      * @return string
@@ -117,6 +110,22 @@ class Demo {
      */
     public function setMatchInfo($matchInfo = null) {
         $this->matchInfo = $matchInfo;
+        return $this;
+    }
+
+    /**
+     * @return MatchPlayer[]
+     */
+    public function getPlayers() {
+        return $this->players;
+    }
+
+    /**
+     * @param MatchPlayer[] $players
+     * @return $this
+     */
+    public function setPlayers($players) {
+        $this->players = $players;
         return $this;
     }
 

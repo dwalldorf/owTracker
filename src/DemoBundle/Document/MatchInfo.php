@@ -24,18 +24,6 @@ class MatchInfo {
     private $serverName;
 
     /**
-     * @var MatchTeam
-     * @ODM\EmbedOne(targetDocument="MatchTeam")
-     */
-    private $team1;
-
-    /**
-     * @var MatchTeam
-     * @ODM\EmbedOne(targetDocument="MatchTeam")
-     */
-    private $team2;
-
-    /**
      * @var int
      * @ODM\Field(type="int", name="rounds_team1")
      */
