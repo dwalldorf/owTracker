@@ -8,5 +8,5 @@ parameters:
             arguments:
                 - demo_info_upload
             options:
-                - -m 50
+                - -m 10
             interval: 2
