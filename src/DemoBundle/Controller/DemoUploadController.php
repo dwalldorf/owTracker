@@ -43,7 +43,7 @@ class DemoUploadController extends BaseController {
 
         $demos = [];
 
-        foreach ($this->request->files->get('file') as $file) {
+        foreach ($this->request->files as $file) {
             $file = $this->moveFile($file);
 
             if ($file) {

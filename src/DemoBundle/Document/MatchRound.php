@@ -3,7 +3,6 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\EmbeddedDocument
@@ -13,18 +12,14 @@ class MatchRound {
     /**
      * @var int
      * @ODM\Field(type="int", name="round", nullable=false)
-     *
-     * @Assert\NotBlank(message="roundNumber for round is mandatory")
      */
     private $roundNumber;
 
     /**
      * @var float
      * @ODM\Field(type="float", name="duration")
-     *
-     * @Assert\NotBlank(message="roundDuration for round is mandatory")
      */
-    private $roundDuration;
+    private $duration;
 
     /**
      * @var int
@@ -33,10 +28,16 @@ class MatchRound {
     private $winner;
 
     /**
+     * @var int
+     * @ODM\Field(type="int")
+     */
+    private $reason;
+
+    /**
      * @var array
      * @ODM\Field(type="hash", name="events")
      */
-    private $roundEvents;
+    private $events;
 
     /**
      * @return int
@@ -55,18 +56,27 @@ class MatchRound {
     }
 
     /**
-     * @return float
+     * @param int $nr
+     * @return $this
      */
-    public function getRoundDuration() {
-        return $this->roundDuration;
+    public function setNr($nr) {
+        $this->setRoundNumber($nr);
+        return $this;
     }
 
     /**
-     * @param float $roundDuration
+     * @return float
+     */
+    public function getDuration() {
+        return $this->duration;
+    }
+
+    /**
+     * @param float $duration
      * @return $this
      */
-    public function setRoundDuration($roundDuration) {
-        $this->roundDuration = $roundDuration;
+    public function setDuration($duration) {
+        $this->duration = $duration;
         return $this;
     }
 
@@ -87,18 +97,34 @@ class MatchRound {
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function getRoundEvents() {
-        return $this->roundEvents;
+    public function getReason() {
+        return $this->reason;
     }
 
     /**
-     * @param array $roundEvents
+     * @param int $reason
      * @return $this
      */
-    public function setRoundEvents($roundEvents) {
-        $this->roundEvents = $roundEvents;
+    public function setReason($reason) {
+        $this->reason = $reason;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEvents() {
+        return $this->events;
+    }
+
+    /**
+     * @param array $events
+     * @return $this
+     */
+    public function setEvents($events) {
+        $this->events = $events;
         return $this;
     }
 }

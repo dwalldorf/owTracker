@@ -3,7 +3,6 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\Document(
@@ -23,16 +22,12 @@ class Demo {
      * @var string
      * @ODM\Field(type="string", name="user_id", nullable=false)
      * @ODM\Index(order="asc")
-     *
-     * @Assert\NotBlank(message="userId is mandatory")
      */
     private $userId;
 
     /**
      * @var MatchInfo
      * @ODM\EmbedOne(name="info", targetDocument="MatchInfo")
-     * 
-     * @Assert\NotNull(message="matchInfo is mandatory")
      */
     private $matchInfo;
 

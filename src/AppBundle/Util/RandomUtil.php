@@ -157,13 +157,12 @@ class RandomUtil {
         $team1 = $teams[0];
         $team2 = $teams[1];
 
-        $matchInfo = new MatchInfo(
-            self::getRandomMap(),
-            $team1,
-            $team2,
-            $team1Rounds,
-            $team2Rounds
-        );
+        $matchInfo = new MatchInfo();
+        $matchInfo->setMap(self::getRandomMap())
+            ->setTeam1($team1)
+            ->setTeam2($team2)
+            ->setTotalRoundsTeam1($team1Rounds)
+            ->setTotalRoundsTeam2($team2Rounds);
 
         /*
          * round end scenarios (winner)
@@ -252,8 +251,8 @@ class RandomUtil {
         }
         $round = new MatchRound();
         $round->setRoundNumber($roundNumber)
-            ->setRoundDuration(mt_rand(30, 110))
-            ->setRoundEvents(new RoundEvents($kills));
+            ->setDuration(mt_rand(30, 110))
+            ->setEvents(new RoundEvents($kills));
 
         return $round;
     }

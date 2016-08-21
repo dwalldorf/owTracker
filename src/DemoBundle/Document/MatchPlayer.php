@@ -3,7 +3,6 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\EmbeddedDocument
@@ -13,24 +12,18 @@ class MatchPlayer {
     /**
      * @var string
      * @ODM\Field(type="string", name="steam_id", nullable=false)
-     *
-     * @Assert\NotBlank(message="steamId for player is mandatory")
      */
     private $steamId;
 
     /**
      * @var int
      * @ODM\Field(type="int", name="user_id")
-     *
-     * @Assert\NotBlank(message="userId for player is mandatory")
      */
     private $userId;
 
     /**
      * @var string
      * @ODM\Field(type="string", nullable=false)
-     *
-     * @Assert\NotBlank(message="name for player is mandatory")
      */
     private $name;
 

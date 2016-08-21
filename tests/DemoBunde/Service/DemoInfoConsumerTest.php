@@ -244,7 +244,7 @@ class DemoInfoConsumerTest extends BaseTestCase {
 //    public function demoRoundWithoutDuration() {
 //        $demo = $this->getDemo();
 //        $rounds = $demo->getRounds();
-//        $rounds[7]->setRoundDuration(null);
+//        $rounds[7]->setDuration(null);
 //        $demo->setRounds($rounds);
 //
 //        $userServiceMock = $this->getUserServiceMock();

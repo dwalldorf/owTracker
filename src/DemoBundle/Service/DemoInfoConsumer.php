@@ -28,17 +28,16 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
         $this->userService = $this->getService(UserService::ID);
     }
 
-    protected function createForm($type, $data = null, array $options = []) {
-        return $this->container->get('form.factory')->create($type, $data, $options);
-    }
-
     /**
      * @param AMQPMessage $msg
      * @return mixed
      */
     public function execute(AMQPMessage $msg) {
-        /* @var $demo Demo */
-        $demo = AppSerializer::getInstance()->fromJson($msg->getBody(), Demo::class);
+        $demo = new Demo();
+
+        $mapper = new \JsonMapper();
+        $mapper->map(json_decode($msg->getBody()), $demo);
+
         $demoFile = $this->demoService->getDemoFileById($demo->getId());
 
         if (!$demoFile) {
@@ -49,6 +48,6 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
 
         $demoFile->setProcessed(true);
         $this->demoService->saveDemoFile($demoFile);
-        return true;
+        return false;
     }
 }
