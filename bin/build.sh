@@ -51,6 +51,14 @@ if [ ${SKIP} == "0" ]
 then
     npm install
     composer install
+
+    # seems like one has to do it like this..
+    if ! [ -f ./vendor/hybridauth/hybridauth/hybridauth/Hybrid/Providers/Steam.php ];
+    then
+        echo "copying custom hybridauth Steam provider"
+        cp ./vendor/hybridauth/hybridauth/additional-providers/hybridauth-steam/Providers/Steam.php ./vendor/hybridauth/hybridauth/hybridauth/Hybrid/Providers/Steam.php
+        chmod 664 ./vendor/hybridauth/hybridauth/hybridauth/Hybrid/Providers/Steam.php
+    fi
 else
     echo "skipping npm/composer dependencies"
 fi

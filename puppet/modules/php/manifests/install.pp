@@ -50,6 +50,10 @@ class php::install inherits php {
         ensure  => latest,
         require => Package['php7.0-common'],
     }
+    package{ 'php5.6-curl':
+        ensure  => latest,
+        require => Package['php5.6-common'],
+    }
     package { 'memcached':
         ensure => latest,
     }
