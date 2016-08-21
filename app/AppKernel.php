@@ -13,7 +13,7 @@ class AppKernel extends Kernel {
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Doctrine\Bundle\CouchDBBundle\DoctrineCouchDBBundle(),
             new Lsw\MemcacheBundle\LswMemcacheBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
 

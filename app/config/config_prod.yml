@@ -13,13 +13,3 @@ monolog:
             level: debug
         console:
             type:  console
-
-doctrine_mongodb:
-    document_managers:
-        default:
-            metadata_cache_driver:
-                type: memcache
-                class: Doctrine\Common\Cache\MemcacheCache
-                host: "%session_memcache_host%"
-                port: "%session_memcache_port%"
-                instance_class: Memcache

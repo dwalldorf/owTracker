@@ -14,6 +14,7 @@ include base
 
 include nginx
 include mongo
+include couchdb
 include php
 include owt
 include demo-parser

@@ -28,21 +28,27 @@ framework:
     http_method_override: true
     assets: ~
 
-doctrine_mongodb:
-    connections:
-        default:
-            server: "%mongo_server%"
-            options: {}
-    default_database: "%mongo_database%"
-    document_managers:
-        default:
-            auto_mapping: true
-            metadata_cache_driver:
-                type: memcache
-                class: Doctrine\Common\Cache\MemcacheCache
-                host: "%session_memcache_host%"
-                port: "%session_memcache_port%"
-                instance_class: Memcache
+#doctrine_mongodb:
+#    connections:
+#        default:
+#            server: "%mongo_server%"
+#            options: {}
+#    default_database: "%mongo_database%"
+#    document_managers:
+#        default:
+#            auto_mapping: true
+#            metadata_cache_driver:
+#                type: memcache
+#                class: Doctrine\Common\Cache\MemcacheCache
+#                host: "%session_memcache_host%"
+#                port: "%session_memcache_port%"
+#                instance_class: Memcache
+
+doctrine_couch_db:
+  client:
+    dbname: owt
+  odm:
+    auto_mapping: true
 
 lsw_memcache:
     session:

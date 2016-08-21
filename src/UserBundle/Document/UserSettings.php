@@ -2,7 +2,7 @@
 
 namespace UserBundle\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\Couchdb\Mapping\Annotations as ODM;
 
 /**
  * @ODM\EmbeddedDocument

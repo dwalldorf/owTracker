@@ -65,6 +65,6 @@ rm -rf ./var/cache/${ENVIRONMENT}
 
 ./bin/console rabbitmq:setup-fabric
 
-./bin/console owt:createIndices
+#./bin/console owt:createIndices
 ./bin/console owt:initCron
 ./bin/console owt:memcache
