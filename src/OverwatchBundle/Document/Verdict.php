@@ -26,14 +26,14 @@ class Verdict {
     private $userId;
 
     /**
-     * @ODM\Date(name="created", nullable=false)
+     * @ODM\Field(type="date", name="created", nullable=false)
      * @ODM\Index(order="desc")
      * @var \DateTime
      */
     private $creationDate;
 
     /**
-     * @ODM\Date(name="verdict_date", nullable=false)
+     * @ODM\Field(type="date", name="verdict_date", nullable=false)
      * @var \DateTime
      */
     private $overwatchDate;

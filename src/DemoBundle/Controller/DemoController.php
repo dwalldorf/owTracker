@@ -36,8 +36,6 @@ class DemoController extends BaseController {
         $offset = $this->getRequestParamAsInt('offset', 0);
         $demos = $this->demoService->getByUser($userId, $limit + 1, $offset);
 
-        ddd($demos);
-
         $demoCollection = new BaseCollection();
         $demoCollection->setItems($demos, $limit);
 

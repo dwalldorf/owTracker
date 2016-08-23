@@ -24,6 +24,12 @@ class MatchInfo {
     private $serverName;
 
     /**
+     * @var MatchPlayer[]
+     * @ODM\EmbedMany(targetDocument="MatchPlayer")
+     */
+    private $players;
+
+    /**
      * @var int
      * @ODM\Field(type="int", name="rounds_team1")
      */
@@ -73,34 +79,34 @@ class MatchInfo {
     }
 
     /**
-     * @return MatchTeam
+     * @return MatchPlayer[]
      */
-    public function getTeam1() {
-        return $this->team1;
+    public function getPlayers() {
+        return $this->players;
     }
 
     /**
-     * @param MatchTeam $team1
+     * @param MatchPlayer[] $players
      * @return $this
      */
-    public function setTeam1(MatchTeam $team1) {
-        $this->team1 = $team1;
+    public function setPlayers($players) {
+        $this->players = $players;
         return $this;
     }
 
     /**
-     * @return MatchTeam
+     * @return mixed
      */
-    public function getTeam2() {
-        return $this->team2;
+    public function getDuration() {
+        return $this->duration;
     }
 
     /**
-     * @param MatchTeam $team2
+     * @param mixed $duration
      * @return $this
      */
-    public function setTeam2(MatchTeam $team2) {
-        $this->team2 = $team2;
+    public function setDuration($duration) {
+        $this->duration = $duration;
         return $this;
     }
 

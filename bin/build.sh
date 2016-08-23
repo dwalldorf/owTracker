@@ -32,11 +32,11 @@ then
     API_PREFIX="/api"
 
     echo "checking if there are any debug statements.."
-    LDD_EXISTS=$(grep -nR " ldd(" ./app ./src)
+    LDD_EXISTS=$(grep -nR " ddd(" ./app ./src)
 
     if [[ ${LDD_EXISTS} != "" ]]
     then
-        echo "[ERROR] found ldd:"
+        echo "[ERROR] found ddd:"
         echo "$LDD_EXISTS"
         exit 1
     else

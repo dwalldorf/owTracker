@@ -32,7 +32,7 @@ class Feedback {
 
     /**
      * @var \DateTime
-     * @ODM\Date(name="created", nullable=false)
+     * @ODM\Field(type="date", name="created", nullable=false)
      */
     private $created;
 

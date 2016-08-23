@@ -16,6 +16,12 @@ class MatchPlayer {
     private $steamId;
 
     /**
+     * @var string
+     * @ODM\Field(type="string", name="steam_id64")
+     */
+    private $steamId64;
+
+    /**
      * @var int
      * @ODM\Field(type="int", name="user_id")
      */
@@ -46,6 +52,22 @@ class MatchPlayer {
      */
     public function setSteamId($steamId) {
         $this->steamId = $steamId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSteamId64() {
+        return $this->steamId64;
+    }
+
+    /**
+     * @param string $steamId64
+     * @return $this
+     */
+    public function setSteamId64($steamId64) {
+        $this->steamId64 = $steamId64;
         return $this;
     }
 

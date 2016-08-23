@@ -89,7 +89,10 @@ class DummyDemoInfoQueueCommand extends BaseContainerAwareCommand {
         $serializer = AppSerializer::getInstance();
 
         // create demo file for integrity
-        $demoFile = new DemoFile('someFile', $user->getId(), null, false, true);
+        $demoFile = new DemoFile();
+        $demoFile->setFile('somefile')
+            ->setUserId($user->getId())
+            ->setQueued(true);
         $this->demoService->saveDemoFile($demoFile);
 
         if ($this->verbose) {
