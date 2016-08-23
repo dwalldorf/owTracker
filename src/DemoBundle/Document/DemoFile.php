@@ -32,6 +32,12 @@ class DemoFile {
     private $file;
 
     /**
+     * @var \DateTime
+     * @ODM\Field(type="date")
+     */
+    private $uploaded;
+
+    /**
      * @var bool
      * @ODM\Field(type="boolean")
      */
@@ -44,21 +50,6 @@ class DemoFile {
     private $processed = false;
 
     /**
-     * @param string $file
-     * @param string $userId
-     * @param string $id
-     * @param bool $processed
-     * @param bool $queued
-     */
-    public function __construct($file = null, $userId = null, $id = null, $processed = false, $queued = false) {
-        $this->file = $file;
-        $this->userId = $userId;
-        $this->id = $id;
-        $this->processed = $processed;
-        $this->queued = $queued;
-    }
-
-    /**
      * @return string
      */
     public function getId() {
@@ -67,9 +58,11 @@ class DemoFile {
 
     /**
      * @param string $id
+     * @return $this
      */
     public function setId($id) {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -81,9 +74,11 @@ class DemoFile {
 
     /**
      * @param string $userId
+     * @return $this
      */
     public function setUserId($userId) {
         $this->userId = $userId;
+        return $this;
     }
 
     /**
@@ -95,9 +90,27 @@ class DemoFile {
 
     /**
      * @param string $file
+     * @return $this
      */
     public function setFile($file) {
         $this->file = $file;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUploaded() {
+        return $this->uploaded;
+    }
+
+    /**
+     * @param \DateTime $uploaded
+     * @return $this
+     */
+    public function setUploaded($uploaded) {
+        $this->uploaded = $uploaded;
+        return $this;
     }
 
     /**
@@ -109,9 +122,11 @@ class DemoFile {
 
     /**
      * @param boolean $processed
+     * @return $this
      */
     public function setProcessed($processed = true) {
         $this->processed = $processed;
+        return $this;
     }
 
     /**
@@ -123,8 +138,10 @@ class DemoFile {
 
     /**
      * @param boolean $queued
+     * @return $this
      */
     public function setQueued($queued = true) {
         $this->queued = $queued;
+        return $this;
     }
 }

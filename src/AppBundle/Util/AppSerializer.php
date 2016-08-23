@@ -2,6 +2,7 @@
 
 namespace AppBundle\Util;
 
+use AppBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -21,10 +22,18 @@ class AppSerializer {
     private $serializer;
 
     /**
+     * @var \JsonMapper
+     */
+    private $jsonMapper;
+
+    /**
      * AppSerializer constructor.
      */
     private function __construct() {
         $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
+        $this->jsonMapper = new \JsonMapper();
+        $this->jsonMapper->bExceptionOnMissingData = false;
+        $this->jsonMapper->bStrictObjectTypeChecking = false;
     }
 
     public static function getInstance() {
@@ -50,8 +59,9 @@ class AppSerializer {
 
     /**
      * @param $json
-     * @param string $target
+     * @param object $target
      * @return object
+     * @throws InvalidArgumentException
      */
     public function fromJson($json, $target) {
         return $this->serializer->deserialize($json, $target, self::FORMAT);

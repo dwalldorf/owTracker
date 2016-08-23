@@ -33,4 +33,12 @@ class DemoFileRepository extends BaseRepository {
 
         return $demoFile;
     }
+
+    /**
+     * @param $id
+     * @return DemoFile
+     */
+    public function getById($id) {
+        return $this->getRepository()->find($id);
+    }
 }

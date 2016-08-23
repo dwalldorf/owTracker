@@ -43,13 +43,14 @@ class DemoUploadController extends BaseController {
 
         $demos = [];
 
-        foreach ($this->request->files->get('file') as $file) {
+        foreach ($this->request->files as $file) {
             $file = $this->moveFile($file);
 
             if ($file) {
                 $demoFile = new DemoFile();
-                $demoFile->setUserId($this->getCurrentUser()->getId());
-                $demoFile->setFile($file->getPathname());
+                $demoFile->setUserId($this->getCurrentUser()->getId())
+                    ->setFile($file->getPathname())
+                    ->setUploaded(new \DateTime());
 
                 $demoFile = $this->demoService->saveDemoFile($demoFile);
                 $this->demoService->publishDemoFile($demoFile);

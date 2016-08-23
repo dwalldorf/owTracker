@@ -32,7 +32,7 @@ class UserScore {
     private $userId;
 
     /**
-     * @ODM\Date(nullable=false)
+     * @ODM\Field(type="date", nullable=false)
      * @var \DateTime
      */
     private $calculated;

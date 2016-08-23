@@ -33,6 +33,18 @@ class CronJob {
     private $command;
 
     /**
+     * @var array
+     * @ODM\Field(type="hash")
+     */
+    private $arguments = [];
+
+    /**
+     * @var array
+     * @ODM\Field(type="hash")
+     */
+    private $options = [];
+
+    /**
      * @var int
      * @ODM\Field(type="int")
      */
@@ -55,33 +67,6 @@ class CronJob {
      * @ODM\Field(type="int", name="last_run")
      */
     private $lastRun = 0;
-
-    /**
-     * CronJob constructor.
-     * @param string $id
-     * @param string $name
-     * @param null $command
-     * @param int $interval
-     * @param bool $running
-     * @param int $started
-     * @param int $lastRun
-     */
-    public function __construct(
-        $id = null,
-        $name = null,
-        $command = null,
-        $interval = null,
-        $running = false,
-        $started = 0,
-        $lastRun = 0
-    ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->command = $command;
-        $this->interval = $interval;
-        $this->running = $running;
-        $this->lastRun = $lastRun;
-    }
 
     /**
      * @return string
@@ -128,6 +113,38 @@ class CronJob {
      */
     public function setCommand($command) {
         $this->command = $command;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArguments() {
+        return $this->arguments;
+    }
+
+    /**
+     * @param array $arguments
+     * @return $this
+     */
+    public function setArguments($arguments) {
+        $this->arguments = $arguments;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions() {
+        return $this->options;
+    }
+
+    /**
+     * @param array $options
+     * @return $this
+     */
+    public function setOptions($options) {
+        $this->options = $options;
         return $this;
     }
 

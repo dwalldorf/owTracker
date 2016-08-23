@@ -14,8 +14,6 @@ class MatchInfo {
      * @var string
      * @ODM\Field(type="string", nullable=false)
      * @ODM\Index(order="asc")
-     *
-     * @Assert\NotBlank(message="map is mandatory")
      */
     private $map;
 
@@ -26,57 +24,27 @@ class MatchInfo {
     private $serverName;
 
     /**
-     * @var MatchTeam
-     * @ODM\EmbedOne(targetDocument="MatchTeam")
-     *
-     * @Assert\NotBlank(message="team 1 is mandatory")
+     * @var MatchPlayer[]
+     * @ODM\EmbedMany(targetDocument="MatchPlayer")
      */
-    private $team1;
-
-    /**
-     * @var MatchTeam
-     * @ODM\EmbedOne(targetDocument="MatchTeam")
-     *
-     * @Assert\NotBlank(message="team 2 is mandatory")
-     */
-    private $team2;
+    private $players;
 
     /**
      * @var int
      * @ODM\Field(type="int", name="rounds_team1")
-     *
-     * @Assert\NotBlank(message="$totalRoundsTeam1 is mandatory")
      */
     private $totalRoundsTeam1;
 
     /**
      * @var int
      * @ODM\Field(type="int", name="rounds_team2")
-     *
-     * @Assert\NotBlank(message="$totalRoundsTeam2 is mandatory")
      */
     private $totalRoundsTeam2;
 
     /**
-     * @param string $map
-     * @param MatchTeam $team1
-     * @param MatchTeam $team2
-     * @param int $totalRoundsTeam1
-     * @param int $totalRoundsTeam2
+     * @var
      */
-    public function __construct(
-        $map = null,
-        MatchTeam $team1 = null,
-        MatchTeam $team2 = null,
-        $totalRoundsTeam1 = 0,
-        $totalRoundsTeam2 = 0
-    ) {
-        $this->map = $map;
-        $this->team1 = $team1;
-        $this->team2 = $team2;
-        $this->totalRoundsTeam1 = $totalRoundsTeam1;
-        $this->totalRoundsTeam2 = $totalRoundsTeam2;
-    }
+    private $duration;
 
     /**
      * @return string
@@ -87,37 +55,59 @@ class MatchInfo {
 
     /**
      * @param string $map
+     * @return $this
      */
     public function setMap($map) {
         $this->map = $map;
+        return $this;
     }
 
     /**
-     * @return MatchTeam
+     * @return string
      */
-    public function getTeam1() {
-        return $this->team1;
+    public function getServerName() {
+        return $this->serverName;
     }
 
     /**
-     * @param MatchTeam $team1
+     * @param string $serverName
+     * @return $this
      */
-    public function setTeam1(MatchTeam $team1) {
-        $this->team1 = $team1;
+    public function setServerName($serverName) {
+        $this->serverName = $serverName;
+        return $this;
     }
 
     /**
-     * @return MatchTeam
+     * @return MatchPlayer[]
      */
-    public function getTeam2() {
-        return $this->team2;
+    public function getPlayers() {
+        return $this->players;
     }
 
     /**
-     * @param MatchTeam $team2
+     * @param MatchPlayer[] $players
+     * @return $this
      */
-    public function setTeam2(MatchTeam $team2) {
-        $this->team2 = $team2;
+    public function setPlayers($players) {
+        $this->players = $players;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDuration() {
+        return $this->duration;
+    }
+
+    /**
+     * @param mixed $duration
+     * @return $this
+     */
+    public function setDuration($duration) {
+        $this->duration = $duration;
+        return $this;
     }
 
     /**
@@ -129,9 +119,11 @@ class MatchInfo {
 
     /**
      * @param int $totalRoundsTeam1
+     * @return $this
      */
     public function setTotalRoundsTeam1($totalRoundsTeam1) {
         $this->totalRoundsTeam1 = $totalRoundsTeam1;
+        return $this;
     }
 
     /**
@@ -143,8 +135,10 @@ class MatchInfo {
 
     /**
      * @param int $totalRoundsTeam2
+     * @return $this
      */
     public function setTotalRoundsTeam2($totalRoundsTeam2) {
         $this->totalRoundsTeam2 = $totalRoundsTeam2;
+        return $this;
     }
 }

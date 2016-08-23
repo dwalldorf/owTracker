@@ -3,7 +3,6 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\Document(
@@ -23,16 +22,18 @@ class Demo {
      * @var string
      * @ODM\Field(type="string", name="user_id", nullable=false)
      * @ODM\Index(order="asc")
-     *
-     * @Assert\NotBlank(message="userId is mandatory")
      */
     private $userId;
 
     /**
+     * @var bool
+     * @ODM\Field(type="boolean")
+     */
+    private $analyzed = false;
+
+    /**
      * @var MatchInfo
      * @ODM\EmbedOne(name="info", targetDocument="MatchInfo")
-     * 
-     * @Assert\NotNull(message="matchInfo is mandatory")
      */
     private $matchInfo;
 
@@ -43,19 +44,6 @@ class Demo {
     private $rounds;
 
     /**
-     * @param string $id
-     * @param string $userId
-     * @param MatchInfo $matchInfo
-     * @param MatchRound[] $rounds
-     */
-    public function __construct($id = null, $userId = null, $matchInfo = null, array $rounds = []) {
-        $this->id = $id;
-        $this->userId = $userId;
-        $this->matchInfo = $matchInfo;
-        $this->rounds = $rounds;
-    }
-
-    /**
      * @return string
      */
     public function getId() {
@@ -64,9 +52,11 @@ class Demo {
 
     /**
      * @param string $id
+     * @return $this
      */
     public function setId($id) {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -78,9 +68,27 @@ class Demo {
 
     /**
      * @param string $userId
+     * @return $this
      */
     public function setUserId($userId) {
         $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAnalyzed() {
+        return $this->analyzed;
+    }
+
+    /**
+     * @param boolean $analyzed
+     * @return $this
+     */
+    public function setAnalyzed($analyzed) {
+        $this->analyzed = $analyzed;
+        return $this;
     }
 
     /**
@@ -92,9 +100,11 @@ class Demo {
 
     /**
      * @param MatchInfo $matchInfo
+     * @return $this
      */
     public function setMatchInfo($matchInfo = null) {
         $this->matchInfo = $matchInfo;
+        return $this;
     }
 
     /**
@@ -106,8 +116,10 @@ class Demo {
 
     /**
      * @param MatchRound[] $rounds
+     * @return $this
      */
     public function setRounds(array $rounds) {
         $this->rounds = $rounds;
+        return $this;
     }
 }

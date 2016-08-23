@@ -3,9 +3,8 @@
 namespace DemoBundle\Service;
 
 use AppBundle\Service\BaseService;
-use AppBundle\Util\AppSerializer;
 use DemoBundle\Document\Demo;
-use DemoBundle\Form\DemoType;
+use DemoBundle\Document\MatchInfo;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use UserBundle\Service\UserService;
@@ -20,17 +19,19 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
     private $demoService;
 
     /**
+     * @var SteamService
+     */
+    private $steamService;
+
+    /**
      * @var UserService
      */
     private $userService;
 
     protected function init() {
         $this->demoService = $this->getService(DemoService::ID);
+        $this->steamService = $this->getService(SteamService::ID);
         $this->userService = $this->getService(UserService::ID);
-    }
-
-    protected function createForm($type, $data = null, array $options = []) {
-        return $this->container->get('form.factory')->create($type, $data, $options);
     }
 
     /**
@@ -39,25 +40,44 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
      */
     public function execute(AMQPMessage $msg) {
         $demo = new Demo();
-        $demoArray = AppSerializer::getInstance()->toArray($msg->getBody());
 
-        /* @var $form \Symfony\Component\Form\Form */
-        $form = $this->container->get('form.factory')->create(DemoType::class, $demo);
-        $form->submit($demoArray);
+        $mapper = new \JsonMapper();
+        $mapper->map(json_decode($msg->getBody()), $demo);
 
-        /*
-         * TODO: read demo from db, get user and check from there
-         * by dwalldorf at 19:01 08.08.16
-         */
-        /*
-        $user = $this->userService->findById($demo->getUserId());
-        if (!$user) {
-            // remove from queue and throw away
+        $demoFile = $this->demoService->getDemoFileById($demo->getId());
+
+        if (!$demoFile) {
+            // should never happen he said
             return true;
         }
-        */
+        $demo->setUserId($demoFile->getUserId());
+        $demo = $this->setPlayer64Ids($demo);
 
         $this->demoService->save($demo);
-        return true;
+
+        unlink($demoFile->getFile());
+        $demoFile->setProcessed(true);
+        $demoFile->setFile(null);
+
+        $this->demoService->saveDemoFile($demoFile);
+
+        return false;
+    }
+
+    /**
+     * @param Demo $demo
+     * @return Demo
+     */
+    private function setPlayer64Ids(Demo $demo) {
+        $matchInfo = $demo->getMatchInfo();
+        $players = $matchInfo->getPlayers();
+        foreach ($players as $index => $player) {
+            $steamId64 = $this->steamService->getSteamId64($player->getSteamId());
+            $players[$index]->setSteamId64($steamId64);
+        }
+        $matchInfo->setPlayers($players);
+        $demo->setMatchInfo($matchInfo);
+
+        return $demo;
     }
 }

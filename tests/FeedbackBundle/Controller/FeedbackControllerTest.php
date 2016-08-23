@@ -19,7 +19,9 @@ class FeedbackControllerTest extends BaseWebTestCase {
      */
     public function getAll() {
         $this->mockSessionUser();
-        $this->mockedSessionUser->setIsAdmin(true);
+        $settings = $this->mockedSessionUser->getUserSettings();
+        $settings->setIsAdmin(true);
+        $this->mockedSessionUser->setUserSettings($settings);
 
         $mockedFeedbackUser = new User('fakeId', 'username');
 
@@ -61,7 +63,9 @@ class FeedbackControllerTest extends BaseWebTestCase {
      */
     public function getAllRequiresAdmin() {
         $this->mockSessionUser();
-        $this->mockedSessionUser->setIsAdmin(false);
+        $settings = $this->mockedSessionUser->getUserSettings();
+        $settings->setIsAdmin(false);
+        $this->mockedSessionUser->setUserSettings($settings);
 
         $response = $this->apiRequest(Request::METHOD_GET, '/feedback');
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
@@ -80,7 +84,9 @@ class FeedbackControllerTest extends BaseWebTestCase {
      */
     public function getByIdRequiresAdmin() {
         $this->mockSessionUser();
-        $this->mockedSessionUser->setIsAdmin(false);
+        $settings = $this->mockedSessionUser->getUserSettings();
+        $settings->setIsAdmin(false);
+        $this->mockedSessionUser->setUserSettings($settings);
 
         $response = $this->apiRequest(Request::METHOD_GET, '/feedback/someFakeId');
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());

@@ -3,7 +3,6 @@
 namespace DemoBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ODM\EmbeddedDocument
@@ -13,37 +12,32 @@ class MatchPlayer {
     /**
      * @var string
      * @ODM\Field(type="string", name="steam_id", nullable=false)
-     *
-     * @Assert\NotBlank(message="steamId for player is mandatory")
      */
     private $steamId;
 
     /**
+     * @var string
+     * @ODM\Field(type="string", name="steam_id64")
+     */
+    private $steamId64;
+
+    /**
      * @var int
      * @ODM\Field(type="int", name="user_id")
-     *
-     * @Assert\NotBlank(message="userId for player is mandatory")
      */
     private $userId;
 
     /**
      * @var string
      * @ODM\Field(type="string", nullable=false)
-     *
-     * @Assert\NotBlank(message="name for player is mandatory")
      */
     private $name;
 
     /**
-     * @param $steamId
-     * @param null $userId
-     * @param $name string
+     * @var int
+     * @ODM\Field(type="int")
      */
-    public function __construct($steamId = null, $userId = null, $name = null) {
-        $this->steamId = $steamId;
-        $this->userId = $userId;
-        $this->name = $name;
-    }
+    private $team;
 
     /**
      * @return string
@@ -58,6 +52,22 @@ class MatchPlayer {
      */
     public function setSteamId($steamId) {
         $this->steamId = $steamId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSteamId64() {
+        return $this->steamId64;
+    }
+
+    /**
+     * @param string $steamId64
+     * @return $this
+     */
+    public function setSteamId64($steamId64) {
+        $this->steamId64 = $steamId64;
         return $this;
     }
 
@@ -90,6 +100,22 @@ class MatchPlayer {
      */
     public function setName($name) {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeam() {
+        return $this->team;
+    }
+
+    /**
+     * @param int $team
+     * @return $this
+     */
+    public function setTeam($team) {
+        $this->team = $team;
         return $this;
     }
 }

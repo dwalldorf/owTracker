@@ -157,13 +157,12 @@ class RandomUtil {
         $team1 = $teams[0];
         $team2 = $teams[1];
 
-        $matchInfo = new MatchInfo(
-            self::getRandomMap(),
-            $team1,
-            $team2,
-            $team1Rounds,
-            $team2Rounds
-        );
+        $matchInfo = new MatchInfo();
+        $matchInfo->setMap(self::getRandomMap())
+            ->setTeam1($team1)
+            ->setTeam2($team2)
+            ->setTotalRoundsTeam1($team1Rounds)
+            ->setTotalRoundsTeam2($team2Rounds);
 
         /*
          * round end scenarios (winner)
@@ -186,7 +185,11 @@ class RandomUtil {
                 $roundCounter++;
             }
         }
-        return new Demo(null, $user->getId(), $matchInfo, $rounds);
+        $demo = new Demo();
+        $demo->setUserId($user->getId())
+            ->setMatchInfo($matchInfo)
+            ->setRounds($rounds);
+        return $demo;
     }
 
     /**
@@ -194,6 +197,12 @@ class RandomUtil {
      * @return MatchTeam[]
      */
     public static function getRandomTeams(User $user) {
+
+        /*
+         * TODO: get rid of "teams"
+         * by dwalldorf at 20:19 21.08.16
+         */
+
         $userIds = [];
         $teams = [];
 
@@ -211,20 +220,22 @@ class RandomUtil {
                 $userIds[] = $userId;
 
                 if ($teamPlayersCreated == 0 && $teamsCreated == 0) {
-                    $players[] = new MatchPlayer(
-                        $user->getId(),
-                        $userId,
-                        $user->getUsername()
-                    );
+                    $player = new MatchPlayer();
+                    $player->setSteamId($user->getId())
+                        ->setUserId($userId)
+                        ->setName($user->getUsername())
+                        ->setTeam($teamsCreated);
+                    $players[] = $player;
                 } else {
-                    $players[] = new MatchPlayer(
-                        self::getRandomString(),
-                        $userId,
-                        'testPlayer_' . self::getRandomString(3)
-                    );
+                    $player = new MatchPlayer();
+                    $player->setSteamId(self::getRandomString())
+                        ->setUserId($userId)
+                        ->setName('testPlayer_' . self::getRandomString(3))
+                        ->setTeam($teamsCreated);
+                    $players[] = $player;
                 }
             }
-            $teams[] = new MatchTeam($teamName, $players);
+            $teams[] = new MatchTeam($teamName, $teamsCreated, $players);
         }
 
         return $teams;
@@ -246,11 +257,15 @@ class RandomUtil {
          */
         foreach ($loserTeamPlayersAlive as $victim) {
             $killer = $winnerTeamPlayersAlive[mt_rand(0, count($winnerTeamPlayersAlive) - 1)];
-            $kills[] = new RoundEventKill(
-                $killer->getSteamId(), $victim->getSteamId(), null, self::getRandomBoolWithProbability(0.3)
-            );
+//            $kills[] = new RoundEventKill(
+//                $killer->getSteamId(), $victim->getSteamId(), null, self::getRandomBoolWithProbability(0.3)
+//            );
         }
+        $round = new MatchRound();
+        $round->setRoundNumber($roundNumber)
+            ->setDuration(mt_rand(30, 110))
+            ->setEvents(new RoundEvents($kills));
 
-        return new MatchRound($roundNumber, mt_rand(30, 110), new RoundEvents($kills));
+        return $round;
     }
 }

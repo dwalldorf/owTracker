@@ -1,6 +1,6 @@
 class mongo::install inherits mongo {
     exec { 'add_mongo_org_ppa':
-        command => '/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && /bin/echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | /usr/bin/tee /etc/apt/sources.list.d/mongodb-org-3.0.list && /usr/bin/apt-get update',
+        command => '/usr/bin/apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927 && /bin/echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | /usr/bin/tee /etc/apt/sources.list.d/mongodb-org-3.0.list && /usr/bin/apt-get update',
         user    => root,
         creates =>'/etc/apt/sources.list.d/mongodb-org-3.0.list',
     }

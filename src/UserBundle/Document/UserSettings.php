@@ -22,7 +22,7 @@ class UserSettings {
     private $isAdmin = false;
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getFollowSteamIds() {
         return $this->followSteamIds;
@@ -38,7 +38,7 @@ class UserSettings {
     /**
      * @return boolean
      */
-    public function isIsAdmin() {
+    public function isAdmin() {
         return $this->isAdmin;
     }
 

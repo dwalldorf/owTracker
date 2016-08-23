@@ -52,6 +52,9 @@ services:
     demo.demo_service:
         class: DemoBundle\Service\DemoService
         parent: app.base_service
+    demo.steam_service:
+        class: DemoBundle\Service\SteamService
+        parent: app.base_service
 
     demo.demo_info_consumer:
         class: DemoBundle\Service\DemoInfoConsumer
