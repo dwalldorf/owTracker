@@ -60,4 +60,17 @@ class DemoRepository extends BaseRepository {
 
         return array_values($res);
     }
+
+    /**
+     * @param int $limit
+     * @return Demo[]
+     */
+    public function findDemosToAnalyze($limit) {
+        return $this->getQueryBuilder()
+            ->field('analyzed')->equals(false)
+            ->limit($limit)
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
 }

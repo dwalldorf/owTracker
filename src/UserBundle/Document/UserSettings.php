@@ -22,7 +22,7 @@ class UserSettings {
     private $isAdmin = false;
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getFollowSteamIds() {
         return $this->followSteamIds;

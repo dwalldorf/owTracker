@@ -66,9 +66,8 @@ class DemoService extends BaseService {
         return $this->demoFileRepository->save($demoFile);
     }
 
-    
     public function getDemoFileById($id) {
-        return $this->demoFileRepository->getById($id);    
+        return $this->demoFileRepository->getById($id);
     }
 
     /**
@@ -86,5 +85,13 @@ class DemoService extends BaseService {
         $producer->publish($message);
 
         return $this->saveDemoFile($demoFile);
+    }
+
+    /**
+     * @param int $limit
+     * @return Demo[]
+     */
+    public function getDemosToAnalyze($limit) {
+        return $this->demoRepository->findDemosToAnalyze($limit);
     }
 }

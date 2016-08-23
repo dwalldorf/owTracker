@@ -10,3 +10,8 @@ parameters:
             options:
                 - -m 10
             interval: 2
+        analyzeDemos:
+            command: owt:analyzeDemos
+            arguments:
+                - 10
+            interval: 2

@@ -19,12 +19,18 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
     private $demoService;
 
     /**
+     * @var SteamService
+     */
+    private $steamService;
+
+    /**
      * @var UserService
      */
     private $userService;
 
     protected function init() {
         $this->demoService = $this->getService(DemoService::ID);
+        $this->steamService = $this->getService(SteamService::ID);
         $this->userService = $this->getService(UserService::ID);
     }
 
@@ -66,11 +72,7 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
         $matchInfo = $demo->getMatchInfo();
         $players = $matchInfo->getPlayers();
         foreach ($players as $index => $player) {
-            $exploded = explode(':', $player->getSteamId());
-            $authId = $exploded[1];
-            $steamId = $exploded[2];
-
-            $steamId64 = ($steamId * 2) + ($authId + 76561197960265728);
+            $steamId64 = $this->steamService->getSteamId64($player->getSteamId());
             $players[$index]->setSteamId64($steamId64);
         }
         $matchInfo->setPlayers($players);
