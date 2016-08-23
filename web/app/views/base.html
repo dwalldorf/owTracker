@@ -11,9 +11,11 @@
                     <navigation></navigation>
                 </div>
                 <div class="col-xs-4 pull-right">
-                    <feedback-dialog></feedback-dialog>
-
-                    <demo-upload></demo-upload>
+                    <button class="btn"
+                            title="Upload demos"
+                            (click)="toggleShowDemoUpload()">
+                        <span class="glyphicon glyphicon-arrow-up"></span> Demo
+                    </button>
 
                     <verdict-dialog></verdict-dialog>
 
@@ -45,3 +47,8 @@
 </div>
 
 <flash-messages></flash-messages>
+
+<div *ngIf="showDemoUploadOverlay"
+     id="demoUploadOverlay">
+    <demo-upload></demo-upload>
+</div>

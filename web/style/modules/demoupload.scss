@@ -1,9 +1,17 @@
 @import "../base/colors";
 
-#upload-progress {
-    background: $default-bg-color;
+#demoUploadOverlay {
     position: fixed;
-    top: 50px;
+    bottom: 20px;
     left: 20px;
-    z-index: 900;
+
+    width: 660px;
+
+    .container {
+        background: $default-bg-color;
+        border-color: $default-border-color;
+        opacity: 0.95;
+        padding: 15px;
+        width: inherit !important;
+    }
 }

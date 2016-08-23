@@ -123,6 +123,8 @@ export class AppComponent {
 
     restFinished = false;
 
+    showDemoUploadOverlay = false;
+
     constructor(router: Router, appLoadingService: AppLoadingService, navigationService: NavigationService, userService: UserService) {
         this._router = router;
         this._appLoadingService = appLoadingService;
@@ -173,6 +175,10 @@ export class AppComponent {
 
     logout() {
         this._userService.logout().subscribe(() => this.handleNotLoggedIn());
+    }
+
+    toggleShowDemoUpload() {
+        this.showDemoUploadOverlay = !this.showDemoUploadOverlay;
     }
 
     displayAdminMenu() {

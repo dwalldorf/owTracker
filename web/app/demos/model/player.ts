@@ -1,6 +1,7 @@
 export class Player {
 
-    public name: string;
     public steamId: string;
+    public userId: number;
+    public name: string;
 
 }

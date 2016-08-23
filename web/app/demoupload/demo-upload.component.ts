@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass, NgStyle} from '@angular/common';
+import {FILE_UPLOAD_DIRECTIVES, FileSelectDirective, FileUploader} from 'ng2-file-upload/ng2-file-upload';
 import {DemoUploadService} from "./service/demo-upload.service";
 import {FlashService} from "../core/service/flash.service";
 
@@ -7,36 +9,29 @@ declare var jQuery: any;
 @Component({
     selector: 'demo-upload',
     templateUrl: 'app/demoupload/views/demo-upload.html',
+    directives: [ FILE_UPLOAD_DIRECTIVES, NgClass, NgStyle, CORE_DIRECTIVES, FORM_DIRECTIVES, FileSelectDirective ],
 })
 export class DemoUploadComponent {
 
-    private _flashService;
+    private _flashService: FlashService;
 
-    private _demoUploadService;
+    private _demoUploadService: DemoUploadService;
+
+    public hasBaseDropZoneOver = false;
+
+    private uploader = new FileUploader({ url: '/api/demo' });
 
     constructor(flashService: FlashService, demoUploadService: DemoUploadService) {
         this._flashService = flashService;
         this._demoUploadService = demoUploadService;
     }
 
-    ngOnInit() {
-        jQuery("#demo-upload").dropzone({
-            url: "/api/demo",
-            parallelUploads: 2,
-            uploadMultiple: true,
-            autoProcessQueue: true,
-            previewTemplate: '\
-            <div class="dz-preview dz-file-preview"> \
-                <div class="dz-details"> \
-                    <div class="dz-filename"><span data-dz-name></span></div> \
-                    <div class="dz-size" data-dz-size></div> \
-                </div> \
-                \
-                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div> \
-            </div>',
-            previewsContainer: "#upload-progress"
-            // acceptedFiles: ".dem",
-        });
+    public fileOverBase(e: any): void {
+        this.hasBaseDropZoneOver = e;
+    }
+
+    openUploadDialog() {
+        this._flashService.showDemoUpload();
     }
 
 }

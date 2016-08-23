@@ -36,10 +36,16 @@ class AppSerializer {
 
     /**
      * @param mixed $obj
+     * @param bool $escapeBackslash
      * @return string
      */
-    public function toJson($obj) {
-        return $this->serializer->serialize($obj, self::FORMAT);
+    public function toJson($obj, $escapeBackslash = true) {
+        $json = $this->serializer->serialize($obj, self::FORMAT);
+
+        if (!$escapeBackslash) {
+            return $json;
+        }
+        return str_replace('\\', '', $json);
     }
 
     /**

@@ -21,5 +21,7 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 export LC_ALL=C
+export GOPATH=/home/vagrant/go
+export PATH=$PATH:$GOPATH/bin
 
 cd <%= @owtDir %>
