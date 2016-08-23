@@ -45,9 +45,16 @@ export class UserSettingsDialogComponent {
     }
 
     save() {
-        console.log('save');
-        console.log(this.user);
         this._appLoadingService.setLoading(this.STATUS_ID);
+
+        var followSteamIds = [];
+        for (var i = 0; i < this.user.userSettings.followSteamIds.length; i++) {
+            if (this.user.userSettings.followSteamIds[ i ].id.length > 0) {
+                followSteamIds.push(this.user.userSettings.followSteamIds[ i ]);
+            }
+        }
+        this.user.userSettings.followSteamIds = followSteamIds;
+
         this._userService.updateSettings(this.user).subscribe(() => {
             this.resetDialog();
             this._appLoadingService.finishedLoading(this.STATUS_ID);

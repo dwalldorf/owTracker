@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Document\User;
+use UserBundle\Document\UserSettings;
 use UserBundle\Exception\NotAuthorizedException;
 use UserBundle\Exception\NotLoggedInException;
 use UserBundle\Exception\RegisterUserException;
@@ -111,8 +112,12 @@ class UserController extends BaseController {
         if ($user->getId() != $this->getCurrentUser()->getId()) {
             throw new NotAuthorizedException();
         }
+        $dbUser = $this->userService->findById($this->getCurrentUser()->getId());
 
-        $this->userService->update($user);
+        $dbUser->setEmail($user->getEmail());
+        $dbUser->setUserSettings($user->getUserSettings());
+        $this->userService->update($dbUser);
+
         return $this->json($this->userService->getSecureUserCopy($user));
     }
 }

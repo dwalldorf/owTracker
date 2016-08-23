@@ -30,8 +30,4 @@ export class DemoUploadComponent {
         this.hasBaseDropZoneOver = e;
     }
 
-    openUploadDialog() {
-        this._flashService.showDemoUpload();
-    }
-
 }
