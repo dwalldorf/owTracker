@@ -114,11 +114,10 @@ class FeedbackControllerTest extends BaseWebTestCase {
         /* @var Feedback $responseFeedback */
         $response = $this->apiRequest(Request::METHOD_POST, '/feedback', $feedback);
         $responseFeedback = $this->getEntityFromRequest($response, Feedback::class);
-        $feedbackCreated = new \DateTime($responseFeedback->getCreated());
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEquals($this->mockedSessionUser->getId(), $responseFeedback->getCreatedBy());
         // created timestamp within last 5 seconds
-        $this->assertTrue($feedbackCreated->getTimestamp() > (time() - 5));
+        $this->assertTrue($responseFeedback->getCreated()->getTimestamp() > (time() - 5));
     }
 }

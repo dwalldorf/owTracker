@@ -75,10 +75,6 @@ class Verdict {
      */
     private $displayDate;
 
-    public function __construct() {
-        $this->setCreationDate(new \DateTime());
-    }
-
     /**
      * @return string
      */
@@ -87,7 +83,7 @@ class Verdict {
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      */
     public function setId($id) {
         $this->id = $id;
@@ -101,7 +97,7 @@ class Verdict {
     }
 
     /**
-     * @param string $userId
+     * @param string|null $userId
      */
     public function setUserId($userId) {
         $this->userId = $userId;
@@ -115,7 +111,7 @@ class Verdict {
     }
 
     /**
-     * @param \DateTime $creationDate
+     * @param \DateTime|null $creationDate
      */
     public function setCreationDate($creationDate) {
         $this->creationDate = $creationDate;
@@ -129,7 +125,7 @@ class Verdict {
     }
 
     /**
-     * @param \DateTime $overwatchDate
+     * @param \DateTime|null $overwatchDate
      */
     public function setOverwatchDate($overwatchDate) {
         $this->overwatchDate = $overwatchDate;
@@ -213,7 +209,7 @@ class Verdict {
     }
 
     /**
-     * @param string $displayDate
+     * @param string|null $displayDate
      */
     public function setDisplayDate($displayDate) {
         $this->displayDate = $displayDate;

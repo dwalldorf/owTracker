@@ -118,7 +118,7 @@ class User {
     }
 
     /**
-     * @param string $password
+     * @param string|null $password
      */
     public function setPassword($password) {
         $this->password = $password;
@@ -132,7 +132,7 @@ class User {
     }
 
     /**
-     * @param int $registered
+     * @param int|null $registered
      */
     public function setRegistered($registered) {
         $this->registered = $registered;

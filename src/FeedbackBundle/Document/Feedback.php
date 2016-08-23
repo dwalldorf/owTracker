@@ -56,13 +56,6 @@ class Feedback {
     private $archived = false;
 
     /**
-     * Feedback constructor.
-     */
-    public function __construct() {
-        $this->created = new \DateTime();
-    }
-
-    /**
      * @return string
      */
     public function getId() {
@@ -70,7 +63,7 @@ class Feedback {
     }
 
     /**
-     * @param string $id
+     * @param string|null $id
      */
     public function setId($id) {
         $this->id = $id;
@@ -84,7 +77,7 @@ class Feedback {
     }
 
     /**
-     * @param string $createdBy
+     * @param string|null $createdBy
      */
     public function setCreatedBy($createdBy) {
         $this->createdBy = $createdBy;
@@ -98,7 +91,7 @@ class Feedback {
     }
 
     /**
-     * @param \DateTime $created
+     * @param \DateTime|null $created
      */
     public function setCreated($created) {
         $this->created = $created;

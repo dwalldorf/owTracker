@@ -64,7 +64,8 @@ class AppSerializer {
      * @throws InvalidArgumentException
      */
     public function fromJson($json, $target) {
-        return $this->serializer->deserialize($json, $target, self::FORMAT);
+        $mapper = new \JsonMapper();
+        return $mapper->map(json_decode($json), new $target());
     }
 
     /**

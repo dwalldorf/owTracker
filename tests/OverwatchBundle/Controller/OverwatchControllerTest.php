@@ -57,7 +57,6 @@ class OverwatchControllerTest extends BaseWebTestCase {
 
         $verdict = new Verdict();
         $verdict->setMap('de_dust2');
-        $verdict->setOverwatchDate(time());
 
         /* @var Verdict $responseVerdict */
         $response = $this->apiRequest(Request::METHOD_POST, '/overwatch/verdicts', $verdict);
