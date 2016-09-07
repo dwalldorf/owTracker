@@ -3,6 +3,7 @@
 namespace DemoBundle\Repository;
 
 use AppBundle\Repository\BaseRepository;
+use DemoBundle\Document\DemoStats;
 
 class DemoStatsRepository extends BaseRepository {
 
@@ -20,5 +21,18 @@ class DemoStatsRepository extends BaseRepository {
      */
     private function getQueryBuilder() {
         return $this->dm->createQueryBuilder(self::ID);
+    }
+
+    /**
+     * @param DemoStats[] $stats
+     * @return DemoStats[]
+     */
+    public function save(array $stats) {
+        foreach ($stats as $item) {
+            $this->dm->persist($item);
+        }
+        $this->dm->flush();
+
+        return $stats;
     }
 }

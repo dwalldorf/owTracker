@@ -3,6 +3,7 @@
 namespace DemoBundle\Command;
 
 use AppBundle\Command\BaseContainerAwareCommand;
+use DemoBundle\Service\DemoAnalyzerService;
 use DemoBundle\Service\DemoService;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,9 +20,9 @@ class AnalyzeDemosCommand extends BaseContainerAwareCommand {
     private $demoService;
 
     /**
-     * @var UserService
+     * @var DemoAnalyzerService
      */
-    private $userService;
+    private $demoAnalyzerService;
 
     /**
      * @var int
@@ -40,34 +41,17 @@ class AnalyzeDemosCommand extends BaseContainerAwareCommand {
 
     protected function initServices() {
         $this->demoService = $this->getService(DemoService::ID);
-        $this->userService = $this->getService(UserService::ID);
+        $this->demoAnalyzerService = $this->getService(DemoAnalyzerService::ID);
     }
 
     protected function executeCommand(InputInterface $input, OutputInterface $output) {
         $this->limit = $input->getArgument(self::ARG_LIMIT_NAME);
         $demos = $this->demoService->getDemosToAnalyze($this->limit);
 
-        foreach ($demos as $demo) {
-            $owningUser = $this->userService->findById($demo->getUserId());
-            $playersToTrack = $owningUser->getUserSettings()->getFollowSteamIds();
-            $trackedPlayers = [];
-
-            // find players to track
-            foreach ($demo->getMatchInfo()->getPlayers() as $player) {
-                if (in_array($player->getSteamId64(), $playersToTrack)) {
-                    $trackedPlayers[] = $player;
-                }
-            }
-
-            ddd($trackedPlayers);
-
-            foreach ($demo->getRounds() as $round) {
-                foreach ($round->getEvents() as $event) {
-                }
-            }
-
-            $this->analyzedDemos++;
-        }
+        /*
+         * TODO: just do this when reading demos from queue but keep anyway for re-analyzing demos (when steamid's are added for example)
+         */
+        $this->demoAnalyzerService->analyzeDemos($demos);
 
         $this->info(sprintf('Analyzed %d demos', $this->analyzedDemos));
     }

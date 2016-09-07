@@ -86,6 +86,18 @@ class MatchInfo {
     }
 
     /**
+     * @param int $userId
+     * @return MatchPlayer|null
+     */
+    public function getPlayerByUserId($userId) {
+        foreach ($this->players as $player) {
+            if ($player->getUserId() == $userId) {
+                return $player;
+            }
+        }
+    }
+
+    /**
      * @param MatchPlayer[] $players
      * @return $this
      */

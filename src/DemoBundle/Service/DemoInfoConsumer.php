@@ -44,6 +44,7 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
         $mapper = new \JsonMapper();
         $mapper->map(json_decode($msg->getBody()), $demo);
 
+
         $demoFile = $this->demoService->getDemoFileById($demo->getId());
 
         if (!$demoFile) {
@@ -55,9 +56,13 @@ class DemoInfoConsumer extends BaseService implements ConsumerInterface {
 
         $this->demoService->save($demo);
 
-        unlink($demoFile->getFile());
+        try {
+            unlink($demoFile->getFile());
+            $demoFile->setFile(null);
+        } catch (\Exception $ex) {
+            print_r($ex->getMessage());
+        }
         $demoFile->setProcessed(true);
-        $demoFile->setFile(null);
 
         $this->demoService->saveDemoFile($demoFile);
 
