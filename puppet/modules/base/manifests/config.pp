@@ -1,4 +1,13 @@
 class base::config inherits base {
+    file { 'rc_local':
+        path     => '/etc/rc.local',
+        source   => 'puppet:///modules/base/rc.local',
+        ensure   => file,
+        owner    => root,
+        group    => root,
+        mode     => 0755,
+    }
+
     file { 'bash_profile_vagrant':
         path     => '/home/vagrant/.profile',
         content  => template('base/profile.erb'),
@@ -30,7 +39,7 @@ class base::config inherits base {
         path    => '/usr/bin',
         user    => root,
         require => [Package['zsh'], File['zprofile_vagrant', 'bash_profile_vagrant']],
-        unless => 'sudo -Hiu vagrant env | /bin/grep SHELL=/bin/zsh',
+        unless  => 'sudo -Hiu vagrant env | /bin/grep SHELL=/bin/zsh',
     }
 
     file { 'bash_profile_root':
